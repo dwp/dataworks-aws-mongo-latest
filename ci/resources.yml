@@ -1,0 +1,29 @@
+resources:
+  - name: aws-emr-template-repository-pr
+    type: pull-request
+    source:
+      repository: dwp/aws-emr-template-repository
+      access_token: ((dataworks-secrets.concourse_github_pat))
+    webhook_token: ((dataworks.concourse_github_webhook_token))
+    check_every: 5m
+
+  - name: aws-emr-template-repository
+    type: git
+    source:
+      branch: master
+      uri: https://github.com/dwp/aws-emr-template-repository.git
+      access_token: ((dataworks-secrets.concourse_github_pat))
+    webhook_token: ((dataworks.concourse_github_webhook_token))
+    check_every: 5m
+
+  - name: aws-emr-template-repository-pipeline
+    type: git
+    source:
+      branch: master
+      uri: https://github.com/dwp/aws-emr-template-repository.git
+      access_token: ((dataworks-secrets.concourse_github_pat))
+      paths:
+        - ci/*
+        - aviator.yml
+    webhook_token: ((dataworks.concourse_github_webhook_token))
+    check_every: 5m

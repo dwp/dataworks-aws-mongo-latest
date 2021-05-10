@@ -1,0 +1,29 @@
+jobs:
+  - name: aws-emr-template-repository-pr
+    plan:
+      - get: aws-emr-template-repository-pr
+        trigger: true
+        version: every
+      - put: aws-emr-template-repository-pr
+        params:
+          path: aws-emr-template-repository-pr
+          status: pending
+      - .: (( inject meta.plan.terraform-bootstrap ))
+        input_mapping:
+          aws-emr-template-repository: aws-emr-template-repository-pr
+      - .: (( inject meta.plan.terraform-plan ))
+        input_mapping:
+          aws-emr-template-repository: aws-emr-template-repository-pr
+        params:
+          TF_WORKSPACE: "qa"
+          DETAILED_EXITCODE: ""
+        on_failure:
+          put: aws-emr-template-repository-pr
+          params:
+            path: aws-emr-template-repository-pr
+            status: failure
+        on_success:
+          put: aws-emr-template-repository-pr
+          params:
+            path: aws-emr-template-repository-pr
+            status: success
