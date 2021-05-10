@@ -6,7 +6,7 @@ groups:
   
   - name: pull-request
     jobs:
-      - aws-emr-template-repository-pr
+      - dataworks-aws-mongo-latest-pr
   
   - name: update-pipeline
     jobs:

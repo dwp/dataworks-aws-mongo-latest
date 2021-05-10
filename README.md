@@ -1,4 +1,4 @@
-# aws-emr-template-repository
+# dataworks-aws-mongo-latest
 
 ## A template repository for building EMR cluster in AWS
 

@@ -1,5 +1,5 @@
 locals {
-  emr_cluster_name = "aws-emr-template-repository"
+  emr_cluster_name = "dataworks-aws-mongo-latest"
   common_emr_tags = merge(
     local.common_tags,
     {
@@ -44,7 +44,7 @@ locals {
     production  = "dataworks.dwp.gov.uk"
   }
 
-  aws_emr_template_repository_log_level = {
+  dataworks_aws_mongo_latest_log_level = {
     development = "DEBUG"
     qa          = "DEBUG"
     integration = "DEBUG"
@@ -52,7 +52,7 @@ locals {
     production  = "INFO"
   }
 
-  aws_emr_template_repository_version = {
+  dataworks_aws_mongo_latest_version = {
     development = "0.0.1"
     qa          = "0.0.1"
     integration = "0.0.1"
@@ -60,7 +60,7 @@ locals {
     production  = "0.0.1"
   }
 
-  aws_emr_template_repository_alerts = {
+  dataworks_aws_mongo_latest_alerts = {
     development = false
     qa          = false
     integration = false
@@ -87,7 +87,7 @@ locals {
         LocalDiskEncryptionConfiguration = {
           EnableEbsEncryption       = true
           EncryptionKeyProviderType = "AwsKms"
-          AwsKmsKey                 = aws_kms_key.aws_emr_template_repository_ebs_cmk.arn
+          AwsKmsKey                 = aws_kms_key.dataworks_aws_mongo_latest_ebs_cmk.arn
         }
       }
     }
@@ -109,13 +109,13 @@ locals {
     production  = "TERMINATE_CLUSTER"
   }
 
-  cw_agent_namespace                   = "/app/aws_emr_template_repository"
-  cw_agent_log_group_name              = "/app/aws_emr_template_repository"
-  cw_agent_bootstrap_loggrp_name       = "/app/aws_emr_template_repository/bootstrap_actions"
-  cw_agent_steps_loggrp_name           = "/app/aws_emr_template_repository/step_logs"
+  cw_agent_namespace                   = "/app/dataworks_aws_mongo_latest"
+  cw_agent_log_group_name              = "/app/dataworks_aws_mongo_latest"
+  cw_agent_bootstrap_loggrp_name       = "/app/dataworks_aws_mongo_latest/bootstrap_actions"
+  cw_agent_steps_loggrp_name           = "/app/dataworks_aws_mongo_latest/step_logs"
   cw_agent_metrics_collection_interval = 60
 
-  s3_log_prefix = "emr/aws_emr_template_repository"
+  s3_log_prefix = "emr/dataworks_aws_mongo_latest"
 
   # These should be `none` unless we have agreed this data product is to use the capacity reservations so as not to interfere with existing data products running
   # If capacity reservation to be used, then it should be `open`

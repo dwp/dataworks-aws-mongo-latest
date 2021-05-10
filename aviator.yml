@@ -9,7 +9,7 @@ spruce:
         regexp: ".*.yml"
     to: aviator_pipeline.yml
 fly:
-  name: aws-emr-template-repository
+  name: dataworks-aws-mongo-latest
   target: aws-concourse
   config: aviator_pipeline.yml
   expose: true

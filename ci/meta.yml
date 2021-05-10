@@ -30,9 +30,9 @@ meta:
             - |
               python bootstrap_terraform.py
               cp terraform.tf ../terraform-bootstrap
-          dir: aws-emr-template-repository
+          dir: dataworks-aws-mongo-latest
         inputs:
-          - name: aws-emr-template-repository
+          - name: dataworks-aws-mongo-latest
         outputs:
           - name: terraform-bootstrap
       params:
@@ -51,9 +51,9 @@ meta:
               terraform init
               terraform plan -out terraform.plan
               terraform apply -auto-approve terraform.plan
-          dir: aws-emr-template-repository
+          dir: dataworks-aws-mongo-latest
         inputs:
-          - name: aws-emr-template-repository
+          - name: dataworks-aws-mongo-latest
           - name: terraform-bootstrap
     terraform-plan:
       task: terraform-plan
@@ -68,9 +68,9 @@ meta:
               terraform workspace show
               terraform init
               terraform plan $DETAILED_EXITCODE
-          dir: aws-emr-template-repository
+          dir: dataworks-aws-mongo-latest
         inputs:
-          - name: aws-emr-template-repository
+          - name: dataworks-aws-mongo-latest
           - name: terraform-bootstrap
       params:
         DETAILED_EXITCODE: -detailed-exitcode

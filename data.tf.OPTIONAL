@@ -1,4 +1,4 @@
-data "aws_iam_policy_document" "aws_emr_template_repository_write_data" {
+data "aws_iam_policy_document" "dataworks_aws_mongo_latest_write_data" {
   statement {
     effect = "Allow"
 
@@ -49,9 +49,9 @@ data "aws_iam_policy_document" "aws_emr_template_repository_write_data" {
   }
 }
 
-resource "aws_iam_policy" "aws_emr_template_repository_write_data" {
+resource "aws_iam_policy" "dataworks_aws_mongo_latest_write_data" {
   name        = "AwsEMRWriteData"
   description = "Allow writing of aws-emr-template files and metrics"
-  policy      = data.aws_iam_policy_document.aws_emr_template_repository_write_data.json
+  policy      = data.aws_iam_policy_document.dataworks_aws_mongo_latest_write_data.json
 }
 

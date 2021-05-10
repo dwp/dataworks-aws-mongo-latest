@@ -2,14 +2,14 @@
 
 source /opt/shared/common_logging.sh
 
-log_aws_emr_template_repository_message() {
+log_dataworks_aws_mongo_latest_message() {
     set +u
 
     message="${1}"
     component="${2}"
     process_id="${3}"
 
-    application="aws_emr_template_repository"
+    application="dataworks_aws_mongo_latest"
 
     app_version="NOT_SET"
     if [ -f "/opt/emr/version" ]; then

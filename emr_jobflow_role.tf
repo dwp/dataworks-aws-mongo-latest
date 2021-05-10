@@ -11,38 +11,38 @@ data "aws_iam_policy_document" "ec2_assume_role" {
   }
 }
 
-resource "aws_iam_role" "aws_emr_template_repository" {
-  name               = "aws_emr_template_repository"
+resource "aws_iam_role" "dataworks_aws_mongo_latest" {
+  name               = "dataworks_aws_mongo_latest"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
   tags               = local.tags
 }
 
-resource "aws_iam_instance_profile" "aws_emr_template_repository" {
-  name = "aws_emr_template_repository"
-  role = aws_iam_role.aws_emr_template_repository.id
+resource "aws_iam_instance_profile" "dataworks_aws_mongo_latest" {
+  name = "dataworks_aws_mongo_latest"
+  role = aws_iam_role.dataworks_aws_mongo_latest.id
 }
 
 resource "aws_iam_role_policy_attachment" "ec2_for_ssm_attachment" {
-  role       = aws_iam_role.aws_emr_template_repository.name
+  role       = aws_iam_role.dataworks_aws_mongo_latest.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
 resource "aws_iam_role_policy_attachment" "amazon_ssm_managed_instance_core" {
-  role       = aws_iam_role.aws_emr_template_repository.name
+  role       = aws_iam_role.dataworks_aws_mongo_latest.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
-resource "aws_iam_role_policy_attachment" "aws_emr_template_repository_ebs_cmk" {
-  role       = aws_iam_role.aws_emr_template_repository.name
-  policy_arn = aws_iam_policy.aws_emr_template_repository_ebs_cmk_encrypt.arn
+resource "aws_iam_role_policy_attachment" "dataworks_aws_mongo_latest_ebs_cmk" {
+  role       = aws_iam_role.dataworks_aws_mongo_latest.name
+  policy_arn = aws_iam_policy.dataworks_aws_mongo_latest_ebs_cmk_encrypt.arn
 }
 
-resource "aws_iam_role_policy_attachment" "aws_emr_template_repository_acm" {
-  role       = aws_iam_role.aws_emr_template_repository.name
-  policy_arn = aws_iam_policy.aws_emr_template_repository_acm.arn
+resource "aws_iam_role_policy_attachment" "dataworks_aws_mongo_latest_acm" {
+  role       = aws_iam_role.dataworks_aws_mongo_latest.name
+  policy_arn = aws_iam_policy.dataworks_aws_mongo_latest_acm.arn
 }
 
-data "aws_iam_policy_document" "aws_emr_template_repository_extra_ssm_properties" {
+data "aws_iam_policy_document" "dataworks_aws_mongo_latest_extra_ssm_properties" {
   statement {
     effect = "Allow"
     actions = [
@@ -114,23 +114,23 @@ data "aws_iam_policy_document" "aws_emr_template_repository_extra_ssm_properties
   }
 }
 
-resource "aws_iam_policy" "aws_emr_template_repository_extra_ssm_properties" {
+resource "aws_iam_policy" "dataworks_aws_mongo_latest_extra_ssm_properties" {
   name        = "AwsEmrTemplateRepositoryExtraSSM"
   description = "Additional properties to allow for SSM and writing logs"
-  policy      = data.aws_iam_policy_document.aws_emr_template_repository_extra_ssm_properties.json
+  policy      = data.aws_iam_policy_document.dataworks_aws_mongo_latest_extra_ssm_properties.json
 }
 
-resource "aws_iam_role_policy_attachment" "aws_emr_template_repository_extra_ssm_properties" {
-  role       = aws_iam_role.aws_emr_template_repository.name
-  policy_arn = aws_iam_policy.aws_emr_template_repository_extra_ssm_properties.arn
+resource "aws_iam_role_policy_attachment" "dataworks_aws_mongo_latest_extra_ssm_properties" {
+  role       = aws_iam_role.dataworks_aws_mongo_latest.name
+  policy_arn = aws_iam_policy.dataworks_aws_mongo_latest_extra_ssm_properties.arn
 }
 
-resource "aws_iam_role_policy_attachment" "aws_emr_template_repository_certificates" {
-  role       = aws_iam_role.aws_emr_template_repository.name
-  policy_arn = aws_iam_policy.aws_emr_template_repository_certificates.arn
+resource "aws_iam_role_policy_attachment" "dataworks_aws_mongo_latest_certificates" {
+  role       = aws_iam_role.dataworks_aws_mongo_latest.name
+  policy_arn = aws_iam_policy.dataworks_aws_mongo_latest_certificates.arn
 }
 
-data "aws_iam_policy_document" "aws_emr_template_repository_write_logs" {
+data "aws_iam_policy_document" "dataworks_aws_mongo_latest_write_logs" {
   statement {
     effect = "Allow"
 
@@ -159,18 +159,18 @@ data "aws_iam_policy_document" "aws_emr_template_repository_write_logs" {
   }
 }
 
-resource "aws_iam_policy" "aws_emr_template_repository_write_logs" {
-  name        = "aws-emr-template-repository-WriteLogs"
-  description = "Allow writing of aws_emr_template_repository logs"
-  policy      = data.aws_iam_policy_document.aws_emr_template_repository_write_logs.json
+resource "aws_iam_policy" "dataworks_aws_mongo_latest_write_logs" {
+  name        = "dataworks-aws-mongo-latest-WriteLogs"
+  description = "Allow writing of dataworks_aws_mongo_latest logs"
+  policy      = data.aws_iam_policy_document.dataworks_aws_mongo_latest_write_logs.json
 }
 
-resource "aws_iam_role_policy_attachment" "aws_emr_template_repository_write_logs" {
-  role       = aws_iam_role.aws_emr_template_repository.name
-  policy_arn = aws_iam_policy.aws_emr_template_repository_write_logs.arn
+resource "aws_iam_role_policy_attachment" "dataworks_aws_mongo_latest_write_logs" {
+  role       = aws_iam_role.dataworks_aws_mongo_latest.name
+  policy_arn = aws_iam_policy.dataworks_aws_mongo_latest_write_logs.arn
 }
 
-data "aws_iam_policy_document" "aws_emr_template_repository_read_config" {
+data "aws_iam_policy_document" "dataworks_aws_mongo_latest_read_config" {
   statement {
     effect = "Allow"
 
@@ -210,18 +210,18 @@ data "aws_iam_policy_document" "aws_emr_template_repository_read_config" {
   }
 }
 
-resource "aws_iam_policy" "aws_emr_template_repository_read_config" {
-  name        = "aws-emr-template-repository-ReadConfig"
-  description = "Allow reading of aws_emr_template_repository config files"
-  policy      = data.aws_iam_policy_document.aws_emr_template_repository_read_config.json
+resource "aws_iam_policy" "dataworks_aws_mongo_latest_read_config" {
+  name        = "dataworks-aws-mongo-latest-ReadConfig"
+  description = "Allow reading of dataworks_aws_mongo_latest config files"
+  policy      = data.aws_iam_policy_document.dataworks_aws_mongo_latest_read_config.json
 }
 
-resource "aws_iam_role_policy_attachment" "aws_emr_template_repository_read_config" {
-  role       = aws_iam_role.aws_emr_template_repository.name
-  policy_arn = aws_iam_policy.aws_emr_template_repository_read_config.arn
+resource "aws_iam_role_policy_attachment" "dataworks_aws_mongo_latest_read_config" {
+  role       = aws_iam_role.dataworks_aws_mongo_latest.name
+  policy_arn = aws_iam_policy.dataworks_aws_mongo_latest_read_config.arn
 }
 
-data "aws_iam_policy_document" "aws_emr_template_repository_read_artefacts" {
+data "aws_iam_policy_document" "dataworks_aws_mongo_latest_read_artefacts" {
   statement {
     effect = "Allow"
 
@@ -261,18 +261,18 @@ data "aws_iam_policy_document" "aws_emr_template_repository_read_artefacts" {
   }
 }
 
-resource "aws_iam_policy" "aws_emr_template_repository_read_artefacts" {
-  name        = "aws-emr-template-repository-ReadArtefacts"
-  description = "Allow reading of aws_emr_template_repository software artefacts"
-  policy      = data.aws_iam_policy_document.aws_emr_template_repository_read_artefacts.json
+resource "aws_iam_policy" "dataworks_aws_mongo_latest_read_artefacts" {
+  name        = "dataworks-aws-mongo-latest-ReadArtefacts"
+  description = "Allow reading of dataworks_aws_mongo_latest software artefacts"
+  policy      = data.aws_iam_policy_document.dataworks_aws_mongo_latest_read_artefacts.json
 }
 
-resource "aws_iam_role_policy_attachment" "aws_emr_template_repository_read_artefacts" {
-  role       = aws_iam_role.aws_emr_template_repository.name
-  policy_arn = aws_iam_policy.aws_emr_template_repository_read_artefacts.arn
+resource "aws_iam_role_policy_attachment" "dataworks_aws_mongo_latest_read_artefacts" {
+  role       = aws_iam_role.dataworks_aws_mongo_latest.name
+  policy_arn = aws_iam_policy.dataworks_aws_mongo_latest_read_artefacts.arn
 }
 
-data "aws_iam_policy_document" "aws_emr_template_repository_write_dynamodb" {
+data "aws_iam_policy_document" "dataworks_aws_mongo_latest_write_dynamodb" {
   statement {
     effect = "Allow"
 
@@ -286,18 +286,18 @@ data "aws_iam_policy_document" "aws_emr_template_repository_write_dynamodb" {
   }
 }
 
-resource "aws_iam_policy" "aws_emr_template_repository_write_dynamodb" {
+resource "aws_iam_policy" "dataworks_aws_mongo_latest_write_dynamodb" {
   name        = "AwsEmrTemplateRepositoryDynamoDB"
-  description = "Allows read and write access toaws_emr_template_repository's EMRFS DynamoDB table"
-  policy      = data.aws_iam_policy_document.aws_emr_template_repository_write_dynamodb.json
+  description = "Allows read and write access todataworks_aws_mongo_latest's EMRFS DynamoDB table"
+  policy      = data.aws_iam_policy_document.dataworks_aws_mongo_latest_write_dynamodb.json
 }
 
 resource "aws_iam_role_policy_attachment" "analytical_dataset_generator_dynamodb" {
-  role       = aws_iam_role.aws_emr_template_repository.name
-  policy_arn = aws_iam_policy.aws_emr_template_repository_write_dynamodb.arn
+  role       = aws_iam_role.dataworks_aws_mongo_latest.name
+  policy_arn = aws_iam_policy.dataworks_aws_mongo_latest_write_dynamodb.arn
 }
 
-data "aws_iam_policy_document" "aws_emr_template_repository_metadata_change" {
+data "aws_iam_policy_document" "dataworks_aws_mongo_latest_metadata_change" {
   statement {
     effect = "Allow"
 
@@ -312,18 +312,18 @@ data "aws_iam_policy_document" "aws_emr_template_repository_metadata_change" {
   }
 }
 
-resource "aws_iam_role_policy_attachment" "aws_emr_template_repository_read_write_processed_bucket" {
-  role       = aws_iam_role.aws_emr_template_repository.name
-  policy_arn = aws_iam_policy.aws_emr_template_repository_read_write_processed_bucket.arn
+resource "aws_iam_role_policy_attachment" "dataworks_aws_mongo_latest_read_write_processed_bucket" {
+  role       = aws_iam_role.dataworks_aws_mongo_latest.name
+  policy_arn = aws_iam_policy.dataworks_aws_mongo_latest_read_write_processed_bucket.arn
 }
 
-resource "aws_iam_policy" "aws_emr_template_repository_metadata_change" {
-  name        = "aws-emr-template-repository-MetadataOptions"
+resource "aws_iam_policy" "dataworks_aws_mongo_latest_metadata_change" {
+  name        = "dataworks-aws-mongo-latest-MetadataOptions"
   description = "Allow editing of Metadata Options"
-  policy      = data.aws_iam_policy_document.aws_emr_template_repository_metadata_change.json
+  policy      = data.aws_iam_policy_document.dataworks_aws_mongo_latest_metadata_change.json
 }
 
-resource "aws_iam_role_policy_attachment" "aws_emr_template_repository_metadata_change" {
-  role       = aws_iam_role.aws_emr_template_repository.name
-  policy_arn = aws_iam_policy.aws_emr_template_repository_metadata_change.arn
+resource "aws_iam_role_policy_attachment" "dataworks_aws_mongo_latest_metadata_change" {
+  role       = aws_iam_role.dataworks_aws_mongo_latest.name
+  policy_arn = aws_iam_policy.dataworks_aws_mongo_latest_metadata_change.arn
 }

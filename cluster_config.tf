@@ -1,5 +1,5 @@
 resource "aws_emr_security_configuration" "ebs_emrfs_em" {
-  name          = "aws_emr_template_repository_ebs_emrfs"
+  name          = "dataworks_aws_mongo_latest_ebs_emrfs"
   configuration = jsonencode(local.ebs_emrfs_em)
 }
 
@@ -10,14 +10,14 @@ output "security_configuration" {
 
 resource "aws_s3_bucket_object" "cluster" {
   bucket = data.terraform_remote_state.common.outputs.config_bucket.id
-  key    = "emr/aws_emr_template_repository/cluster.yaml"
+  key    = "emr/dataworks_aws_mongo_latest/cluster.yaml"
   content = templatefile("${path.module}/cluster_config/cluster.yaml.tpl",
     {
       s3_log_bucket          = data.terraform_remote_state.security-tools.outputs.logstore_bucket.id
       s3_log_prefix          = local.s3_log_prefix
       ami_id                 = var.emr_ami_id
-      service_role           = aws_iam_role.aws_emr_template_repository_emr_service.arn
-      instance_profile       = aws_iam_instance_profile.aws_emr_template_repository.arn
+      service_role           = aws_iam_role.dataworks_aws_mongo_latest_emr_service.arn
+      instance_profile       = aws_iam_instance_profile.dataworks_aws_mongo_latest.arn
       security_configuration = aws_emr_security_configuration.ebs_emrfs_em.id
       emr_release            = var.emr_release[local.environment]
     }
@@ -26,16 +26,16 @@ resource "aws_s3_bucket_object" "cluster" {
 
 resource "aws_s3_bucket_object" "instances" {
   bucket = data.terraform_remote_state.common.outputs.config_bucket.id
-  key    = "emr/aws_emr_template_repository/instances.yaml"
+  key    = "emr/dataworks_aws_mongo_latest/instances.yaml"
   content = templatefile("${path.module}/cluster_config/instances.yaml.tpl",
     {
       keep_cluster_alive                  = local.keep_cluster_alive[local.environment]
-      add_master_sg                       = aws_security_group.aws_emr_template_repository_common.id
-      add_slave_sg                        = aws_security_group.aws_emr_template_repository_common.id
-      subnet_ids                          = join(",", data.terraform_remote_state.internal_compute.outputs.aws_emr_template_repository_subnet.ids)
-      master_sg                           = aws_security_group.aws_emr_template_repository_master.id
-      slave_sg                            = aws_security_group.aws_emr_template_repository_slave.id
-      service_access_sg                   = aws_security_group.aws_emr_template_repository_emr_service.id
+      add_master_sg                       = aws_security_group.dataworks_aws_mongo_latest_common.id
+      add_slave_sg                        = aws_security_group.dataworks_aws_mongo_latest_common.id
+      subnet_ids                          = join(",", data.terraform_remote_state.internal_compute.outputs.dataworks_aws_mongo_latest_subnet.ids)
+      master_sg                           = aws_security_group.dataworks_aws_mongo_latest_master.id
+      slave_sg                            = aws_security_group.dataworks_aws_mongo_latest_slave.id
+      service_access_sg                   = aws_security_group.dataworks_aws_mongo_latest_emr_service.id
       instance_type_core_one              = var.emr_instance_type_core_one[local.environment]
       instance_type_master                = var.emr_instance_type_master[local.environment]
       core_instance_count                 = var.emr_core_instance_count[local.environment]
@@ -47,7 +47,7 @@ resource "aws_s3_bucket_object" "instances" {
 
 resource "aws_s3_bucket_object" "steps" {
   bucket = data.terraform_remote_state.common.outputs.config_bucket.id
-  key    = "emr/aws_emr_template_repository/steps.yaml"
+  key    = "emr/dataworks_aws_mongo_latest/steps.yaml"
   content = templatefile("${path.module}/cluster_config/steps.yaml.tpl",
     {
       s3_config_bucket    = data.terraform_remote_state.common.outputs.config_bucket.id
@@ -60,7 +60,7 @@ resource "aws_s3_bucket_object" "steps" {
 
 resource "aws_s3_bucket_object" "configurations" {
   bucket = data.terraform_remote_state.common.outputs.config_bucket.id
-  key    = "emr/aws_emr_template_repository/configurations.yaml"
+  key    = "emr/dataworks_aws_mongo_latest/configurations.yaml"
   content = templatefile("${path.module}/cluster_config/configurations.yaml.tpl",
     {
       s3_log_bucket                                 = data.terraform_remote_state.security-tools.outputs.logstore_bucket.id

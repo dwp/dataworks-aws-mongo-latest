@@ -1,29 +1,29 @@
 jobs:
-  - name: aws-emr-template-repository-pr
+  - name: dataworks-aws-mongo-latest-pr
     plan:
-      - get: aws-emr-template-repository-pr
+      - get: dataworks-aws-mongo-latest-pr
         trigger: true
         version: every
-      - put: aws-emr-template-repository-pr
+      - put: dataworks-aws-mongo-latest-pr
         params:
-          path: aws-emr-template-repository-pr
+          path: dataworks-aws-mongo-latest-pr
           status: pending
       - .: (( inject meta.plan.terraform-bootstrap ))
         input_mapping:
-          aws-emr-template-repository: aws-emr-template-repository-pr
+          dataworks-aws-mongo-latest: dataworks-aws-mongo-latest-pr
       - .: (( inject meta.plan.terraform-plan ))
         input_mapping:
-          aws-emr-template-repository: aws-emr-template-repository-pr
+          dataworks-aws-mongo-latest: dataworks-aws-mongo-latest-pr
         params:
           TF_WORKSPACE: "qa"
           DETAILED_EXITCODE: ""
         on_failure:
-          put: aws-emr-template-repository-pr
+          put: dataworks-aws-mongo-latest-pr
           params:
-            path: aws-emr-template-repository-pr
+            path: dataworks-aws-mongo-latest-pr
             status: failure
         on_success:
-          put: aws-emr-template-repository-pr
+          put: dataworks-aws-mongo-latest-pr
           params:
-            path: aws-emr-template-repository-pr
+            path: dataworks-aws-mongo-latest-pr
             status: success
