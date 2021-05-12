@@ -74,7 +74,6 @@ resource "aws_s3_bucket_object" "configurations" {
       proxy_http_port                               = data.terraform_remote_state.internal_compute.outputs.internet_proxy.port
       proxy_https_host                              = data.terraform_remote_state.internal_compute.outputs.internet_proxy.host
       proxy_https_port                              = data.terraform_remote_state.internal_compute.outputs.internet_proxy.port
-      s3_htme_bucket                                = data.terraform_remote_state.ingest.outputs.s3_buckets.htme_bucket
       hive_metastore_username                       = data.terraform_remote_state.internal_compute.outputs.metadata_store_users.mongo_latest_writer.username
       hive_metastore_pwd                            = data.terraform_remote_state.internal_compute.outputs.metadata_store_users.mongo_latest_writer.secret_name
       hive_metastore_endpoint                       = data.terraform_remote_state.internal_compute.outputs.hive_metastore_v2.endpoint

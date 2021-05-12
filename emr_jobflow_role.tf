@@ -47,11 +47,6 @@ resource "aws_iam_role_policy_attachment" "mongo_latest_acm" {
   policy_arn = aws_iam_policy.mongo_latest_acm.arn
 }
 
-resource "aws_iam_role_policy_attachment" "emr_mongo_latest_secretsmanager" {
-  role       = aws_iam_role.mongo_latest.name
-  policy_arn = aws_iam_policy.mongo_latest_secretsmanager.arn
-}
-
 resource "aws_iam_role_policy_attachment" "mongo_latest_read_write_processed_bucket" {
   role       = aws_iam_role.mongo_latest.name
   policy_arn = aws_iam_policy.mongo_latest_read_write_processed_bucket.arn
@@ -249,55 +244,4 @@ resource "aws_iam_policy" "mongo_latest_metadata_change" {
 resource "aws_iam_role_policy_attachment" "mongo_latest_metadata_change" {
   role       = aws_iam_role.mongo_latest.name
   policy_arn = aws_iam_policy.mongo_latest_metadata_change.arn
-}
-
-data "aws_iam_policy_document" "mongo_latest_read_htme" {
-  statement {
-    effect = "Allow"
-
-    actions = [
-      "s3:GetBucketLocation",
-      "s3:ListBucket",
-    ]
-
-    resources = [
-      format("arn:aws:s3:::%s", data.terraform_remote_state.ingest.outputs.s3_buckets.htme_bucket),
-    ]
-  }
-
-  statement {
-    effect = "Allow"
-
-    actions = [
-      "s3:GetObject*",
-    ]
-
-    resources = [
-      format("arn:aws:s3:::%s/%s/*", data.terraform_remote_state.ingest.outputs.s3_buckets.htme_bucket, data.terraform_remote_state.ingest.outputs.s3_buckets.htme_prefix)
-    ]
-  }
-
-  statement {
-    effect = "Allow"
-
-    actions = [
-      "kms:Decrypt",
-      "kms:DescribeKey",
-    ]
-
-    resources = [
-      "${data.terraform_remote_state.internal_compute.outputs.compaction_bucket_cmk.arn}",
-    ]
-  }
-}
-
-resource "aws_iam_policy" "mongo_latest_read_htme" {
-  name        = "MongoLatestReadHTMEOutputFiles"
-  description = "Allow reading of HTME output files"
-  policy      = data.aws_iam_policy_document.mongo_latest_read_htme.json
-}
-
-resource "aws_iam_role_policy_attachment" "mongo_latest_read_htme" {
-  role       = aws_iam_role.mongo_latest.name
-  policy_arn = aws_iam_policy.mongo_latest_read_htme.arn
 }
