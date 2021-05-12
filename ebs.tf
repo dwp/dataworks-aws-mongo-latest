@@ -1,20 +1,4 @@
-data "aws_iam_user" "breakglass" {
-  user_name = "breakglass"
-}
-
-data "aws_iam_role" "ci" {
-  name = "ci"
-}
-
-data "aws_iam_role" "administrator" {
-  name = "administrator"
-}
-
-data "aws_iam_role" "aws_config" {
-  name = "aws_config"
-}
-
-data "aws_iam_policy_document" "dataworks_aws_mongo_latest_ebs_cmk" {
+data "aws_iam_policy_document" "mongo_latest_ebs_cmk" {
   statement {
     sid    = "EnableIAMPermissionsBreakglass"
     effect = "Allow"
@@ -22,19 +6,6 @@ data "aws_iam_policy_document" "dataworks_aws_mongo_latest_ebs_cmk" {
     principals {
       type        = "AWS"
       identifiers = [data.aws_iam_user.breakglass.arn]
-    }
-
-    actions   = ["kms:*"]
-    resources = ["*"]
-  }
-
-  statement {
-    sid    = "EnableIAMPermissionsAccount"
-    effect = "Allow"
-
-    principals {
-      type        = "AWS"
-      identifiers = [local.account[local.environment]]
     }
 
     actions   = ["kms:*"]
@@ -113,7 +84,7 @@ data "aws_iam_policy_document" "dataworks_aws_mongo_latest_ebs_cmk" {
 
     principals {
       type        = "AWS"
-      identifiers = [aws_iam_role.dataworks_aws_mongo_latest_emr_service.arn, aws_iam_role.dataworks_aws_mongo_latest.arn]
+      identifiers = [aws_iam_role.mongo_latest_emr_service.arn, aws_iam_role.mongo_latest.arn]
     }
 
     actions = [
@@ -129,12 +100,12 @@ data "aws_iam_policy_document" "dataworks_aws_mongo_latest_ebs_cmk" {
   }
 
   statement {
-    sid    = "Allowdataworks_aws_mongo_latestServiceGrant"
+    sid    = "AllowMongoLatestServiceGrant"
     effect = "Allow"
 
     principals {
       type        = "AWS"
-      identifiers = [aws_iam_role.dataworks_aws_mongo_latest_emr_service.arn, aws_iam_role.dataworks_aws_mongo_latest.arn]
+      identifiers = [aws_iam_role.mongo_latest_emr_service.arn, aws_iam_role.mongo_latest.arn]
     }
 
     actions = ["kms:CreateGrant"]
@@ -149,32 +120,32 @@ data "aws_iam_policy_document" "dataworks_aws_mongo_latest_ebs_cmk" {
   }
 }
 
-resource "aws_kms_key" "dataworks_aws_mongo_latest_ebs_cmk" {
-  description             = "Encrypts dataworks_aws_mongo_latest EBS volumes"
+resource "aws_kms_key" "mongo_latest_ebs_cmk" {
+  description             = "Encrypts Mongo Latest EBS volumes"
   deletion_window_in_days = 7
   is_enabled              = true
   enable_key_rotation     = true
-  policy                  = data.aws_iam_policy_document.dataworks_aws_mongo_latest_ebs_cmk.json
+  policy                  = data.aws_iam_policy_document.mongo_latest_ebs_cmk.json
 
 
-  # ProtectsSensitiveData = "True" - the dataworks_aws_mongo_latest cluster decrypts sensitive data
+  # ProtectsSensitiveData = "True" - the Mongo Latest cluster decrypts sensitive data
   # that it reads from HBase. It can potentially spill this to disk if it can't
   # hold it all in memory, which is likely given the size of the dataset.
   tags = merge(
     local.tags,
     {
-      Name                  = "dataworks_aws_mongo_latest_ebs_cmk"
+      Name                  = "mongo_latest_ebs_cmk"
       ProtectsSensitiveData = "True"
     }
   )
 }
 
-resource "aws_kms_alias" "dataworks_aws_mongo_latest_ebs_cmk" {
-  name          = "alias/dataworks_aws_mongo_latest_ebs_cmk"
-  target_key_id = aws_kms_key.dataworks_aws_mongo_latest_ebs_cmk.key_id
+resource "aws_kms_alias" "mongo_latest_ebs_cmk" {
+  name          = "alias/mongo_latest_ebs_cmk"
+  target_key_id = aws_kms_key.mongo_latest_ebs_cmk.key_id
 }
 
-data "aws_iam_policy_document" "dataworks_aws_mongo_latest_ebs_cmk_encrypt" {
+data "aws_iam_policy_document" "mongo_latest_ebs_cmk_encrypt" {
   statement {
     effect = "Allow"
 
@@ -186,7 +157,7 @@ data "aws_iam_policy_document" "dataworks_aws_mongo_latest_ebs_cmk_encrypt" {
       "kms:DescribeKey",
     ]
 
-    resources = [aws_kms_key.dataworks_aws_mongo_latest_ebs_cmk.arn]
+    resources = [aws_kms_key.mongo_latest_ebs_cmk.arn]
   }
 
   statement {
@@ -194,7 +165,7 @@ data "aws_iam_policy_document" "dataworks_aws_mongo_latest_ebs_cmk_encrypt" {
 
     actions = ["kms:CreateGrant"]
 
-    resources = [aws_kms_key.dataworks_aws_mongo_latest_ebs_cmk.arn]
+    resources = [aws_kms_key.mongo_latest_ebs_cmk.arn]
     condition {
       test     = "Bool"
       variable = "kms:GrantIsForAWSResource"
@@ -203,8 +174,8 @@ data "aws_iam_policy_document" "dataworks_aws_mongo_latest_ebs_cmk_encrypt" {
   }
 }
 
-resource "aws_iam_policy" "dataworks_aws_mongo_latest_ebs_cmk_encrypt" {
-  name        = "dataworks-aws-mongo-latest-EbsCmkEncrypt"
-  description = "Allow encryption and decryption using the dataworks_aws_mongo_latest EBS CMK"
-  policy      = data.aws_iam_policy_document.dataworks_aws_mongo_latest_ebs_cmk_encrypt.json
+resource "aws_iam_policy" "mongo_latest_ebs_cmk_encrypt" {
+  name        = "MongoLatestEbsCmkEncrypt"
+  description = "Allow encryption and decryption using the Mongo Latest EBS CMK"
+  policy      = data.aws_iam_policy_document.mongo_latest_ebs_cmk_encrypt.json
 }

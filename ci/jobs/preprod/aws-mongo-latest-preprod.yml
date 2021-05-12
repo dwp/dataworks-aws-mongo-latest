@@ -1,0 +1,21 @@
+jobs:
+  - name: aws-mongo-latest-preprod
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - get: dataworks-aws-mongo-latest
+            trigger: true
+            passed:
+              - aws-mongo-latest-int
+          - get: emr-launcher-release
+            trigger: true
+      - .: (( inject meta.plan.terraform-bootstrap ))
+        config:
+          params:
+            AWS_ACC: ((aws_account.preprod))
+      - .: (( inject meta.plan.terraform-apply ))
+        params:
+          TF_WORKSPACE: preprod
+      - .: (( inject meta.plan.terraform-plan ))
+        params:
+          TF_WORKSPACE: preprod

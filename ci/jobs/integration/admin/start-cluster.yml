@@ -1,0 +1,12 @@
+jobs:
+  - name: int-start-cluster
+    plan:
+      - .: (( inject meta.plan.start-cluster ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
+            AWS_ACC: ((aws_account.integration))
+            S3_PREFIX: analytical-dataset/2020-08-13_22-16-58/
+            CORRELATION_ID: test
+            SNAPSHOT_TYPE: "full"
+            EXPORT_DATE: "2020-08-13"

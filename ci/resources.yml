@@ -27,3 +27,29 @@ resources:
         - aviator.yml
     webhook_token: ((dataworks.concourse_github_webhook_token))
     check_every: 5m
+
+  - name: emr-launcher-release
+    type: github-release
+    source:
+      owner: dwp
+      repository: emr-launcher
+    check_every: 1h
+    webhook_token: ((dataworks.concourse_github_webhook_token))
+
+  - name: dataworks-behavioural-framework
+    type: git
+    source:
+      branch: master
+      uri: https://github.com/dwp/dataworks-behavioural-framework.git
+      access_token: ((dataworks-secrets.concourse_github_pat))
+    webhook_token: ((dataworks.concourse_github_webhook_token))
+    check_every: 5m
+
+  - name: meta-development
+    type: meta
+  - name: meta-qa
+    type: meta
+  - name: meta-integration
+    type: meta
+
+

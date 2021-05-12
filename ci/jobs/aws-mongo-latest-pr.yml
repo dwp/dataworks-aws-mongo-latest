@@ -1,0 +1,82 @@
+jobs:
+  - name: aws-mongo-latest-pr
+    plan:
+      - in_parallel:
+        - get: dataworks-aws-mongo-latest-pr
+          trigger: true
+          version: every
+        - get: emr-launcher-release
+          trigger: false
+      - put: dataworks-aws-mongo-latest-pr
+        params:
+          path: dataworks-aws-mongo-latest-pr
+          status: pending
+      - task: linting-shell
+        input_mapping:
+          aws-mongo-latest: dataworks-aws-mongo-latest-pr
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: koalaman/shellcheck-alpine
+              tag: latest
+          run:
+            path: sh
+            args:
+              - -exc
+              - |
+                find . -name "*.sh" ! -name "get_lambda_release.sh" ! -name "cloudwatch.sh" | cat >> shell-list
+
+                # Ignore SC2154 as it will fail all terraform vars that are passed to scripts
+                # Ignore SC1091 due to sourcing of files that aren't in the same path locally so shellcheck will fail, but these files are on the boxes
+                for i in $(cat shell-list); do shellcheck -e SC2154 -e SC1091 $i; done
+            dir: aws-mongo-latest
+          inputs:
+            - name: aws-mongo-latest
+      - .: (( inject meta.plan.terraform-bootstrap ))
+        input_mapping:
+          aws-mongo-latest: dataworks-aws-mongo-latest-pr
+      - task: terraform-plan
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: ((dataworks.terraform_repository))
+              tag: ((dataworks.terraform_version))
+          params:
+            TF_INPUT: false
+            TF_CLI_ARGS_apply: -lock-timeout=300s
+            TF_CLI_ARGS_plan: -lock-timeout=300s
+            TF_WORKSPACE: qa
+          run:
+            path: sh
+            dir: aws-mongo-latest
+            args:
+              - -exc
+              - |
+                cp ../terraform-config/terraform.tf .
+                cp ../terraform-config/terraform.tfvars .
+                export TF_VAR_emr_ami_id=$(cat ../al2-emr-ami/id)
+                export TF_VAR_emr_launcher_zip="{base_path = \"../emr-launcher-release\", version = \"$(cat ../emr-launcher-release/version)\"}"
+                terraform init
+                terraform workspace show
+                terraform plan
+          inputs:
+            - name: aws-mongo-latest
+            - name: terraform-config
+            - name: emr-launcher-release
+#            - name: al2-emr-ami
+        input_mapping:
+          aws-mongo-latest: dataworks-aws-mongo-latest-pr
+        on_failure:
+          put: dataworks-aws-mongo-latest-pr
+          params:
+            path: dataworks-aws-mongo-latest-pr
+            status: failure
+        on_success:
+          put: dataworks-aws-mongo-latest-pr
+          params:
+            path: dataworks-aws-mongo-latest-pr
+            status: success

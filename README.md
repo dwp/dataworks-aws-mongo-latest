@@ -1,35 +1,86 @@
 # dataworks-aws-mongo-latest
 
-## A template repository for building EMR cluster in AWS
+The Mongo Latest cluster runs the aws-mongo-latest SQL data product and builds the infrastructure needed for it to run on AWS.
 
-This repo contains Makefile and base terraform folders and jinja2 files to fit the standard pattern.
-This repo is a base to create new Terraform repos, renaming the template files and adding the githooks submodule, making the repo ready for use.
+# Overview
 
-Running aviator will create the pipeline required on the AWS-Concourse instance, in order pass a mandatory CI ran status check.  this will likely require you to login to Concourse, if you haven't already.
+![Overview](docs/overview.png)
 
-After cloning this repo, please generate `terraform.tf` and `terraform.tfvars` files:  
-`make bootstrap`
+## Dynamo-db table
 
-In addition, you may want to do the following: 
+There is a dynamo-db table that exists which tracks the status of all Mongo Latest runs. This table is named `data_pipeline_metadata`. In order to populate this table, the `emr-setup` bootstrap step kicks off a shell script named `update_dynamo.sh` which runs in the background.
 
-1. Create non-default Terraform workspaces as and if required:  
-    `make terraform-workspace-new workspace=<workspace_name>` e.g.  
-    ```make terraform-workspace-new workspace=qa```
+This script waits for certain files to exist on the local file systems. These files contain information passed to the cluster from SNS (like the correlation id) and the first step of the cluster than saves them to the files.
 
-1. Configure Concourse CI pipeline:
-    1. Add/remove jobs in `./ci/jobs` as required 
-    1. Create CI pipeline:  
-`aviator`
+When the files are found, then the script updates dynamo db with a row for the current run of the cluster (when the row already exists, it's a retry scenario, see below). Then the script loops in the background for the lifecycle of the cluster. When a step is completed, the current step field is updated in dynamo db and when the cluster is finished the status is updated with the final cluster status. Cancelled clusters are set to failed.
 
-## Networking
+### Retries
 
-Before you are able to deploy your EMR cluster, the new service will need the networking for it configured.   
+If a cluster fails, then the status is updated in the dynamo db table to failed. When a new cluster starts, before it inserts the new dynamo db row, it checks if one exists. If it does, then it checks the last run step and the status and if the status is failed, it saves off this status to a local file.
 
-[An example](https://git.ucd.gpn.gov.uk/dip/aws-internal-compute/blob/master/clive_network.tf) of this can be seen in the `internal-compute` VPC where a lot of our EMR clusters are deployed. 
+Whenever a step starts on a cluster, it calls a common method which checks if this local file exists. If it does not (i.e. this is not a retry scenario) then the step continues a normal. However if the file does exist, then the step checks if the failed cluster was running the same step when it failed. If it was, then it runs the step as normal and the local files is deleted so as not to affect subsequent steps. However if the step name does not match, this step is assumed to have completed before and therefore is skipped this time.
 
-If you are creating the subnets in a different repository, remember to output the address as seen [here](https://git.ucd.gpn.gov.uk/dip/aws-internal-compute/blob/master/outputs.tf#L47-L53)
+In this way, we are able to retry the entire cluster but not repeat steps that have already succeeded, therefore saving us potentially hours or time for retry scenarios.
+
+## Concourse pipeline
+
+There is a concourse pipeline for mongo latest named `aws-mongo-latest`. The code for this pipeline is in the `ci` folder. The main part of the pipeline (the `master` group) deploys the infrastructure and runs the e2e tests. There are a number of groups for rotating passwords and there are also admin groups for each environment.
+
+### Admin jobs
+
+There are a number of available admin jobs for each environment.
+
+#### Start cluster
+
+This job will start an Mongo Latest cluster running. In order to make the cluster do what you want it to do, you can alter the following environment variables in the pipeline config and then run `aviator` to update the pipeline before kicking it off:
+
+1. S3_PREFIX (required) -> the S3 output location for the HTME data to process, i.e. `businessdata/mongo/ucdata/2021-04-01/full`
+1. EXPORT_DATE (required) -> the date the data was exported, i.e `2021-04-01`
+1. CORRELATION_ID (required) -> the correlation id for this run, i.e. `generate_snapshots_preprod_generate_full_snapshots_4_full`
+1. SNAPSHOT_TYPE (required) -> either `full` or `incremental` for the type of snapshots for this run
+
+#### Stop clusters
+
+For stopping clusters, you can run the `stop-cluster` job to terminate ALL current `mongo-latest` clusters on the environment.
+
+### Clear dynamo row (i.e. for a cluster restart)
+
+Sometimes the Mongo Latest cluster is required to restart from the beginning instead of restarting from the failure point.
+To be able to do a full cluster restart, delete the associated DynamoDB row if it exists. The keys to the row are `Correlation_Id` and `DataProduct` in the DynamoDB table storing cluster state information (see [Retries](#retries)).   
+The `clear-dynamodb-row` job is responsible for carrying out the row deletion.
+
+To do a full cluster restart
+
+* Manually enter CORRELATION_ID and DATA_PRODUCT of the row to delete to the `clear-dynamodb-row` job and run aviator.
 
 
-## Optional Features
+    ```
+    jobs:
+      - name: dev-clear-dynamodb-row
+        plan:
+          - .: (( inject meta.plan.clear-dynamodb-row ))
+            config:
+              params:
+                AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
+                AWS_ACC: ((aws_account.development))
+                CORRELATION_ID: <Correlation_Id of the row to delete>
+                DATA_PRODUCT: <DataProduct of the row to delete>
 
-`data.tf.OPTIONAL` can be used if your product requires writing data to the published S3 bucket.
+    ```
+* Run the admin job to `<env>-clear-dynamodb-row`
+
+* You can then run `start-cluster` job with the same `Correlation_Id` from fresh.
+
+# Status Metrics
+
+In order to generate status metrics, the emr-setup bootstrap step kicks off a shell script named status_metrics.sh which runs in the background.
+
+This script loops in the background for the lifecycle of the cluster and sends a metric called `mongo_latest_status` to the Mongo Latest pushgateway. This metric has the following
+values which map to a certain cluster status
+
+| Cluster Status  | Metric Value |
+| ------------- | ------------- |
+| Running    | 1
+| Completed  | 2  |
+| Failed  | 3  |
+| Cancelled  | 4  |

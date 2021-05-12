@@ -13,8 +13,10 @@ meta:
           TF_CLI_ARGS_apply: -lock-timeout=300s
           TF_CLI_ARGS_plan: -lock-timeout=300s
           TF_VAR_costcode: ((dataworks.costcode))
+
     terraform-bootstrap:
       task: terraform-bootstrap
+      .: (( inject meta.plan.terraform-common-config ))
       config:
         platform: linux
         image_resource:
@@ -29,32 +31,45 @@ meta:
             - -exc
             - |
               python bootstrap_terraform.py
-              cp terraform.tf ../terraform-bootstrap
-          dir: dataworks-aws-mongo-latest
+              sed -i '/^assume_role/ d' terraform.tfvars
+              cp terraform.tf ../terraform-config
+              cp terraform.tfvars ../terraform-config
+          dir: aws-mongo-latest
         inputs:
-          - name: dataworks-aws-mongo-latest
+          - name: aws-mongo-latest
         outputs:
-          - name: terraform-bootstrap
+          - name: terraform-config
       params:
         AWS_REGION: eu-west-2
+
     terraform-apply:
       task: terraform-apply
       .: (( inject meta.plan.terraform-common-config ))
       config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.terraform_repository))
+            tag: ((dataworks.terraform_version))
         run:
           path: sh
+          dir: aws-mongo-latest
           args:
             - -exc
             - |
-              cp ../terraform-bootstrap/terraform.tf .
+              cp ../terraform-config/terraform.tf .
+              cp ../terraform-config/terraform.tfvars .
+              export TF_VAR_emr_launcher_zip="{base_path = \"../emr-launcher-release\", version = \"$(cat ../emr-launcher-release/version)\"}"
               terraform workspace show
               terraform init
               terraform plan -out terraform.plan
               terraform apply -auto-approve terraform.plan
-          dir: dataworks-aws-mongo-latest
         inputs:
-          - name: dataworks-aws-mongo-latest
-          - name: terraform-bootstrap
+          - name: aws-mongo-latest
+          - name: terraform-config
+          - name: emr-launcher-release
+
     terraform-plan:
       task: terraform-plan
       .: (( inject meta.plan.terraform-common-config ))
@@ -64,14 +79,139 @@ meta:
           args:
             - -exc
             - |
-              cp ../terraform-bootstrap/terraform.tf .
+              cp ../terraform-config/terraform.tf .
+              cp ../terraform-config/terraform.tfvars .
+              export TF_VAR_emr_launcher_zip="{base_path = \"../emr-launcher-release\", version = \"$(cat ../emr-launcher-release/version)\"}"
               terraform workspace show
               terraform init
               terraform plan $DETAILED_EXITCODE
-          dir: dataworks-aws-mongo-latest
+          dir: aws-mongo-latest
         inputs:
-          - name: dataworks-aws-mongo-latest
-          - name: terraform-bootstrap
+          - name: aws-mongo-latest
+          - name: terraform-config
+          - name: emr-launcher-release
       params:
         DETAILED_EXITCODE: -detailed-exitcode
 
+    e2e-tests:
+      task: e2e-tests
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_python_boto_behave_repository))
+            tag: ((dataworks.docker_python_boto_behave_version))
+        params:
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+          NUMBER_OF_TOPICS_TO_USE: "3"
+          E2E_TEST_TIMEOUT: 7200
+          E2E_FEATURE_TAG_FILTER: "@mongo-latest"
+          ASSUME_DURATION: 10800
+        run:
+          path: sh
+          dir: dataworks-behavioural-framework
+          args:
+            - -exc
+            - |
+              source /assume-role
+
+              cd src/runners
+              ./run-ci.sh \
+              "../../../meta"
+        inputs:
+          - name: dataworks-behavioural-framework
+          - name: aws-mongo-latest
+          - name: meta
+
+    clear-dynamodb-row:
+      task: clear-dynamodb-row
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_awscli_repository))
+            version: ((dataworks.docker_awscli_version))
+            tag: ((dataworks.docker_awscli_version))
+        params:
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              export AWS_DEFAULT_REGION
+              source /assume-role
+              set +x
+
+              export message_json=$(cat <<EOF
+              {
+                "Correlation_Id": {"S": "$CORRELATION_ID"},
+                "DataProduct": {"S": "$DATA_PRODUCT"}
+              }
+              EOF
+              )
+              echo $message_json
+
+              aws dynamodb delete-item \
+              --table-name data_pipeline_metadata \
+              --key "$message_json"
+
+    start-cluster:
+      task: start-cluster
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_awscli_repository))
+            version: ((dataworks.docker_awscli_version))
+            tag: ((dataworks.docker_awscli_version))
+        params:
+          AWS_ROLE_ARN: arn:aws:iam::((aws_account.management)):role/ci
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              export AWS_DEFAULT_REGION
+              source /assume-role
+              set +x
+
+              jq -n --arg correlation_id "$CORRELATION_ID" --arg s3_prefix "$S3_PREFIX" --arg snapshot_type "$SNAPSHOT_TYPE" --arg export_date "$EXPORT_DATE" '{
+                 "correlation_id": $correlation_id,
+                 "s3_prefix": $s3_prefix,
+                 "snapshot_type": $snapshot_type,
+                 "export_date": $export_date
+               }' > payload.json
+
+              cat payload.json
+              aws lambda invoke --function-name mongo_latest_emr_launcher --invocation-type RequestResponse --payload file://payload.json --cli-connect-timeout 600 --cli-read-timeout 600 output.json
+
+    stop-cluster:
+      task: stop-cluster
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: ((dataworks.docker_awscli_repository))
+            version: ((dataworks.docker_awscli_version))
+            tag: ((dataworks.docker_awscli_version))
+        params:
+          AWS_ROLE_ARN: arn:aws:iam::((aws_account.management)):role/ci
+          AWS_DEFAULT_REGION: ((dataworks.aws_region))
+        run:
+          path: sh
+          args:
+            - -exc
+            - |
+              export AWS_DEFAULT_REGION
+              source /assume-role
+              set +x
+              for CLUSTER_ID in $(aws emr list-clusters --active | jq -r '.Clusters[] | select(.Name | test("mongo-latest")) | .Id');
+              do
+                aws emr terminate-clusters --cluster-ids $CLUSTER_ID
+              done

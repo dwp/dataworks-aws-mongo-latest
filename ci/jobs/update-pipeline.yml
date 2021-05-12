@@ -1,7 +1,7 @@
 jobs:
   - name: update-pipeline
     plan:
-      - get: dataworks-aws-mongo-latest
+      - get: aws-mongo-latest
         resource: dataworks-aws-mongo-latest-pipeline
         trigger: true
       - task: aviator
@@ -20,10 +20,10 @@ jobs:
                 sed -i 's/fly/nofly/' aviator.yml
                 /usr/bin/aviator -f aviator.yml
                 mv aviator_pipeline.yml ../pipeline
-            dir: dataworks-aws-mongo-latest
+            dir: aws-mongo-latest
           inputs:
-            - name: dataworks-aws-mongo-latest
+            - name: aws-mongo-latest
           outputs:
             - name: pipeline
-      - set_pipeline: dataworks-aws-mongo-latest
+      - set_pipeline: aws-mongo-latest
         file: pipeline/aviator_pipeline.yml

@@ -1,10 +1,12 @@
 ---
 Applications:
+- Name: "Spark"
+- Name: "Ganglia"
 - Name: "Hive"
 CustomAmiId: "${ami_id}"
 EbsRootVolumeSize: 100
 LogUri: "s3://${s3_log_bucket}/${s3_log_prefix}"
-Name: "dataworks-aws-mongo-latest"
+Name: "mongo-latest"
 ReleaseLabel: "emr-${emr_release}"
 SecurityConfiguration: "${security_configuration}"
 ScaleDownBehavior: "TERMINATE_AT_TASK_COMPLETION"
@@ -25,8 +27,8 @@ Tags:
 - Key: "Environment"
   Value: "development"
 - Key: "Application"
-  Value: "dataworks-aws-mongo-latest"
+  Value: "mongo_latest"
 - Key: "Name"
-  Value: "dataworks-aws-mongo-latest"
+  Value: "mongo_latest"
 - Key: "for-use-with-amazon-emr-managed-policies"
   Value: "true"

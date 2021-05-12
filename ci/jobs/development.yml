@@ -1,9 +1,0 @@
-jobs:
-  - name: development
-    max_in_flight: 1
-    plan:
-      - get: dataworks-aws-mongo-latest
-        trigger: true
-      - .: (( inject meta.plan.terraform-bootstrap ))
-      - .: (( inject meta.plan.terraform-apply ))
-      - .: (( inject meta.plan.terraform-plan ))

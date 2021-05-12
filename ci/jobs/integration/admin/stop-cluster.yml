@@ -1,0 +1,7 @@
+jobs:
+  - name: int-stop-cluster
+    plan:
+      - .: (( inject meta.plan.stop-cluster ))
+        config:
+          params:
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.integration)):role/ci
