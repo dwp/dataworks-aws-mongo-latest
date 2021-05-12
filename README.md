@@ -34,7 +34,6 @@ There are a number of available admin jobs for each environment.
 
 This job will start an Mongo Latest cluster running. In order to make the cluster do what you want it to do, you can alter the following environment variables in the pipeline config and then run `aviator` to update the pipeline before kicking it off:
 
-1. S3_PREFIX (required) -> the S3 output location for the HTME data to process, i.e. `businessdata/mongo/ucdata/2021-04-01/full`
 1. EXPORT_DATE (required) -> the date the data was exported, i.e `2021-04-01`
 1. CORRELATION_ID (required) -> the correlation id for this run, i.e. `generate_snapshots_preprod_generate_full_snapshots_4_full`
 1. SNAPSHOT_TYPE (required) -> either `full` or `incremental` for the type of snapshots for this run

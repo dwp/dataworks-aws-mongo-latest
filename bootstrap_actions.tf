@@ -1,13 +1,13 @@
 resource "aws_s3_bucket_object" "metadata_script" {
   bucket     = data.terraform_remote_state.common.outputs.config_bucket.id
-  key        = "component/mongo-latest/metadata.sh"
+  key        = "component/mongo_latest/metadata.sh"
   content    = file("${path.module}/bootstrap_actions/metadata.sh")
   kms_key_id = data.terraform_remote_state.common.outputs.config_bucket_cmk.arn
 }
 
 resource "aws_s3_bucket_object" "download_scripts_sh" {
   bucket = data.terraform_remote_state.common.outputs.config_bucket.id
-  key    = "component/mongo-latest/download_scripts.sh"
+  key    = "component/mongo_latest/download_scripts.sh"
   content = templatefile("${path.module}/bootstrap_actions/download_scripts.sh",
     {
       VERSION                 = local.mongo_latest_version[local.environment]
@@ -15,19 +15,19 @@ resource "aws_s3_bucket_object" "download_scripts_sh" {
       ENVIRONMENT_NAME        = local.environment
       S3_COMMON_LOGGING_SHELL = format("s3://%s/%s", data.terraform_remote_state.common.outputs.config_bucket.id, data.terraform_remote_state.common.outputs.application_logging_common_file.s3_id)
       S3_LOGGING_SHELL        = format("s3://%s/%s", data.terraform_remote_state.common.outputs.config_bucket.id, aws_s3_bucket_object.logging_script.key)
-      scripts_location        = format("s3://%s/%s", data.terraform_remote_state.common.outputs.config_bucket.id, "component/mongo-latest")
+      scripts_location        = format("s3://%s/%s", data.terraform_remote_state.common.outputs.config_bucket.id, "component/mongo_latest")
   })
 }
 
 resource "aws_s3_bucket_object" "resume_step_script" {
   bucket  = data.terraform_remote_state.common.outputs.config_bucket.id
-  key     = "component/mongo-latest/resume_step.sh"
+  key     = "component/mongo_latest/resume_step.sh"
   content = file("${path.module}/bootstrap_actions/resume_step.sh")
 }
 
 resource "aws_s3_bucket_object" "emr_setup_sh" {
   bucket = data.terraform_remote_state.common.outputs.config_bucket.id
-  key    = "component/mongo-latest/emr-setup.sh"
+  key    = "component/mongo_latest/emr-setup.sh"
   content = templatefile("${path.module}/bootstrap_actions/emr-setup.sh",
     {
       MONGO_LATEST_LOG_LEVEL          = local.mongo_latest_log_level[local.environment]
@@ -58,13 +58,13 @@ resource "aws_s3_bucket_object" "emr_setup_sh" {
 
 resource "aws_s3_bucket_object" "ssm_script" {
   bucket  = data.terraform_remote_state.common.outputs.config_bucket.id
-  key     = "component/mongo-latest/start_ssm.sh"
+  key     = "component/mongo_latest/start_ssm.sh"
   content = file("${path.module}/bootstrap_actions/start_ssm.sh")
 }
 
 resource "aws_s3_bucket_object" "status_metrics_sh" {
   bucket = data.terraform_remote_state.common.outputs.config_bucket.id
-  key    = "component/mongo-latest/status_metrics.sh"
+  key    = "component/mongo_latest/status_metrics.sh"
   content = templatefile("${path.module}/bootstrap_actions/status_metrics.sh",
     {
       mongo_latest_pushgateway_hostname = data.terraform_remote_state.metrics_infrastructure.outputs.mongo_latest_pushgateway_hostname
@@ -75,7 +75,7 @@ resource "aws_s3_bucket_object" "status_metrics_sh" {
 
 resource "aws_s3_bucket_object" "logging_script" {
   bucket  = data.terraform_remote_state.common.outputs.config_bucket.id
-  key     = "component/mongo-latest/logging.sh"
+  key     = "component/mongo_latest/logging.sh"
   content = file("${path.module}/bootstrap_actions/logging.sh")
 }
 
@@ -111,7 +111,7 @@ resource "aws_cloudwatch_log_group" "mongo_latest_cw_tests_loggroup" {
 
 resource "aws_s3_bucket_object" "cloudwatch_sh" {
   bucket = data.terraform_remote_state.common.outputs.config_bucket.id
-  key    = "component/mongo-latest/cloudwatch.sh"
+  key    = "component/mongo_latest/cloudwatch.sh"
   content = templatefile("${path.module}/bootstrap_actions/cloudwatch.sh",
     {
       emr_release = var.emr_release[local.environment]
@@ -122,7 +122,7 @@ resource "aws_s3_bucket_object" "cloudwatch_sh" {
 resource "aws_s3_bucket_object" "metrics_setup_sh" {
   bucket     = data.terraform_remote_state.common.outputs.config_bucket.id
   kms_key_id = data.terraform_remote_state.common.outputs.config_bucket_cmk.arn
-  key        = "component/mongo-latest/metrics-setup.sh"
+  key        = "component/mongo_latest/metrics-setup.sh"
   content = templatefile("${path.module}/bootstrap_actions/metrics-setup.sh",
     {
       proxy_url          = data.terraform_remote_state.internal_compute.outputs.internet_proxy.url
@@ -135,20 +135,20 @@ resource "aws_s3_bucket_object" "metrics_setup_sh" {
 resource "aws_s3_bucket_object" "metrics_pom" {
   bucket     = data.terraform_remote_state.common.outputs.config_bucket.id
   kms_key_id = data.terraform_remote_state.common.outputs.config_bucket_cmk.arn
-  key        = "component/mongo-latest/metrics/pom.xml"
+  key        = "component/mongo_latest/metrics/pom.xml"
   content    = file("${path.module}/bootstrap_actions/metrics_config/pom.xml")
 }
 
 resource "aws_s3_bucket_object" "prometheus_config" {
   bucket     = data.terraform_remote_state.common.outputs.config_bucket.id
   kms_key_id = data.terraform_remote_state.common.outputs.config_bucket_cmk.arn
-  key        = "component/mongo-latest/metrics/prometheus_config.yml"
+  key        = "component/mongo_latest/metrics/prometheus_config.yml"
   content    = file("${path.module}/bootstrap_actions/metrics_config/prometheus_config.yml")
 }
 
 resource "aws_s3_bucket_object" "download_sql_sh" {
   bucket = data.terraform_remote_state.common.outputs.config_bucket.id
-  key    = "component/mongo-latest/download_sql.sh"
+  key    = "component/mongo_latest/download_sql.sh"
   content = templatefile("${path.module}/bootstrap_actions/download_sql.sh",
     {
       version                = local.mongo_latest_version[local.environment]
@@ -162,14 +162,14 @@ resource "aws_s3_bucket_object" "download_sql_sh" {
 resource "aws_s3_bucket_object" "dynamo_json_file" {
   bucket     = data.terraform_remote_state.common.outputs.config_bucket.id
   kms_key_id = data.terraform_remote_state.common.outputs.config_bucket_cmk.arn
-  key        = "component/mongo-latest/dynamo_schema.json"
+  key        = "component/mongo_latest/dynamo_schema.json"
   content    = file("${path.module}/bootstrap_actions/dynamo_schema.json")
 }
 
 resource "aws_s3_bucket_object" "update_dynamo_sh" {
   bucket     = data.terraform_remote_state.common.outputs.config_bucket.id
   kms_key_id = data.terraform_remote_state.common.outputs.config_bucket_cmk.arn
-  key        = "component/mongo-latest/update_dynamo.sh"
+  key        = "component/mongo_latest/update_dynamo.sh"
   content = templatefile("${path.module}/bootstrap_actions/update_dynamo.sh",
     {
       dynamodb_table_name = local.data_pipeline_metadata
@@ -180,6 +180,6 @@ resource "aws_s3_bucket_object" "update_dynamo_sh" {
 
 resource "aws_s3_bucket_object" "hive_setup_sh" {
   bucket  = data.terraform_remote_state.common.outputs.config_bucket.id
-  key     = "component/mongo-latest/hive-setup.sh"
+  key     = "component/mongo_latest/hive-setup.sh"
   content = file("${path.module}/bootstrap_actions/hive-setup.sh")
 }
