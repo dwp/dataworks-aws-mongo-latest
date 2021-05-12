@@ -1,6 +1,6 @@
-resource "aws_cloudwatch_event_rule" "dataworks_aws_mongo_latest_failed" {
-  name          = "dataworks_aws_mongo_latest_failed"
-  description   = "Sends failed message to slack when dataworks_aws_mongo_latest cluster terminates with errors"
+resource "aws_cloudwatch_event_rule" "mongo_latest_failed" {
+  name          = "mongo_latest_failed"
+  description   = "Sends failed message to slack when Mongo Latest cluster terminates with errors"
   event_pattern = <<EOF
 {
   "source": [
@@ -14,16 +14,16 @@ resource "aws_cloudwatch_event_rule" "dataworks_aws_mongo_latest_failed" {
       "TERMINATED_WITH_ERRORS"
     ],
     "name": [
-      "dataworks-aws-mongo-latest"
+      "mongo_latest"
     ]
   }
 }
 EOF
 }
 
-resource "aws_cloudwatch_event_rule" "dataworks_aws_mongo_latest_terminated" {
-  name          = "dataworks_aws_mongo_latest_terminated"
-  description   = "Sends failed message to slack when dataworks_aws_mongo_latest cluster terminates by user request"
+resource "aws_cloudwatch_event_rule" "mongo_latest_terminated" {
+  name          = "mongo_latest_terminated"
+  description   = "Sends failed message to slack when Mongo Latest cluster terminates by user request"
   event_pattern = <<EOF
 {
   "source": [
@@ -37,7 +37,7 @@ resource "aws_cloudwatch_event_rule" "dataworks_aws_mongo_latest_terminated" {
       "TERMINATED"
     ],
     "name": [
-      "dataworks-aws-mongo-latest"
+      "mongo_latest"
     ],
     "stateChangeReason": [
       "{\"code\":\"USER_REQUEST\",\"message\":\"User request\"}"
@@ -47,8 +47,8 @@ resource "aws_cloudwatch_event_rule" "dataworks_aws_mongo_latest_terminated" {
 EOF
 }
 
-resource "aws_cloudwatch_event_rule" "dataworks_aws_mongo_latest_success" {
-  name          = "dataworks_aws_mongo_latest_success"
+resource "aws_cloudwatch_event_rule" "mongo_latest_success" {
+  name          = "mongo_latest_success"
   description   = "checks that all steps complete"
   event_pattern = <<EOF
 {
@@ -63,19 +63,20 @@ resource "aws_cloudwatch_event_rule" "dataworks_aws_mongo_latest_success" {
       "TERMINATED"
     ],
     "name": [
-      "dataworks-aws-mongo-latest"
+      "mongo_latest"
     ],
     "stateChangeReason": [
-      "{\"code\":\"ALL_STEPS_COMPLETED\",\"message\":\"Steps completed\"}"
+      "{\"code\":\"ALL_STEPS_COMPLETED\",\"message\":\"Steps completed\"}",
+      "{\"code\":\"ALL_STEPS_COMPLETED\",\"message\":\"Steps completed with errors\"}"
     ]
   }
 }
 EOF
 }
 
-resource "aws_cloudwatch_event_rule" "dataworks_aws_mongo_latest_running" {
-  name          = "dataworks_aws_mongo_latest_running"
-  description   = "checks that dataworks_aws_mongo_latest is running"
+resource "aws_cloudwatch_event_rule" "mongo_latest_running" {
+  name          = "mongo_latest_running"
+  description   = "checks that Mongo Latest is running"
   event_pattern = <<EOF
 {
   "source": [
@@ -89,16 +90,16 @@ resource "aws_cloudwatch_event_rule" "dataworks_aws_mongo_latest_running" {
       "RUNNING"
     ],
     "name": [
-      "dataworks-aws-mongo-latest"
+      "mongo_latest"
     ]
   }
 }
 EOF
 }
 
-resource "aws_cloudwatch_metric_alarm" "dataworks_aws_mongo_latest_failed" {
-  count                     = local.dataworks_aws_mongo_latest_alerts[local.environment] == true ? 1 : 0
-  alarm_name                = "dataworks_aws_mongo_latest_failed"
+resource "aws_cloudwatch_metric_alarm" "mongo_latest_failed" {
+  count                     = local.mongo_latest_alerts[local.environment] == true ? 1 : 0
+  alarm_name                = "mongo_latest_failed"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "1"
   metric_name               = "TriggeredRules"
@@ -110,21 +111,21 @@ resource "aws_cloudwatch_metric_alarm" "dataworks_aws_mongo_latest_failed" {
   insufficient_data_actions = []
   alarm_actions             = [data.terraform_remote_state.security-tools.outputs.sns_topic_london_monitoring.arn]
   dimensions = {
-    RuleName = aws_cloudwatch_event_rule.dataworks_aws_mongo_latest_failed.name
+    RuleName = aws_cloudwatch_event_rule.mongo_latest_failed.name
   }
   tags = merge(
     local.common_tags,
     {
-      Name              = "dataworks_aws_mongo_latest_failed",
+      Name              = "mongo_latest_failed",
       notification_type = "Error",
       severity          = "Critical"
     },
   )
 }
 
-resource "aws_cloudwatch_metric_alarm" "dataworks_aws_mongo_latest_terminated" {
-  count                     = local.dataworks_aws_mongo_latest_alerts[local.environment] == true ? 1 : 0
-  alarm_name                = "dataworks_aws_mongo_latest_terminated"
+resource "aws_cloudwatch_metric_alarm" "mongo_latest_terminated" {
+  count                     = local.mongo_latest_alerts[local.environment] == true ? 1 : 0
+  alarm_name                = "mongo_latest_terminated"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "1"
   metric_name               = "TriggeredRules"
@@ -136,21 +137,21 @@ resource "aws_cloudwatch_metric_alarm" "dataworks_aws_mongo_latest_terminated" {
   insufficient_data_actions = []
   alarm_actions             = [data.terraform_remote_state.security-tools.outputs.sns_topic_london_monitoring.arn]
   dimensions = {
-    RuleName = aws_cloudwatch_event_rule.dataworks_aws_mongo_latest_terminated.name
+    RuleName = aws_cloudwatch_event_rule.mongo_latest_terminated.name
   }
   tags = merge(
     local.common_tags,
     {
-      Name              = "dataworks_aws_mongo_latest_terminated",
+      Name              = "mongo_latest_terminated",
       notification_type = "Information",
       severity          = "High"
     },
   )
 }
 
-resource "aws_cloudwatch_metric_alarm" "dataworks_aws_mongo_latest_success" {
-  count                     = local.dataworks_aws_mongo_latest_alerts[local.environment] == true ? 1 : 0
-  alarm_name                = "dataworks_aws_mongo_latest_success"
+resource "aws_cloudwatch_metric_alarm" "mongo_latest_success" {
+  count                     = local.mongo_latest_alerts[local.environment] == true ? 1 : 0
+  alarm_name                = "mongo_latest_success"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "1"
   metric_name               = "TriggeredRules"
@@ -158,25 +159,25 @@ resource "aws_cloudwatch_metric_alarm" "dataworks_aws_mongo_latest_success" {
   period                    = "60"
   statistic                 = "Sum"
   threshold                 = "1"
-  alarm_description         = "Monitoring dataworks_aws_mongo_latest completion"
+  alarm_description         = "Monitoring Mongo Latest completion"
   insufficient_data_actions = []
   alarm_actions             = [data.terraform_remote_state.security-tools.outputs.sns_topic_london_monitoring.arn]
   dimensions = {
-    RuleName = aws_cloudwatch_event_rule.dataworks_aws_mongo_latest_success.name
+    RuleName = aws_cloudwatch_event_rule.mongo_latest_success.name
   }
   tags = merge(
     local.common_tags,
     {
-      Name              = "dataworks_aws_mongo_latest_success",
+      Name              = "mongo_latest_success",
       notification_type = "Information",
       severity          = "Critical"
     },
   )
 }
 
-resource "aws_cloudwatch_metric_alarm" "dataworks_aws_mongo_latest_running" {
-  count                     = local.dataworks_aws_mongo_latest_alerts[local.environment] == true ? 1 : 0
-  alarm_name                = "dataworks_aws_mongo_latest_running"
+resource "aws_cloudwatch_metric_alarm" "mongo_latest_running" {
+  count                     = local.mongo_latest_alerts[local.environment] == true ? 1 : 0
+  alarm_name                = "mongo_latest_running"
   comparison_operator       = "GreaterThanOrEqualToThreshold"
   evaluation_periods        = "1"
   metric_name               = "TriggeredRules"
@@ -184,16 +185,16 @@ resource "aws_cloudwatch_metric_alarm" "dataworks_aws_mongo_latest_running" {
   period                    = "60"
   statistic                 = "Sum"
   threshold                 = "1"
-  alarm_description         = "Monitoring dataworks_aws_mongo_latest running"
+  alarm_description         = "Monitoring Mongo Latest running"
   insufficient_data_actions = []
   alarm_actions             = [data.terraform_remote_state.security-tools.outputs.sns_topic_london_monitoring.arn]
   dimensions = {
-    RuleName = aws_cloudwatch_event_rule.dataworks_aws_mongo_latest_running.name
+    RuleName = aws_cloudwatch_event_rule.mongo_latest_running.name
   }
   tags = merge(
     local.common_tags,
     {
-      Name              = "dataworks_aws_mongo_latest_running",
+      Name              = "mongo_latest_running",
       notification_type = "Information",
       severity          = "Critical"
     },

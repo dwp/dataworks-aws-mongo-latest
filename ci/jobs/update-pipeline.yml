@@ -25,5 +25,5 @@ jobs:
             - name: dataworks-aws-mongo-latest
           outputs:
             - name: pipeline
-      - set_pipeline: dataworks-aws-mongo-latest
+      - set_pipeline: aws-mongo-latest
         file: pipeline/aviator_pipeline.yml

@@ -1,13 +1,34 @@
-#uploading of step files to s3 go here
-
-
-resource "aws_s3_bucket_object" "example_step_name_sh" {
+resource "aws_s3_bucket_object" "flush_pushgateway" {
   bucket     = data.terraform_remote_state.common.outputs.config_bucket.id
   kms_key_id = data.terraform_remote_state.common.outputs.config_bucket_cmk.arn
-  key        = "component/dataworks-aws-mongo-latest/example-step-name.sh"
-  content = templatefile("${path.module}/steps/example-step-name.sh",
+  key        = "component/mongo-latest/flush-pushgateway.sh"
+  content = templatefile("${path.module}/steps/flush-pushgateway.sh",
     {
-      example_var = "Hello World"
+      mongo_latest_pushgateway_hostname = data.terraform_remote_state.metrics_infrastructure.outputs.mongo_latest_pushgateway_hostname
+    }
+  )
+}
+
+resource "aws_s3_bucket_object" "courtesy_flush" {
+  bucket     = data.terraform_remote_state.common.outputs.config_bucket.id
+  kms_key_id = data.terraform_remote_state.common.outputs.config_bucket_cmk.arn
+  key        = "component/mongo-latest/courtesy-flush.sh"
+  content = templatefile("${path.module}/steps/courtesy-flush.sh",
+    {
+      mongo_latest_pushgateway_hostname = data.terraform_remote_state.metrics_infrastructure.outputs.mongo_latest_pushgateway_hostname
+    }
+  )
+}
+
+resource "aws_s3_bucket_object" "create-mongo-latest-dbs" {
+  bucket     = data.terraform_remote_state.common.outputs.config_bucket.id
+  kms_key_id = data.terraform_remote_state.common.outputs.config_bucket_cmk.arn
+  key        = "component/mongo-latest/create-mongo-latest-dbs.sh"
+  content = templatefile("${path.module}/steps/create-mongo-latest-dbs.sh",
+    {
+      publish_bucket      = format("s3://%s", data.terraform_remote_state.common.outputs.published_bucket.id)
+      processed_bucket    = format("s3://%s", data.terraform_remote_state.common.outputs.processed_bucket.id)
+      dynamodb_table_name = local.data_pipeline_metadata
     }
   )
 }

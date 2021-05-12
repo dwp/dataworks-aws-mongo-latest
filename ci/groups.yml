@@ -1,13 +1,40 @@
 groups:
   - name: master
     jobs:
-      - development
-      - qa
-  
+      - aws-mongo-latest-dev
+      - aws-mongo-latest-qa
+      - aws-mongo-latest-int
+      - aws-mongo-latest-preprod
+      - aws-mongo-latest-prod
+
   - name: pull-request
     jobs:
-      - dataworks-aws-mongo-latest-pr
-  
+      - aws-mongo-latest-pr
+
+  - name: clear-dynamodb-row
+    jobs:
+      - clear-dynamodb-row-development
+      - clear-dynamodb-row-qa
+      - clear-dynamodb-row-integration
+      - clear-dynamodb-row-preprod
+      - clear-dynamodb-row-production
+
   - name: update-pipeline
     jobs:
       - update-pipeline
+
+  - name: admin-start-cluster
+    jobs:
+      - dev-start-cluster
+      - qa-start-cluster
+      - int-start-cluster
+      - preprod-start-cluster
+      - prod-start-cluster
+
+  - name: admin-stop-cluster
+    jobs:
+      - dev-stop-cluster
+      - qa-stop-cluster
+      - int-stop-cluster
+      - preprod-stop-cluster
+      - prod-stop-cluster

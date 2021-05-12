@@ -7,10 +7,10 @@ variable "emr_launcher_zip" {
   }
 }
 
-resource "aws_lambda_function" "dataworks_aws_mongo_latest_emr_launcher" {
+resource "aws_lambda_function" "mongo_latest_emr_launcher" {
   filename      = "${var.emr_launcher_zip["base_path"]}/emr-launcher-${var.emr_launcher_zip["version"]}.zip"
-  function_name = "dataworks_aws_mongo_latest_emr_launcher"
-  role          = aws_iam_role.dataworks_aws_mongo_latest_emr_launcher_lambda_role.arn
+  function_name = "mongo_latest_emr_launcher"
+  role          = aws_iam_role.mongo_latest_emr_launcher_lambda_role.arn
   handler       = "emr_launcher.handler.handler"
   runtime       = "python3.7"
   source_code_hash = filebase64sha256(
@@ -26,20 +26,32 @@ resource "aws_lambda_function" "dataworks_aws_mongo_latest_emr_launcher" {
   environment {
     variables = {
       EMR_LAUNCHER_CONFIG_S3_BUCKET = data.terraform_remote_state.common.outputs.config_bucket.id
-      EMR_LAUNCHER_CONFIG_S3_FOLDER = "emr/dataworks_aws_mongo_latest"
+      EMR_LAUNCHER_CONFIG_S3_FOLDER = "emr/mongo_latest"
       EMR_LAUNCHER_LOG_LEVEL        = "debug"
     }
   }
 }
 
-resource "aws_iam_role" "dataworks_aws_mongo_latest_emr_launcher_lambda_role" {
-  name               = "dataworks_aws_mongo_latest_emr_launcher_lambda_role"
-  assume_role_policy = data.aws_iam_policy_document.dataworks_aws_mongo_latest_emr_launcher_assume_policy.json
+resource "aws_cloudwatch_event_rule" "mongo_latest_emr_launcher_schedule" {
+  name                = "mongo_latest_emr_launcher_schedule"
+  description         = "Triggers Mongo Latest EMR Launcher"
+  schedule_expression = format("cron(%s)", local.mongo_latest_emr_lambda_schedule[local.environment])
 }
 
-data "aws_iam_policy_document" "dataworks_aws_mongo_latest_emr_launcher_assume_policy" {
+resource "aws_cloudwatch_event_target" "mongo_latest_emr_launcher_target" {
+  rule      = aws_cloudwatch_event_rule.mongo_latest_emr_launcher_schedule.name
+  target_id = "mongo_latest_emr_launcher_target"
+  arn       = aws_lambda_function.mongo_latest_emr_launcher.arn
+}
+
+resource "aws_iam_role" "mongo_latest_emr_launcher_lambda_role" {
+  name               = "mongo_latest_emr_launcher_lambda_role"
+  assume_role_policy = data.aws_iam_policy_document.mongo_latest_emr_launcher_assume_policy.json
+}
+
+data "aws_iam_policy_document" "mongo_latest_emr_launcher_assume_policy" {
   statement {
-    sid     = "dataworks-aws-mongo-latest-EMRLauncherLambdaAssumeRolePolicy"
+    sid     = "MongoLatestEMRLauncherLambdaAssumeRolePolicy"
     effect  = "Allow"
     actions = ["sts:AssumeRole"]
 
@@ -50,14 +62,14 @@ data "aws_iam_policy_document" "dataworks_aws_mongo_latest_emr_launcher_assume_p
   }
 }
 
-data "aws_iam_policy_document" "dataworks_aws_mongo_latest_emr_launcher_read_s3_policy" {
+data "aws_iam_policy_document" "mongo_latest_emr_launcher_read_s3_policy" {
   statement {
     effect = "Allow"
     actions = [
       "s3:GetObject",
     ]
     resources = [
-      format("arn:aws:s3:::%s/emr/dataworks_aws_mongo_latest/*", data.terraform_remote_state.common.outputs.config_bucket.id)
+      format("arn:aws:s3:::%s/emr/mongo_latest/*", data.terraform_remote_state.common.outputs.config_bucket.id)
     ]
   }
   statement {
@@ -71,7 +83,7 @@ data "aws_iam_policy_document" "dataworks_aws_mongo_latest_emr_launcher_read_s3_
   }
 }
 
-data "aws_iam_policy_document" "dataworks_aws_mongo_latest_emr_launcher_runjobflow_policy" {
+data "aws_iam_policy_document" "mongo_latest_emr_launcher_runjobflow_policy" {
   statement {
     effect = "Allow"
     actions = [
@@ -84,7 +96,7 @@ data "aws_iam_policy_document" "dataworks_aws_mongo_latest_emr_launcher_runjobfl
   }
 }
 
-data "aws_iam_policy_document" "dataworks_aws_mongo_latest_emr_launcher_pass_role_document" {
+data "aws_iam_policy_document" "mongo_latest_emr_launcher_pass_role_document" {
   statement {
     effect = "Allow"
     actions = [
@@ -96,41 +108,65 @@ data "aws_iam_policy_document" "dataworks_aws_mongo_latest_emr_launcher_pass_rol
   }
 }
 
-resource "aws_iam_policy" "dataworks_aws_mongo_latest_emr_launcher_read_s3_policy" {
-  name        = "dataworks_aws_mongo_latestReadS3"
-  description = "Allow dataworks_aws_mongo_latest to read from S3 bucket"
-  policy      = data.aws_iam_policy_document.dataworks_aws_mongo_latest_emr_launcher_read_s3_policy.json
+resource "aws_iam_policy" "mongo_latest_emr_launcher_read_s3_policy" {
+  name        = "MongoLatestReadS3"
+  description = "Allow Mongo Latest to read from S3 bucket"
+  policy      = data.aws_iam_policy_document.mongo_latest_emr_launcher_read_s3_policy.json
 }
 
-resource "aws_iam_policy" "dataworks_aws_mongo_latest_emr_launcher_runjobflow_policy" {
-  name        = "dataworks_aws_mongo_latestRunJobFlow"
-  description = "Allow dataworks_aws_mongo_latest to run job flow"
-  policy      = data.aws_iam_policy_document.dataworks_aws_mongo_latest_emr_launcher_runjobflow_policy.json
+resource "aws_iam_policy" "mongo_latest_emr_launcher_runjobflow_policy" {
+  name        = "MongoLatestRunJobFlow"
+  description = "Allow Mongo Latest to run job flow"
+  policy      = data.aws_iam_policy_document.mongo_latest_emr_launcher_runjobflow_policy.json
 }
 
-resource "aws_iam_policy" "dataworks_aws_mongo_latest_emr_launcher_pass_role_policy" {
-  name        = "dataworks_aws_mongo_latestPassRole"
-  description = "Allow dataworks_aws_mongo_latest to pass role"
-  policy      = data.aws_iam_policy_document.dataworks_aws_mongo_latest_emr_launcher_pass_role_document.json
+resource "aws_iam_policy" "mongo_latest_emr_launcher_pass_role_policy" {
+  name        = "MongoLatestPassRole"
+  description = "Allow Mongo Latest to pass role"
+  policy      = data.aws_iam_policy_document.mongo_latest_emr_launcher_pass_role_document.json
 }
 
-resource "aws_iam_role_policy_attachment" "dataworks_aws_mongo_latest_emr_launcher_read_s3_attachment" {
-  role       = aws_iam_role.dataworks_aws_mongo_latest_emr_launcher_lambda_role.name
-  policy_arn = aws_iam_policy.dataworks_aws_mongo_latest_emr_launcher_read_s3_policy.arn
+resource "aws_iam_role_policy_attachment" "mongo_latest_emr_launcher_read_s3_attachment" {
+  role       = aws_iam_role.mongo_latest_emr_launcher_lambda_role.name
+  policy_arn = aws_iam_policy.mongo_latest_emr_launcher_read_s3_policy.arn
 }
 
-resource "aws_iam_role_policy_attachment" "dataworks_aws_mongo_latest_emr_launcher_runjobflow_attachment" {
-  role       = aws_iam_role.dataworks_aws_mongo_latest_emr_launcher_lambda_role.name
-  policy_arn = aws_iam_policy.dataworks_aws_mongo_latest_emr_launcher_runjobflow_policy.arn
+resource "aws_iam_role_policy_attachment" "mongo_latest_emr_launcher_runjobflow_attachment" {
+  role       = aws_iam_role.mongo_latest_emr_launcher_lambda_role.name
+  policy_arn = aws_iam_policy.mongo_latest_emr_launcher_runjobflow_policy.arn
 }
 
-resource "aws_iam_role_policy_attachment" "dataworks_aws_mongo_latest_emr_launcher_pass_role_attachment" {
-  role       = aws_iam_role.dataworks_aws_mongo_latest_emr_launcher_lambda_role.name
-  policy_arn = aws_iam_policy.dataworks_aws_mongo_latest_emr_launcher_pass_role_policy.arn
+resource "aws_iam_role_policy_attachment" "mongo_latest_emr_launcher_pass_role_attachment" {
+  role       = aws_iam_role.mongo_latest_emr_launcher_lambda_role.name
+  policy_arn = aws_iam_policy.mongo_latest_emr_launcher_pass_role_policy.arn
 }
 
-resource "aws_iam_role_policy_attachment" "dataworks_aws_mongo_latest_emr_launcher_policy_execution" {
-  role       = aws_iam_role.dataworks_aws_mongo_latest_emr_launcher_lambda_role.name
+resource "aws_iam_role_policy_attachment" "mongo_latest_emr_launcher_policy_execution" {
+  role       = aws_iam_role.mongo_latest_emr_launcher_lambda_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
+resource "aws_iam_policy" "mongo_latest_emr_launcher_getsecrets" {
+  name        = "MongoLatestGetSecrets"
+  description = "Allow Mongo Latest Lambda function to get secrets"
+  policy      = data.aws_iam_policy_document.mongo_latest_emr_launcher_getsecrets.json
+}
+
+data "aws_iam_policy_document" "mongo_latest_emr_launcher_getsecrets" {
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "secretsmanager:GetSecretValue",
+    ]
+
+    resources = [
+      data.terraform_remote_state.internal_compute.outputs.metadata_store_users.mongo_latest_writer.secret_arn,
+    ]
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "mongo_latest_emr_launcher_getsecrets" {
+  role       = aws_iam_role.mongo_latest_emr_launcher_lambda_role.name
+  policy_arn = aws_iam_policy.mongo_latest_emr_launcher_getsecrets.arn
+}

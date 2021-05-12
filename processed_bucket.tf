@@ -1,4 +1,6 @@
-data "aws_iam_policy_document" "dataworks_aws_mongo_latest_write" {
+
+
+data "aws_iam_policy_document" "mongo_latest_write" {
   statement {
     effect = "Allow"
 
@@ -43,9 +45,9 @@ data "aws_iam_policy_document" "dataworks_aws_mongo_latest_write" {
   }
 }
 
-resource "aws_iam_policy" "dataworks_aws_mongo_latest_read_write_processed_bucket" {
-  name        = "dataworks-aws-mongo-latest-ReadWriteAccessToProcessedBucket"
+resource "aws_iam_policy" "mongo_latest_read_write_processed_bucket" {
+  name        = "ReadWriteAccessToProcessedBucket"
   description = "Allow read and write access to the processed bucket"
-  policy      = data.aws_iam_policy_document.dataworks_aws_mongo_latest_write.json
+  policy      = data.aws_iam_policy_document.mongo_latest_write.json
 }
 

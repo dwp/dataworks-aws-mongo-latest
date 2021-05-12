@@ -1,24 +1,32 @@
 #!/usr/bin/env bash
 echo "Installing scripts"
 $(which aws) s3 cp "${S3_CLOUDWATCH_SHELL}"            /opt/emr/cloudwatch.sh
+$(which aws) s3 cp "${RESUME_STEP_SHELL}"              /opt/emr/resume_step.sh
+$(which aws) s3 cp "${update_dynamo_sh}"               /opt/emr/update_dynamo.sh
+$(which aws) s3 cp "${dynamo_schema_json}"             /opt/emr/dynamo_schema.json
+$(which aws) s3 cp "${status_metrics_sh}"              /opt/emr/status_metrics.sh
 
 echo "Changing the Permissions"
 chmod u+x /opt/emr/cloudwatch.sh
+chmod u+x /opt/emr/resume_step.sh
+chmod u+x /opt/emr/update_dynamo.sh
+chmod u+x /opt/emr/status_metrics.sh
 
 (
     # Import the logging functions
     source /opt/emr/logging.sh
     
     function log_wrapper_message() {
-        log_dataworks_aws_mongo_latest_message "$${1}" "emr-setup.sh" "$${PID}" "$${@:2}" "Running as: ,$USER"
+        log_mongo_latest_message "$${1}" "emr-setup.sh" "$${PID}" "$${@:2}" "Running as: ,$USER"
     }
+    
     log_wrapper_message "Setting up the Proxy"
-
+    
     echo -n "Running as: "
     whoami
     
     export AWS_DEFAULT_REGION="${aws_default_region}"
-
+    
     FULL_PROXY="${full_proxy}"
     FULL_NO_PROXY="${full_no_proxy}"
     export http_proxy="$FULL_PROXY"
@@ -27,14 +35,18 @@ chmod u+x /opt/emr/cloudwatch.sh
     export HTTPS_PROXY="$FULL_PROXY"
     export no_proxy="$FULL_NO_PROXY"
     export NO_PROXY="$FULL_NO_PROXY"
-    export dataworks_aws_mongo_latest_LOG_LEVEL="${dataworks_aws_mongo_latest_LOG_LEVEL}"
-
+    export MONGO_LATEST_LOG_LEVEL="${MONGO_LATEST_LOG_LEVEL}"
+    
+    PUB_BUCKET_ID="${publish_bucket_id}"
+    echo "export PUBLISH_BUCKET_ID=$PUB_BUCKET_ID" | sudo tee /etc/profile.d/buckets.sh
+    sudo -s source /etc/profile.d/buckets.sh
+    
     echo "Setup cloudwatch logs"
     sudo /opt/emr/cloudwatch.sh \
     "${cwa_metrics_collection_interval}" "${cwa_namespace}"  "${cwa_log_group_name}" \
-    "${aws_default_region}" "${cwa_bootstrap_loggrp_name}" "${cwa_steps_loggrp_name}"
-
-    log_wrapper_message "Getting the DKS Certificate Details "
+    "${aws_default_region}" "${cwa_bootstrap_loggrp_name}" "${cwa_steps_loggrp_name}" \
+    "${cwa_yarnspark_loggrp_name}" "${cwa_tests_loggrp_name}"
+    
     log_wrapper_message "Getting the DKS Certificate Details "
     
     ## get dks cert
@@ -76,7 +88,7 @@ EOF
     --truststore-password "$TRUSTSTORE_PASSWORD" \
     --truststore-aliases "${truststore_aliases}" \
     --truststore-certs "${truststore_certs}" \
-    --jks-only true >> /var/log/dataworks_aws_mongo_latest/acm-cert-retriever.log 2>&1
+    --jks-only true >> /var/log/mongo_latest/acm-cert-retriever.log 2>&1
     
     #shellcheck disable=SC2024
     sudo -E acm-cert-retriever \
@@ -84,17 +96,17 @@ EOF
     --acm-key-passphrase "$ACM_KEY_PASSWORD" \
     --private-key-alias "${private_key_alias}" \
     --truststore-aliases "${truststore_aliases}" \
-    --truststore-certs "${truststore_certs}"  >> /var/log/dataworks_aws_mongo_latest/acm-cert-retriever.log 2>&1 # No sudo needed to write to file, so redirect is fine
+    --truststore-certs "${truststore_certs}"  >> /var/log/mongo_latest/acm-cert-retriever.log 2>&1 # No sudo needed to write to file, so redirect is fine
     
     cd /etc/pki/ca-trust/source/anchors/ || exit
 
-    sudo touch analytical_ca.pem
-    sudo chown hadoop:hadoop /etc/pki/tls/private/"${private_key_alias}".key /etc/pki/tls/certs/"${private_key_alias}".crt /etc/pki/ca-trust/source/anchors/analytical_ca.pem
+    sudo touch mongo_latest_ca.pem
+    sudo chown hadoop:hadoop /etc/pki/tls/private/"${private_key_alias}".key /etc/pki/tls/certs/"${private_key_alias}".crt /etc/pki/ca-trust/source/anchors/mongo_latest_ca.pem
     TRUSTSTORE_ALIASES="${truststore_aliases}"
 
     #shellcheck disable=SC2001
     for F in $(echo "$TRUSTSTORE_ALIASES" | sed "s/,/ /g"); do #Shellcheck wants to not use sed for POSIX compliance but is ok here as it works
-        (sudo cat "$F.crt"; echo) >> analytical_ca.pem;
+        (sudo cat "$F.crt"; echo) >> mongo_latest_ca.pem;
     done
     
     UUID=$(dbus-uuidgen | cut -c 1-8)
@@ -113,4 +125,7 @@ EOF
     
     log_wrapper_message "Completed the emr-setup.sh step of the EMR Cluster"
 
-) >> /var/log/dataworks_aws_mongo_latest/emr-setup.log 2>&1
+    /opt/emr/update_dynamo.sh &
+    /opt/emr/status_metrics.sh &
+
+) >> /var/log/mongo_latest/emr-setup.log 2>&1
