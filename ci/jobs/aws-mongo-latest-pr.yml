@@ -13,7 +13,7 @@ jobs:
           status: pending
       - task: linting-shell
         input_mapping:
-          aws-mongo-latest: dataworks-aws-mongo-latest-pr
+          dataworks-aws-mongo-latest: dataworks-aws-mongo-latest-pr
         config:
           platform: linux
           image_resource:
@@ -68,7 +68,7 @@ jobs:
             - name: terraform-config
             - name: emr-launcher-release
         input_mapping:
-          aws-mongo-latest: dataworks-aws-mongo-latest-pr
+          dataworks-aws-mongo-latest: dataworks-aws-mongo-latest-pr
         on_failure:
           put: dataworks-aws-mongo-latest-pr
           params:
