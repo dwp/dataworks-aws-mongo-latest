@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "mongo_latest_write" {
 }
 
 resource "aws_iam_policy" "mongo_latest_read_write_processed_bucket" {
-  name        = "ReadWriteAccessToProcessedBucket"
+  name        = "MongoLatestReadWriteAccessToProcessedBucket"
   description = "Allow read and write access to the processed bucket"
   policy      = data.aws_iam_policy_document.mongo_latest_write.json
 }

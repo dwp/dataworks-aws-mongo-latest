@@ -36,14 +36,6 @@ locals {
     production  = "management"
   }
 
-  root_dns_name = {
-    development = "dev.dataworks.dwp.gov.uk"
-    qa          = "qa.dataworks.dwp.gov.uk"
-    integration = "int.dataworks.dwp.gov.uk"
-    preprod     = "pre.dataworks.dwp.gov.uk"
-    production  = "dataworks.dwp.gov.uk"
-  }
-
   mongo_latest_emr_lambda_schedule = {
     development = "1 0 * * ? 2099"
     qa          = "1 0 * * ? *"
