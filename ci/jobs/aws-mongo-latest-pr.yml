@@ -31,12 +31,12 @@ jobs:
                 # Ignore SC2154 as it will fail all terraform vars that are passed to scripts
                 # Ignore SC1091 due to sourcing of files that aren't in the same path locally so shellcheck will fail, but these files are on the boxes
                 for i in $(cat shell-list); do shellcheck -e SC2154 -e SC1091 $i; done
-            dir: aws-mongo-latest
+            dir: dataworks-aws-mongo-latest
           inputs:
-            - name: aws-mongo-latest
+            - name: dataworks-aws-mongo-latest
       - .: (( inject meta.plan.terraform-bootstrap ))
         input_mapping:
-          aws-mongo-latest: dataworks-aws-mongo-latest-pr
+          dataworks-aws-mongo-latest: dataworks-aws-mongo-latest-pr
       - task: terraform-plan
         config:
           platform: linux
@@ -52,7 +52,7 @@ jobs:
             TF_WORKSPACE: qa
           run:
             path: sh
-            dir: aws-mongo-latest
+            dir: dataworks-aws-mongo-latest
             args:
               - -exc
               - |
@@ -64,10 +64,9 @@ jobs:
                 terraform workspace show
                 terraform plan
           inputs:
-            - name: aws-mongo-latest
+            - name: dataworks-aws-mongo-latest
             - name: terraform-config
             - name: emr-launcher-release
-#            - name: al2-emr-ami
         input_mapping:
           aws-mongo-latest: dataworks-aws-mongo-latest-pr
         on_failure:

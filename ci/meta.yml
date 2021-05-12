@@ -34,9 +34,9 @@ meta:
               sed -i '/^assume_role/ d' terraform.tfvars
               cp terraform.tf ../terraform-config
               cp terraform.tfvars ../terraform-config
-          dir: aws-mongo-latest
+          dir: dataworks-aws-mongo-latest
         inputs:
-          - name: aws-mongo-latest
+          - name: dataworks-aws-mongo-latest
         outputs:
           - name: terraform-config
       params:
@@ -54,7 +54,7 @@ meta:
             tag: ((dataworks.terraform_version))
         run:
           path: sh
-          dir: aws-mongo-latest
+          dir: dataworks-aws-mongo-latest
           args:
             - -exc
             - |
@@ -66,7 +66,7 @@ meta:
               terraform plan -out terraform.plan
               terraform apply -auto-approve terraform.plan
         inputs:
-          - name: aws-mongo-latest
+          - name: dataworks-aws-mongo-latest
           - name: terraform-config
           - name: emr-launcher-release
 
@@ -85,9 +85,9 @@ meta:
               terraform workspace show
               terraform init
               terraform plan $DETAILED_EXITCODE
-          dir: aws-mongo-latest
+          dir: dataworks-aws-mongo-latest
         inputs:
-          - name: aws-mongo-latest
+          - name: dataworks-aws-mongo-latest
           - name: terraform-config
           - name: emr-launcher-release
       params:
@@ -121,7 +121,7 @@ meta:
               "../../../meta"
         inputs:
           - name: dataworks-behavioural-framework
-          - name: aws-mongo-latest
+          - name: dataworks-aws-mongo-latest
           - name: meta
 
     clear-dynamodb-row:
