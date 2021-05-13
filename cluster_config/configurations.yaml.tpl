@@ -19,7 +19,7 @@ Configurations:
     "yarn.scheduler.capacity.root.default.maximum-capacity": "10"
     "yarn.scheduler.capacity.root.default.acl_submit_applications": ""
     "yarn.scheduler.capacity.root.default.default-application-priority": "1"
-    "yarn.scheduler.capacity.root.mrqueue.capacity": "50"
+    "yarn.scheduler.capacity.root.mrqueue.capacity": "54"
     "yarn.scheduler.capacity.root.mrqueue.acl_submit_applications": "*"
     "yarn.scheduler.capacity.root.mrqueue.maximum-capacity": "95"
     "yarn.scheduler.capacity.root.mrqueue.state": "RUNNING"
