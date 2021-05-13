@@ -257,6 +257,62 @@ locals {
     production  = "50"
   }
 
+  map_reduce_vcores_per_node = {
+    development = "5"
+    qa          = "5"
+    integration = "5"
+    preprod     = "10"
+    production  = "10"
+  }
+
+  map_reduce_vcores_per_task = {
+    development = "1"
+    qa          = "1"
+    integration = "1"
+    preprod     = "3"
+    production  = "3"
+  }
+
+  map_reduce_memory_per_reducer = {
+    development = "7168"
+    qa          = "7168"
+    integration = "7168"
+    preprod     = "12582"
+    production  = "12582"
+  }
+
+  map_reduce_java_opts_per_reducer = {
+    development = "-Xmx5734m"
+    qa          = "-Xmx5734m"
+    integration = "-Xmx5734m"
+    preprod     = "-Xmx10065m"
+    production  = "-Xmx10065m"
+  }
+
+  map_reduce_memory_per_mapper = {
+    development = "3584"
+    qa          = "3584"
+    integration = "3584"
+    preprod     = "5120"
+    production  = "5120"
+  }
+
+  map_reduce_java_opts_per_mapper = {
+    development = "-Xmx2867m"
+    qa          = "-Xmx2867m"
+    integration = "-Xmx2867m"
+    preprod     = "-Xmx4096m"
+    production  = "-Xmx4096m"
+  }
+
+  map_reduce_memory_per_node = {
+    development = "7168"
+    qa          = "7168"
+    integration = "7168"
+    preprod     = "12582"
+    production  = "12582"
+  }
+
   emr_capacity_reservation_preference = {
     development = "none"
     qa          = "open"
