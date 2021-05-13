@@ -6,6 +6,7 @@ jobs:
           - put: meta
             resource: meta-development
           - get: dataworks-aws-mongo-latest
+            resource: dataworks-aws-mongo-latest-dev
             trigger: true
           - get: emr-launcher-release
             trigger: true
