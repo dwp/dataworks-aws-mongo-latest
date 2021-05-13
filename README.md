@@ -83,3 +83,12 @@ values which map to a certain cluster status
 | Completed  | 2  |
 | Failed  | 3  |
 | Cancelled  | 4  |
+
+## Configuration
+
+Tez and Hive settings are calculated according to the instance types and sizes using the following guides:
+
+* https://community.cloudera.com/t5/Community-Articles/Demystify-Apache-Tez-Memory-Tuning-Step-by-Step/ta-p/245279
+* https://community.cloudera.com/t5/Community-Articles/Hive-Understanding-concurrent-sessions-queue-allocation/ta-p/247407
+* https://community.cloudera.com/t5/Community-Articles/Hive-on-Tez-Performance-Tuning-Determining-Reducer-Counts/ta-p/245680
+* https://cwiki.apache.org/confluence/display/TEZ/How+initial+task+parallelism+works

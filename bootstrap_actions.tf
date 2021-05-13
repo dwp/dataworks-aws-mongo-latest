@@ -112,11 +112,7 @@ resource "aws_cloudwatch_log_group" "mongo_latest_cw_tests_loggroup" {
 resource "aws_s3_bucket_object" "cloudwatch_sh" {
   bucket = data.terraform_remote_state.common.outputs.config_bucket.id
   key    = "component/mongo_latest/cloudwatch.sh"
-  content = templatefile("${path.module}/bootstrap_actions/cloudwatch.sh",
-    {
-      emr_release = var.emr_release[local.environment]
-    }
-  )
+  content = file("${path.module}/bootstrap_actions/cloudwatch.sh")
 }
 
 resource "aws_s3_bucket_object" "metrics_setup_sh" {

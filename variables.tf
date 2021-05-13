@@ -1,26 +1,3 @@
-variable "emr_release_label" {
-  description = "Version of AWS EMR to deploy with associated applicatoins"
-  default     = "emr-6.2.0"
-}
-
-variable "emr_applications" {
-  description = "List of applications to deploy to EMR Cluster"
-  type        = list(string)
-  default     = ["Spark", "HBase", "Hive", "Ganglia"]
-}
-
-variable "termination_protection" {
-  description = "Default setting for Termination Protection"
-  type        = bool
-  default     = false
-}
-
-variable "keep_flow_alive" {
-  description = "Indicates whether to keep job flow alive when no active steps"
-  type        = bool
-  default     = true //TODO set this to false when you want the cluster to autoterminate when final step completes
-}
-
 variable "truststore_aliases" {
   description = "comma seperated truststore aliases"
   type        = list(string)
@@ -69,6 +46,6 @@ variable "emr_core_instance_count" {
     qa          = "10"
     integration = "10"
     preprod     = "39"
-    production  = "58"
+    production  = "39"
   }
 }
