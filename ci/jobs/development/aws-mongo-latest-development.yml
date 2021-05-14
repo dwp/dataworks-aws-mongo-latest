@@ -7,6 +7,8 @@ jobs:
             resource: meta-development
           - get: dataworks-aws-mongo-latest
             trigger: true
+          - get: emr-al2-ami
+            trigger: true
           - get: emr-launcher-release
             trigger: true
           - get: dataworks-behavioural-framework
