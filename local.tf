@@ -103,7 +103,7 @@ locals {
   cw_agent_tests_loggrp_name           = "/app/mongo_latest/tests_logs"
   cw_agent_metrics_collection_interval = 60
 
-  s3_log_prefix          = "emr/mongo_latest"
+  s3_log_prefix = "emr/mongo_latest"
 
   data_pipeline_metadata = data.terraform_remote_state.internal_compute.outputs.data_pipeline_metadata_dynamo.name
 
