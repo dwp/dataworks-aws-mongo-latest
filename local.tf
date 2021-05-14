@@ -166,11 +166,11 @@ locals {
   }
 
   hive_bytes_per_reducer = {
-    development = "10485760"
-    qa          = "10485760"
-    integration = "10485760"
-    preprod     = "67108864"
-    production  = "67108864"
+    development = "5242880"
+    qa          = "5242880"
+    integration = "5242880"
+    preprod     = "33554432"
+    production  = "33554432"
   }
 
   # 0.1 of hive_tez_container_size
@@ -237,40 +237,40 @@ locals {
     development = "1099"
     qa          = "1099"
     integration = "1099"
-    preprod     = "4000"
-    production  = "4000"
+    preprod     = "5000"
+    production  = "5000"
   }
 
   hive_tez_sessions_per_queue = {
-    development = "10"
-    qa          = "10"
-    integration = "10"
-    preprod     = "50"
-    production  = "50"
+    development = "20"
+    qa          = "20"
+    integration = "20"
+    preprod     = "75"
+    production  = "75"
   }
 
   hive_prewarm_container_count = {
-    development = "10"
-    qa          = "10"
-    integration = "10"
-    preprod     = "50"
-    production  = "50"
+    development = "20"
+    qa          = "20"
+    integration = "20"
+    preprod     = "75"
+    production  = "75"
   }
 
   map_reduce_vcores_per_node = {
-    development = "2"
-    qa          = "2"
-    integration = "2"
+    development = "4"
+    qa          = "4"
+    integration = "4"
     preprod     = "12"
     production  = "12"
   }
 
   map_reduce_vcores_per_task = {
-    development = "1"
-    qa          = "1"
-    integration = "1"
-    preprod     = "3"
-    production  = "3"
+    development = "2"
+    qa          = "2"
+    integration = "2"
+    preprod     = "5"
+    production  = "5"
   }
 
   map_reduce_memory_per_reducer = {
