@@ -5,7 +5,7 @@ variable "truststore_aliases" {
 }
 
 variable "emr_ami_id" {
-  description = "AMI ID to use for the HBase EMR nodes"
+  description = "AMI ID to use for the EMR nodes"
   default     = "ami-0a5d042ae876f72ff"
 }
 

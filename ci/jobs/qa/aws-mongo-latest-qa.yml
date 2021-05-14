@@ -5,6 +5,8 @@ jobs:
       - in_parallel:
           - put: meta
             resource: meta-qa
+          - get: emr-al2-ami
+            trigger: true
           - get: dataworks-aws-mongo-latest
             trigger: true
           - get: emr-launcher-release

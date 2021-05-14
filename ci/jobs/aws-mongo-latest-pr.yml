@@ -5,6 +5,8 @@ jobs:
         - get: dataworks-aws-mongo-latest-pr
           trigger: true
           version: every
+        - get: emr-al2-ami
+          trigger: false
         - get: emr-launcher-release
           trigger: false
       - put: dataworks-aws-mongo-latest-pr
@@ -59,7 +61,7 @@ jobs:
                 terraform fmt -recursive -check=true
                 cp ../terraform-config/terraform.tf .
                 cp ../terraform-config/terraform.tfvars .
-                export TF_VAR_emr_ami_id=$(cat ../al2-emr-ami/id)
+                export TF_VAR_emr_ami_id=$(cat ../emr-al2-ami/id)
                 export TF_VAR_emr_launcher_zip="{base_path = \"../emr-launcher-release\", version = \"$(cat ../emr-launcher-release/version)\"}"
                 terraform init
                 terraform workspace show
@@ -68,6 +70,7 @@ jobs:
             - name: dataworks-aws-mongo-latest
             - name: terraform-config
             - name: emr-launcher-release
+            - name: emr-al2-ami
         input_mapping:
           dataworks-aws-mongo-latest: dataworks-aws-mongo-latest-pr
         on_failure:

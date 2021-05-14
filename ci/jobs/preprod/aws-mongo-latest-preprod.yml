@@ -7,8 +7,14 @@ jobs:
             trigger: true
             passed:
               - aws-mongo-latest-int
+          - get: emr-al2-ami
+            trigger: true
+            passed:
+              - aws-mongo-latest-int
           - get: emr-launcher-release
             trigger: true
+            passed:
+              - aws-mongo-latest-int
       - .: (( inject meta.plan.terraform-bootstrap ))
         config:
           params:
