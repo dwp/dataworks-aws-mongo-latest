@@ -280,7 +280,7 @@ locals {
     preprod     = "8192"
     production  = "8192"
   }
-  
+
   # 0.8 of map_reduce_memory_per_reducer
   map_reduce_java_opts_per_reducer = {
     development = "-Xmx3276m"
