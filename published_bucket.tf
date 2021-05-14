@@ -14,8 +14,6 @@ data "aws_iam_role" "aws_config" {
   name = "aws_config"
 }
 
-
-
 data "aws_iam_policy_document" "mongo_latest_write_parquet" {
   statement {
     effect = "Allow"
@@ -26,7 +24,6 @@ data "aws_iam_policy_document" "mongo_latest_write_parquet" {
     ]
 
     resources = [
-      data.terraform_remote_state.common.outputs.published_bucket.arn,
       data.terraform_remote_state.common.outputs.published_bucket.arn,
     ]
   }
@@ -41,6 +38,7 @@ data "aws_iam_policy_document" "mongo_latest_write_parquet" {
     ]
 
     resources = [
+      "${data.terraform_remote_state.common.outputs.published_bucket.arn}/analytical-dataset/*",
       "${data.terraform_remote_state.common.outputs.published_bucket.arn}/data/ucs_latest_unredacted/*",
       "${data.terraform_remote_state.common.outputs.published_bucket.arn}/data/ucs_latest_redacted/*",
     ]
@@ -92,6 +90,7 @@ data "aws_iam_policy_document" "mongo_latest_read_only" {
     ]
 
     resources = [
+      "${data.terraform_remote_state.common.outputs.published_bucket.arn}/analytical-dataset/*",
       "${data.terraform_remote_state.common.outputs.published_bucket.arn}/data/ucs_latest_unredacted/*",
       "${data.terraform_remote_state.common.outputs.published_bucket.arn}/data/ucs_latest_redacted/*",
     ]

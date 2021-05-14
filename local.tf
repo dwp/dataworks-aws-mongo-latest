@@ -108,11 +108,11 @@ locals {
   data_pipeline_metadata = data.terraform_remote_state.internal_compute.outputs.data_pipeline_metadata_dynamo.name
 
   mongo_latest_version = {
-    development = "0.0.62"
-    qa          = "0.0.62"
-    integration = "0.0.62"
-    preprod     = "0.0.62"
-    production  = "0.0.62"
+    development = "0.0.63"
+    qa          = "0.0.63"
+    integration = "0.0.63"
+    preprod     = "0.0.63"
+    production  = "0.0.63"
   }
 
   dynamodb_final_step = {
@@ -255,6 +255,62 @@ locals {
     integration = "10"
     preprod     = "50"
     production  = "50"
+  }
+
+  map_reduce_vcores_per_node = {
+    development = "2"
+    qa          = "2"
+    integration = "2"
+    preprod     = "8"
+    production  = "8"
+  }
+
+  map_reduce_vcores_per_task = {
+    development = "1"
+    qa          = "1"
+    integration = "1"
+    preprod     = "2"
+    production  = "2"
+  }
+
+  map_reduce_memory_per_reducer = {
+    development = "7168"
+    qa          = "7168"
+    integration = "7168"
+    preprod     = "12582"
+    production  = "12582"
+  }
+
+  map_reduce_java_opts_per_reducer = {
+    development = "-Xmx5734m"
+    qa          = "-Xmx5734m"
+    integration = "-Xmx5734m"
+    preprod     = "-Xmx10065m"
+    production  = "-Xmx10065m"
+  }
+
+  map_reduce_memory_per_mapper = {
+    development = "3584"
+    qa          = "3584"
+    integration = "3584"
+    preprod     = "5120"
+    production  = "5120"
+  }
+
+  map_reduce_java_opts_per_mapper = {
+    development = "-Xmx2867m"
+    qa          = "-Xmx2867m"
+    integration = "-Xmx2867m"
+    preprod     = "-Xmx4096m"
+    production  = "-Xmx4096m"
+  }
+
+  map_reduce_memory_per_node = {
+    development = "7168"
+    qa          = "7168"
+    integration = "7168"
+    preprod     = "12582"
+    production  = "12582"
   }
 
   emr_capacity_reservation_preference = {

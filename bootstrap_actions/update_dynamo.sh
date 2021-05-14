@@ -17,7 +17,6 @@
 
   STEP_DETAILS_DIR=/mnt/var/lib/info/steps
   CORRELATION_ID_FILE=/opt/emr/correlation_id.txt
-  S3_PREFIX_FILE=/opt/emr/s3_prefix.txt
   SNAPSHOT_TYPE_FILE=/opt/emr/snapshot_type.txt
   OUTPUT_LOCATION_FILE=/opt/emr/output_location.txt
   EXPORT_DATE_FILE=/opt/emr/export_date.txt
@@ -33,13 +32,12 @@
 
   FINAL_STEP_NAME="${dynamodb_final_step}"
 
-  while [[ ! -f "$CORRELATION_ID_FILE" ]] && [[ ! -f "$S3_PREFIX_FILE" ]] && [[ ! -f "$SNAPSHOT_TYPE_FILE" ]] && [[ ! -f "$EXPORT_DATE_FILE" ]]
+  while [[ ! -f "$CORRELATION_ID_FILE" ]] && [[ ! -f "$SNAPSHOT_TYPE_FILE" ]] && [[ ! -f "$EXPORT_DATE_FILE" ]]
   do
     sleep 5
   done
 
   CORRELATION_ID=$(cat $CORRELATION_ID_FILE)
-  S3_PREFIX=$(cat $S3_PREFIX_FILE)
   SNAPSHOT_TYPE=$(cat $SNAPSHOT_TYPE_FILE)
   EXPORT_DATE=$(cat $EXPORT_DATE_FILE)
   DATA_PRODUCT="MONGO_LATEST"
@@ -73,10 +71,10 @@
     ttl_value=$(get_ttl)
     output_location_value=$(get_output_location)
 
-    log_wrapper_message "Updating DynamoDB with Correlation_Id: $CORRELATION_ID, DataProduct: $DATA_PRODUCT, Date: $EXPORT_DATE, Cluster_Id: $CLUSTER_ID, S3_Prefix_Snapshots: $S3_PREFIX, S3_Prefix_Analytical_DataSet: $output_location_value, Snapshot_Type: $SNAPSHOT_TYPE, TimeToExist: $ttl_value, CurrentStep: $current_step, Status: $status, Run_Id: $run_id"
+    log_wrapper_message "Updating DynamoDB with Correlation_Id: $CORRELATION_ID, DataProduct: $DATA_PRODUCT, Date: $EXPORT_DATE, Cluster_Id: $CLUSTER_ID, S3_Prefix_Analytical_DataSet: $output_location_value, Snapshot_Type: $SNAPSHOT_TYPE, TimeToExist: $ttl_value, CurrentStep: $current_step, Status: $status, Run_Id: $run_id"
 
-    update_expression="SET #d = :s, Cluster_Id = :v, S3_Prefix_Snapshots = :w, Snapshot_Type = :x, TimeToExist = :z"
-    expression_values="\":s\": {\"S\":\"$EXPORT_DATE\"}, \":v\": {\"S\":\"$CLUSTER_ID\"}, \":w\": {\"S\":\"$S3_PREFIX\"}, \":x\": {\"S\":\"$SNAPSHOT_TYPE\"}, \":z\": {\"N\":\"$ttl_value\"}"
+    update_expression="SET #d = :s, Cluster_Id = :v, Snapshot_Type = :x, TimeToExist = :z"
+    expression_values="\":s\": {\"S\":\"$EXPORT_DATE\"}, \":v\": {\"S\":\"$CLUSTER_ID\"}, \":x\": {\"S\":\"$SNAPSHOT_TYPE\"}, \":z\": {\"N\":\"$ttl_value\"}"
     expression_names="\"#d\":\"Date\""
 
     if [[ -n "$current_step" ]] && [[ "$current_step" != "NOT_SET" ]]; then

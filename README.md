@@ -92,3 +92,4 @@ Tez and Hive settings are calculated according to the instance types and sizes u
 * https://community.cloudera.com/t5/Community-Articles/Hive-Understanding-concurrent-sessions-queue-allocation/ta-p/247407
 * https://community.cloudera.com/t5/Community-Articles/Hive-on-Tez-Performance-Tuning-Determining-Reducer-Counts/ta-p/245680
 * https://cwiki.apache.org/confluence/display/TEZ/How+initial+task+parallelism+works
+* https://stackoverflow.com/questions/41454796/aws-emr-parallel-mappers/43404403#43404403
