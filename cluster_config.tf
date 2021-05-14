@@ -94,13 +94,13 @@ resource "aws_s3_bucket_object" "configurations" {
       hive_bytes_per_reducer                        = local.hive_bytes_per_reducer[local.environment]
       hive_prewarm_container_count                  = local.hive_prewarm_container_count[local.environment]
       map_reduce_memory_per_mapper                  = local.map_reduce_memory_per_mapper[local.environment]
-      map_reduce_java_opts_per_mapper                  = local.map_reduce_java_opts_per_mapper[local.environment]
-      map_reduce_vcores_per_task                  = local.map_reduce_vcores_per_task[local.environment]
-      map_reduce_vcores_per_task                  = local.map_reduce_vcores_per_task[local.environment]
-      map_reduce_vcores_per_node                  = local.map_reduce_vcores_per_node[local.environment]
-      map_reduce_memory_per_reducer                  = local.map_reduce_memory_per_reducer[local.environment]
-      map_reduce_java_opts_per_reducer                  = local.map_reduce_java_opts_per_reducer[local.environment]
-      map_reduce_memory_per_node                     = local.map_reduce_memory_per_node[local.environment]
+      map_reduce_java_opts_per_mapper               = local.map_reduce_java_opts_per_mapper[local.environment]
+      map_reduce_vcores_per_task                    = local.map_reduce_vcores_per_task[local.environment]
+      map_reduce_vcores_per_task                    = local.map_reduce_vcores_per_task[local.environment]
+      map_reduce_vcores_per_node                    = local.map_reduce_vcores_per_node[local.environment]
+      map_reduce_memory_per_reducer                 = local.map_reduce_memory_per_reducer[local.environment]
+      map_reduce_java_opts_per_reducer              = local.map_reduce_java_opts_per_reducer[local.environment]
+      map_reduce_memory_per_node                    = local.map_reduce_memory_per_node[local.environment]
     }
   )
 }

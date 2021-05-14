@@ -110,8 +110,8 @@ resource "aws_cloudwatch_log_group" "mongo_latest_cw_tests_loggroup" {
 }
 
 resource "aws_s3_bucket_object" "cloudwatch_sh" {
-  bucket = data.terraform_remote_state.common.outputs.config_bucket.id
-  key    = "component/mongo_latest/cloudwatch.sh"
+  bucket  = data.terraform_remote_state.common.outputs.config_bucket.id
+  key     = "component/mongo_latest/cloudwatch.sh"
   content = file("${path.module}/bootstrap_actions/cloudwatch.sh")
 }
 
@@ -121,9 +121,9 @@ resource "aws_s3_bucket_object" "metrics_setup_sh" {
   key        = "component/mongo_latest/metrics-setup.sh"
   content = templatefile("${path.module}/bootstrap_actions/metrics-setup.sh",
     {
-      proxy_url          = data.terraform_remote_state.internal_compute.outputs.internet_proxy.url
-      metrics_pom        = format("s3://%s/%s", data.terraform_remote_state.common.outputs.config_bucket.id, aws_s3_bucket_object.metrics_pom.key)
-      prometheus_config  = format("s3://%s/%s", data.terraform_remote_state.common.outputs.config_bucket.id, aws_s3_bucket_object.prometheus_config.key)
+      proxy_url         = data.terraform_remote_state.internal_compute.outputs.internet_proxy.url
+      metrics_pom       = format("s3://%s/%s", data.terraform_remote_state.common.outputs.config_bucket.id, aws_s3_bucket_object.metrics_pom.key)
+      prometheus_config = format("s3://%s/%s", data.terraform_remote_state.common.outputs.config_bucket.id, aws_s3_bucket_object.prometheus_config.key)
     }
   )
 }
