@@ -36,7 +36,6 @@ This job will start an Mongo Latest cluster running. In order to make the cluste
 
 1. EXPORT_DATE (required) -> the date the data was exported, i.e `2021-04-01`
 1. CORRELATION_ID (required) -> the correlation id for this run, i.e. `generate_snapshots_preprod_generate_full_snapshots_4_full`
-1. SNAPSHOT_TYPE (required) -> either `full` or `incremental` for the type of snapshots for this run
 
 #### Stop clusters
 
