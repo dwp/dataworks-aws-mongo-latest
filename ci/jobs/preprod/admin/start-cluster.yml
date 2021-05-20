@@ -6,5 +6,5 @@ jobs:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
             AWS_ACC: ((aws_account.preprod))
-            CORRELATION_ID: ingest_emr_scheduled_tasks_export_snapshots_to_crown_preprod_incremental_15_incremental
-            EXPORT_DATE: "2021-05-14"
+            CORRELATION_ID: ingest_emr_scheduled_tasks_export_snapshots_to_crown_preprod_incremental_18_incremental
+            EXPORT_DATE: "2021-05-17"
