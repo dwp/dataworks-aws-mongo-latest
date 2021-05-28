@@ -1,4 +1,4 @@
-resource "aws_security_group_rule" "ingress_adg_metastore_v2" {
+resource "aws_security_group_rule" "ingress_mongo_latest_metastore_v2" {
   description              = "Allow mysql traffic to Aurora RDS from Mongo Latest"
   from_port                = 3306
   protocol                 = "tcp"
@@ -8,7 +8,7 @@ resource "aws_security_group_rule" "ingress_adg_metastore_v2" {
   source_security_group_id = aws_security_group.mongo_latest_common.id
 }
 
-resource "aws_security_group_rule" "egress_adg_metastore_v2" {
+resource "aws_security_group_rule" "egress_mongo_latest_metastore_v2" {
   description              = "Allow mysql traffic to Aurora RDS from Mongo Latest"
   from_port                = 3306
   protocol                 = "tcp"
