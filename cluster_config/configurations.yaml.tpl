@@ -108,7 +108,7 @@ Configurations:
     "hive.optimize.sort.dynamic.partition": "true"
     "hive.stats.autogather": "true"
     "hive.tez.auto.reducer.parallelism": "true"
-    "hive.tez.bucket.pruning": "true
+    "hive.tez.bucket.pruning": "true"
     "hive.optimize.reducededuplication.min.reducer": "1"
     "hive.server2.enable.doAs": "false"
 
