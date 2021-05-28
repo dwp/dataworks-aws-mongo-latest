@@ -106,7 +106,7 @@ resource "aws_security_group_rule" "egress_hbase_zookeeper" {
   from_port                = 2181
   to_port                  = 2181
   protocol                 = "tcp"
-  source_security_group_id = data.terraform_remote_state.ingest.outputs.emr_common_sg.id
+  source_security_group_id = data.terraform_remote_state.internal_compute.outputs.aws_emr_cluster.common_sg_id
   security_group_id        = aws_security_group.mongo_latest_common.id
 }
 
@@ -117,7 +117,7 @@ resource "aws_security_group_rule" "ingress_hbase_zookeeper" {
   to_port                  = 2181
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.mongo_latest_common.id
-  security_group_id        = data.terraform_remote_state.ingest.outputs.emr_common_sg.id
+  security_group_id        = data.terraform_remote_state.internal_compute.outputs.aws_emr_cluster.common_sg_id
 }
 
 resource "aws_security_group_rule" "egress_hbase_master" {
@@ -126,7 +126,7 @@ resource "aws_security_group_rule" "egress_hbase_master" {
   from_port                = 16000
   to_port                  = 16000
   protocol                 = "tcp"
-  source_security_group_id = data.terraform_remote_state.ingest.outputs.emr_common_sg.id
+  source_security_group_id = data.terraform_remote_state.internal_compute.outputs.aws_emr_cluster.common_sg_id
   security_group_id        = aws_security_group.mongo_latest_common.id
 }
 
@@ -137,7 +137,7 @@ resource "aws_security_group_rule" "ingress_hbase_master" {
   to_port                  = 16000
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.mongo_latest_common.id
-  security_group_id        = data.terraform_remote_state.ingest.outputs.emr_common_sg.id
+  security_group_id        = data.terraform_remote_state.internal_compute.outputs.aws_emr_cluster.common_sg_id
 }
 
 resource "aws_security_group_rule" "egress_hbase_regionserver" {
@@ -146,7 +146,7 @@ resource "aws_security_group_rule" "egress_hbase_regionserver" {
   from_port                = 16020
   to_port                  = 16020
   protocol                 = "tcp"
-  source_security_group_id = data.terraform_remote_state.ingest.outputs.emr_common_sg.id
+  source_security_group_id = data.terraform_remote_state.internal_compute.outputs.aws_emr_cluster.common_sg_id
   security_group_id        = aws_security_group.mongo_latest_common.id
 }
 
@@ -157,7 +157,7 @@ resource "aws_security_group_rule" "ingress_hbase_regionserver" {
   to_port                  = 16020
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.mongo_latest_common.id
-  security_group_id        = data.terraform_remote_state.ingest.outputs.emr_common_sg.id
+  security_group_id        = data.terraform_remote_state.internal_compute.outputs.aws_emr_cluster.common_sg_id
 }
 
 resource "aws_security_group_rule" "egress_mongo_latest_to_dks" {
