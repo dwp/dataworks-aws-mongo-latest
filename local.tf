@@ -143,8 +143,8 @@ locals {
     development = "2688"
     qa          = "2688"
     integration = "2688"
-    preprod     = "10240"
-    production  = "10240"
+    preprod     = "16384"
+    production  = "16384"
   }
 
   # 0.8 of hive_tez_container_size
@@ -152,8 +152,8 @@ locals {
     development = "-Xmx2150m"
     qa          = "-Xmx2150m"
     integration = "-Xmx2150m"
-    preprod     = "-Xmx8192m"
-    production  = "-Xmx8192m"
+    preprod     = "-Xmx13107m"
+    production  = "-Xmx13107m"
   }
 
   # 0.33 of hive_tez_container_size
@@ -161,16 +161,16 @@ locals {
     development = "896"
     qa          = "896"
     integration = "896"
-    preprod     = "3379"
-    production  = "3379"
+    preprod     = "4915"
+    production  = "4915"
   }
 
   hive_bytes_per_reducer = {
     development = "5242880"
     qa          = "5242880"
     integration = "5242880"
-    preprod     = "33554432"
-    production  = "33554432"
+    preprod     = "22369621"
+    production  = "22369621"
   }
 
   # 0.1 of hive_tez_container_size
@@ -178,8 +178,8 @@ locals {
     development = "268"
     qa          = "268"
     integration = "268"
-    preprod     = "1024"
-    production  = "1024"
+    preprod     = "1638"
+    production  = "1638"
   }
 
   # 0.4 of hive_tez_container_size
@@ -187,8 +187,8 @@ locals {
     development = "1075"
     qa          = "1075"
     integration = "1075"
-    preprod     = "4096"
-    production  = "4096"
+    preprod     = "6553"
+    production  = "6553"
   }
 
   tez_grouping_min_size = {
@@ -211,8 +211,8 @@ locals {
     development = "1024"
     qa          = "1024"
     integration = "1024"
-    preprod     = "8192"
-    production  = "8192"
+    preprod     = "4096"
+    production  = "4096"
   }
 
   # 0.8 of tez_am_resource_memory_mb
@@ -220,17 +220,16 @@ locals {
     development = "-Xmx819m"
     qa          = "-Xmx819m"
     integration = "-Xmx819m"
-    preprod     = "-Xmx6553m"
-    production  = "-Xmx6553m"
+    preprod     = "-Xmx3276m"
+    production  = "-Xmx3276m"
   }
 
-  # 0.8 of hive_tez_container_size
   tez_task_resource_memory_mb = {
-    development = "1024"
-    qa          = "1024"
-    integration = "1024"
-    preprod     = "8192"
-    production  = "8192"
+    development = "2048"
+    qa          = "2048"
+    integration = "2048"
+    preprod     = "15360"
+    production  = "15360"
   }
 
   hive_max_reducers = {
@@ -274,28 +273,28 @@ locals {
   }
 
   map_reduce_memory_per_reducer = {
-    development = "4096"
-    qa          = "4096"
-    integration = "4096"
-    preprod     = "8192"
-    production  = "8192"
+    development = "2048"
+    qa          = "2048"
+    integration = "2048"
+    preprod     = "4096"
+    production  = "4096"
   }
 
   # 0.8 of map_reduce_memory_per_reducer
   map_reduce_java_opts_per_reducer = {
-    development = "-Xmx3276m"
-    qa          = "-Xmx3276m"
-    integration = "-Xmx3276m"
-    preprod     = "-Xmx6553m"
-    production  = "-Xmx6553m"
+    development = "-Xmx1638m"
+    qa          = "-Xmx1638m"
+    integration = "-Xmx1638m"
+    preprod     = "-Xmx3686m"
+    production  = "-Xmx3686m"
   }
 
   map_reduce_memory_per_mapper = {
     development = "2048"
     qa          = "2048"
     integration = "2048"
-    preprod     = "5120"
-    production  = "5120"
+    preprod     = "4096"
+    production  = "4096"
   }
 
   # 0.8 of map_reduce_memory_per_mapper
@@ -303,17 +302,17 @@ locals {
     development = "-Xmx1638m"
     qa          = "-Xmx1638m"
     integration = "-Xmx1638m"
-    preprod     = "-Xmx4096m"
-    production  = "-Xmx4096m"
+    preprod     = "-Xmx3686m"
+    production  = "-Xmx3686m"
   }
 
   # Same as tez_am_resource_memory_mb
   map_reduce_memory_per_node = {
-    development = "4096"
-    qa          = "4096"
-    integration = "4096"
-    preprod     = "8192"
-    production  = "8192"
+    development = "1024"
+    qa          = "1024"
+    integration = "1024"
+    preprod     = "2048"
+    production  = "2048"
   }
 
   use_capacity_reservation = {
