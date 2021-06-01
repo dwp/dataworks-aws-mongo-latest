@@ -67,7 +67,7 @@ resource "aws_s3_bucket_object" "status_metrics_sh" {
   key    = "component/mongo_latest/status_metrics.sh"
   content = templatefile("${path.module}/bootstrap_actions/status_metrics.sh",
     {
-      mongo_latest_pushgateway_hostname = data.terraform_remote_state.metrics_infrastructure.outputs.mongo_latest_pushgateway_hostname
+      mongo_latest_pushgateway_hostname = local.mongo_latest_pushgateway_hostname
       dynamodb_final_step               = local.dynamodb_final_step[local.environment]
     }
   )

@@ -4,7 +4,7 @@ resource "aws_s3_bucket_object" "flush_pushgateway" {
   key        = "component/mongo_latest/flush-pushgateway.sh"
   content = templatefile("${path.module}/steps/flush-pushgateway.sh",
     {
-      mongo_latest_pushgateway_hostname = data.terraform_remote_state.metrics_infrastructure.outputs.mongo_latest_pushgateway_hostname
+      mongo_latest_pushgateway_hostname = local.mongo_latest_pushgateway_hostname
     }
   )
 }
@@ -15,7 +15,7 @@ resource "aws_s3_bucket_object" "courtesy_flush" {
   key        = "component/mongo_latest/courtesy-flush.sh"
   content = templatefile("${path.module}/steps/courtesy-flush.sh",
     {
-      mongo_latest_pushgateway_hostname = data.terraform_remote_state.metrics_infrastructure.outputs.mongo_latest_pushgateway_hostname
+      mongo_latest_pushgateway_hostname = local.mongo_latest_pushgateway_hostname
     }
   )
 }
