@@ -115,7 +115,7 @@ Configurations:
     "hive.tez.bucket.pruning": "true"
     "hive.optimize.reducededuplication.min.reducer": "1"
     "hive.server2.enable.doAs": "false"
-    "hive.aux.jars.path": "/opt/emr/custom_jars/"
+    "hive.aux.jars.path": "/opt/emr/custom_jars/,/usr/lib/hive/"
 
 - Classification: "tez-site"
   Properties:
