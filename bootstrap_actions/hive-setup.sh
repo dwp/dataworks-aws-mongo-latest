@@ -20,8 +20,8 @@ set -euo pipefail
     sudo chown hadoop:hadoop /opt/emr/steps
 
     log_wrapper_message "Copying decryption jar to EMR jars folder"
-    sudo mkdir -p /usr/share/aws/emr/lib
-    sudo cp /opt/emr/encryption-materials-provider-all.jar /usr/share/aws/emr/lib/
+    sudo mkdir -p /opt/emr/custom_jars
+    sudo cp /opt/emr/encryption-materials-provider-all.jar /opt/emr/custom_jars/
 
 ) >> /var/log/mongo_latest/hive_setup.log 2>&1
 
