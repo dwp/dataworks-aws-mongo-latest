@@ -23,6 +23,11 @@ set -euo pipefail
     sudo mkdir -p /opt/emr/custom_jars
     sudo cp /opt/emr/encryption-materials-provider-all.jar /opt/emr/custom_jars/
 
+    log_wrapper_message "Copying compression jars to EMR jars folder"
+    sudo cp /usr/lib/hadoop-lzo/lib/hadoop-lzo-0.4.19.jar /opt/emr/custom_jars/
+    sudo cp /usr/lib/hadoop-lzo/lib/hadoop-lzo.jar /opt/emr/custom_jars/
+    sudo cp -r /usr/lib/hadoop-lzo/lib/native/ /opt/emr/custom_jars/
+
 ) >> /var/log/mongo_latest/hive_setup.log 2>&1
 
 
