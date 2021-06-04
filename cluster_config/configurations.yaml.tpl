@@ -115,7 +115,7 @@ Configurations:
     "hive.tez.bucket.pruning": "true"
     "hive.optimize.reducededuplication.min.reducer": "1"
     "hive.server2.enable.doAs": "false"
-    "hive.aux.jars.path": "/opt/emr/custom_jars/,/usr/lib/hadoop-lzo/lib/,/usr/lib/hadoop-lzo/lib/native/"
+    "hive.aux.jars.path": "/opt/emr/custom_jars/"
 
 - Classification: "tez-site"
   Properties:
@@ -167,6 +167,7 @@ Configurations:
   Configurations:
   - Classification: "export"
     Properties:
+      "HADOOP_CLASSPATH": "/usr/lib/hadoop-lzo/lib/hadoop-lzo-0.4.19.jar:$HADOOP_CLASSPATH"
       "HADOOP_NAMENODE_OPTS": "\"-javaagent:/opt/emr/metrics/dependencies/jmx_prometheus_javaagent-0.14.0.jar=7101:/opt/emr/metrics/prometheus_config.yml\""
       "HADOOP_DATANODE_OPTS": "\"-javaagent:/opt/emr/metrics/dependencies/jmx_prometheus_javaagent-0.14.0.jar=7103:/opt/emr/metrics/prometheus_config.yml\""
 
