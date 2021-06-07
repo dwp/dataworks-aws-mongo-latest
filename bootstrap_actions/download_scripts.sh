@@ -17,12 +17,12 @@ echo "${ENVIRONMENT_NAME}" > /opt/emr/environment
 # Download the logging scripts
 $(which aws) s3 cp "${S3_COMMON_LOGGING_SHELL}"  /opt/shared/common_logging.sh
 $(which aws) s3 cp "${S3_LOGGING_SHELL}"         /opt/emr/logging.sh
-$(which aws) s3 cp "${DECRYPTION_JAR}"           /opt/emr/encryption-materials-provider-all.jar
+#$(which aws) s3 cp "${DECRYPTION_JAR}"           /opt/emr/encryption-materials-provider-all.jar
 
 # Set permissions
 chmod u+x /opt/shared/common_logging.sh
 chmod u+x /opt/emr/logging.sh
-chmod u+x /opt/emr/encryption-materials-provider-all.jar
+#chmod u+x /opt/emr/encryption-materials-provider-all.jar
 
 (
     # Import the logging functions
