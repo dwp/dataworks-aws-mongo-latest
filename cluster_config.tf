@@ -101,6 +101,8 @@ resource "aws_s3_bucket_object" "configurations" {
       map_reduce_memory_per_reducer                 = local.map_reduce_memory_per_reducer[local.environment]
       map_reduce_java_opts_per_reducer              = local.map_reduce_java_opts_per_reducer[local.environment]
       map_reduce_memory_per_node                    = local.map_reduce_memory_per_node[local.environment]
+      encryption_materials_provider_uri             = local.decryption_jar_s3_location[local.environment]
+      encryption_materials_provider_class           = local.decryption_jar_class[local.environment]
     }
   )
 }

@@ -59,7 +59,8 @@ locals {
   endpoint_services    = ["dynamodb", "ec2", "ec2messages", "glue", "kms", "logs", "monitoring", ".s3", "s3", "secretsmanager", "ssm", "ssmmessages"]
   no_proxy             = "169.254.169.254,${join(",", formatlist("%s.%s", local.endpoint_services, local.amazon_region_domain))},${local.mongo_latest_pushgateway_hostname}"
 
-  decryption_jar_s3_location = "s3://${data.terraform_remote_state.management_artefact.outputs.artefact_bucket.id}/emr-encryption-materials-provider/encryption-materials-provider-all-aws-hadoop3.jar"
+  decryption_jar_s3_location = "s3://${data.terraform_remote_state.management_artefact.outputs.artefact_bucket.id}/emr-encryption-materials-provider/encryption-materials-provider-all.jar"
+  decryption_jar_class = "uk.gov.dwp.dataworks.dks.encryptionmaterialsprovider.DKSEncryptionMaterialsProvider"
 
   ebs_emrfs_em = {
     EncryptionConfiguration = {
@@ -70,7 +71,7 @@ locals {
         S3EncryptionConfiguration = {
           EncryptionMode             = "CSE-Custom"
           S3Object                   = local.decryption_jar_s3_location
-          EncryptionKeyProviderClass = "uk.gov.dwp.dataworks.dks.encryptionmaterialsprovider.DKSEncryptionMaterialsProvider"
+          EncryptionKeyProviderClass = local.decryption_jar_class
         }
         LocalDiskEncryptionConfiguration = {
           EnableEbsEncryption       = true

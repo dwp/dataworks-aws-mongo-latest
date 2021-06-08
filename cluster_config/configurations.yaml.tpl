@@ -115,6 +115,7 @@ Configurations:
     "hive.tez.bucket.pruning": "true"
     "hive.optimize.reducededuplication.min.reducer": "1"
     "hive.server2.enable.doAs": "false"
+    "hive.aux.jars.path": "/usr/lib/hadoop-yarn/,/usr/lib/hadoop-yarn/timelineservice/,/usr/lib/hadoop-yarn/timelineservice/lib/,/usr/lib/hadoop-yarn/lib/,/usr/lib/hadoop/lib,/usr/lib/hive/lib/,/usr/share/aws/aws-java-sdk/,/usr/share/aws/emr/ddb/lib/,/usr/share/aws/emr/emrfs/auxlib/"
 
 - Classification: "tez-site"
   Properties:
@@ -161,6 +162,9 @@ Configurations:
   Properties:
     "fs.s3.maxConnections": "10000"
     "fs.s3.maxRetries": "20"
+    "fs.s3.cse.enabled": "true",
+    "fs.s3.cse.encryptionMaterialsProvider.uri": "${encryption_materials_provider_uri}",
+    "fs.s3.cse.encryptionMaterialsProvider": "${encryption_materials_provider_class}"
 
 - Classification: "hadoop-env"
   Configurations:

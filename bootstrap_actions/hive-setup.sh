@@ -19,14 +19,8 @@ set -euo pipefail
     sudo mkdir -p /opt/emr/steps
     sudo chown hadoop:hadoop /opt/emr/steps
 
-    # log_wrapper_message "Copying decryption jar to EMR jars folder"
-    # sudo mkdir -p /opt/emr/custom_jars
-    # sudo cp /opt/emr/encryption-materials-provider-all.jar /opt/emr/custom_jars/
-
-    # log_wrapper_message "Copying compression jars to EMR jars folder"
-    # sudo cp /usr/lib/hadoop-lzo/lib/hadoop-lzo-0.4.19.jar /opt/emr/custom_jars/
-    # sudo cp /usr/lib/hadoop-lzo/lib/hadoop-lzo.jar /opt/emr/custom_jars/
-    # sudo cp -r /usr/lib/hadoop-lzo/lib/native/ /opt/emr/custom_jars/
+    log_wrapper_message "Enable yarn fast launch for LLAP"
+    sudo sed -i "s/.require.Enable Yarn fastlaunch.*/ require => [ Exec['Enable Yarn fastlaunch'] ],/g" /var/aws/emr/bigtop-deploy/puppet/modules/hadoop_hive/manifests/init.pp
 
 ) >> /var/log/mongo_latest/hive_setup.log 2>&1
 
