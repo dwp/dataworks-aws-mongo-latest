@@ -38,6 +38,8 @@ Configurations:
 - Classification: "hive"
   Properties:
     "hive.llap.enabled": "true"
+    "hive.llap.percent-allocation": "0.4"
+    "hive.llap.num-instances": "3"
 
 - Classification: "hive-site"
   Properties:
