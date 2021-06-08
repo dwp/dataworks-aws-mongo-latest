@@ -162,8 +162,8 @@ Configurations:
   Properties:
     "fs.s3.maxConnections": "10000"
     "fs.s3.maxRetries": "20"
-    "fs.s3.cse.enabled": "true",
-    "fs.s3.cse.encryptionMaterialsProvider.uri": "${encryption_materials_provider_uri}",
+    "fs.s3.cse.enabled": "true"
+    "fs.s3.cse.encryptionMaterialsProvider.uri": "${encryption_materials_provider_uri}"
     "fs.s3.cse.encryptionMaterialsProvider": "${encryption_materials_provider_class}"
 
 - Classification: "hadoop-env"
