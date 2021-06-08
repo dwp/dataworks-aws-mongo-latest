@@ -115,7 +115,7 @@ Configurations:
     "hive.tez.bucket.pruning": "true"
     "hive.optimize.reducededuplication.min.reducer": "1"
     "hive.server2.enable.doAs": "false"
-    "hive.aux.jars.path": "/usr/lib/hadoop-yarn/,/usr/lib/hadoop-yarn/timelineservice/,/usr/lib/hadoop-yarn/timelineservice/lib/,/usr/lib/hadoop-yarn/lib/,/usr/lib/hadoop/lib,/usr/lib/hive/lib/,/usr/share/aws/aws-java-sdk/,/usr/share/aws/emr/ddb/lib/,/usr/share/aws/emr/emrfs/auxlib/,/usr/lib/hadoop-lzo/lib/native/,/usr/lib/hadoop-lzo/lib/,/opt/custom_jars/"
+    "hive.aux.jars.path": "/opt/custom_jars/,/usr/lib/hadoop-yarn/,/usr/lib/hadoop-yarn/timelineservice/,/usr/lib/hadoop-yarn/timelineservice/lib/,/usr/lib/hadoop-yarn/lib/,/usr/lib/hadoop/lib,/usr/lib/hive/lib/,/usr/share/aws/aws-java-sdk/,/usr/share/aws/emr/ddb/lib/,/usr/share/aws/emr/emrfs/auxlib/"
 
 - Classification: "tez-site"
   Properties:
