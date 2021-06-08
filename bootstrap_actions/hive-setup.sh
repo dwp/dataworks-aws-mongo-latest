@@ -23,5 +23,3 @@ set -euo pipefail
     sudo sed -i "s/.require.Enable Yarn fastlaunch.*/ require => [ Exec['Enable Yarn fastlaunch'] ],/g" /var/aws/emr/bigtop-deploy/puppet/modules/hadoop_hive/manifests/init.pp
 
 ) >> /var/log/mongo_latest/hive_setup.log 2>&1
-
-
