@@ -20,7 +20,7 @@ Configurations:
     "yarn.scheduler.capacity.root.ordering-policy": "priority-utilization"
     "yarn.scheduler.capacity.root.default.capacity": "35"
     "yarn.scheduler.capacity.root.default.maximum-capacity": "75"
-    "yarn.scheduler.capacity.root.default.acl_submit_applications": "hadoop"
+    "yarn.scheduler.capacity.root.default.acl_submit_applications": "*"
     "yarn.scheduler.capacity.root.default.default-application-priority": "1"
     "yarn.scheduler.capacity.root.mrqueue.capacity": "50"
     "yarn.scheduler.capacity.root.mrqueue.acl_submit_applications": "*"
