@@ -2,10 +2,12 @@
 
 sudo mkdir -p /var/log/mongo_latest
 sudo mkdir -p /opt/emr
+sudo mkdir -p /opt/custom_jars
 sudo mkdir -p /opt/shared
 sudo mkdir -p /var/ci
 sudo chown hadoop:hadoop /var/log/mongo_latest
 sudo chown hadoop:hadoop /opt/emr
+sudo chown hadoop:hadoop /opt/custom_jars
 sudo chown hadoop:hadoop /opt/shared
 sudo chown hadoop:hadoop /var/ci
 export MONGO_LATEST_LOG_LEVEL="${MONGO_LATEST_LOG_LEVEL}"
@@ -17,11 +19,12 @@ echo "${ENVIRONMENT_NAME}" > /opt/emr/environment
 # Download the logging scripts
 $(which aws) s3 cp "${S3_COMMON_LOGGING_SHELL}"  /opt/shared/common_logging.sh
 $(which aws) s3 cp "${S3_LOGGING_SHELL}"         /opt/emr/logging.sh
+$(which aws) s3 cp "${DECRYPTION_JAR}"           /opt/custom_jars/hadoop-lzo-0.4.19.jar
 
 # Set permissions
 chmod u+x /opt/shared/common_logging.sh
 chmod u+x /opt/emr/logging.sh
-#chmod u+x /opt/emr/encryption-materials-provider-all.jar
+chmod u+x /opt/custom_jars/hadoop-lzo-0.4.19.jar
 
 (
     # Import the logging functions
