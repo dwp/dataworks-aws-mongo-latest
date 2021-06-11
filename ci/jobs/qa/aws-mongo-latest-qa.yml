@@ -10,6 +10,7 @@ jobs:
           - get: dataworks-aws-mongo-latest
             trigger: true
           - get: emr-launcher-release
+            version: { tag: ((emr-launcher-version.qa)) }
             trigger: true
           - get: dataworks-behavioural-framework
             trigger: false

@@ -11,6 +11,7 @@ jobs:
           - get: emr-al2-ami
             trigger: true
           - get: emr-launcher-release
+            version: { tag: ((emr-launcher-version.development)) }
             trigger: true
           - get: dataworks-behavioural-framework
             trigger: false

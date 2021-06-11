@@ -19,12 +19,10 @@ echo "${ENVIRONMENT_NAME}" > /opt/emr/environment
 # Download the logging scripts
 $(which aws) s3 cp "${S3_COMMON_LOGGING_SHELL}"  /opt/shared/common_logging.sh
 $(which aws) s3 cp "${S3_LOGGING_SHELL}"         /opt/emr/logging.sh
-$(which aws) s3 cp "${DECRYPTION_JAR}"           /opt/custom_jars/hadoop-lzo-0.4.19.jar
 
 # Set permissions
 chmod u+x /opt/shared/common_logging.sh
 chmod u+x /opt/emr/logging.sh
-chmod u+x /opt/custom_jars/hadoop-lzo-0.4.19.jar
 
 (
     # Import the logging functions

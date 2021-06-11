@@ -16,7 +16,6 @@ resource "aws_s3_bucket_object" "download_scripts_sh" {
       S3_COMMON_LOGGING_SHELL = format("s3://%s/%s", data.terraform_remote_state.common.outputs.config_bucket.id, data.terraform_remote_state.common.outputs.application_logging_common_file.s3_id)
       S3_LOGGING_SHELL        = format("s3://%s/%s", data.terraform_remote_state.common.outputs.config_bucket.id, aws_s3_bucket_object.logging_script.key)
       scripts_location        = format("s3://%s/%s", data.terraform_remote_state.common.outputs.config_bucket.id, "component/mongo_latest")
-      DECRYPTION_JAR          = format("s3://%s/%s", data.terraform_remote_state.common.outputs.config_bucket.id, "emr/jars/hadoop-lzo-0.4.19.jar")
   })
 }
 

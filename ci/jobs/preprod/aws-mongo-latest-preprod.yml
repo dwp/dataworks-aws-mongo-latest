@@ -12,6 +12,7 @@ jobs:
             passed:
               - aws-mongo-latest-int
           - get: emr-launcher-release
+            version: { tag: ((emr-launcher-version.preprod)) }
             trigger: true
             passed:
               - aws-mongo-latest-int
