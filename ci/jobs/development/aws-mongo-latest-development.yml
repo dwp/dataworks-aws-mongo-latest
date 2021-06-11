@@ -6,7 +6,6 @@ jobs:
           - put: meta
             resource: meta-development
           - get: dataworks-aws-mongo-latest
-            resource: dataworks-aws-mongo-latest-branch
             trigger: true
           - get: emr-al2-ami
             trigger: true
