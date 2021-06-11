@@ -1,5 +1,7 @@
 output "mongo_latest_common_sg" {
-  value = aws_security_group.mongo_latest_common
+  value = {
+    id = aws_security_group.mongo_latest_common.id
+  }
 }
 
 output "mongo_latest_emr_launcher_lambda" {
