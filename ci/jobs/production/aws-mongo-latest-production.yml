@@ -6,12 +6,13 @@ jobs:
           - get: dataworks-aws-mongo-latest
             trigger: true
             passed:
-              - aws-mongo-latest-preprod
+              - aws-mongo-latest-int
           - get: emr-al2-ami
             trigger: true
             passed:
               - aws-mongo-latest-preprod
           - get: emr-launcher-release
+            version: { tag: ((emr-launcher-version.production)) }
             trigger: true
             passed:
               - aws-mongo-latest-preprod

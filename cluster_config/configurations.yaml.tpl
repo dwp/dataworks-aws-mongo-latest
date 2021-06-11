@@ -18,17 +18,17 @@ Configurations:
     "yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DefaultResourceCalculator"
     "yarn.scheduler.capacity.root.queues": "default,mrqueue,appqueue1"
     "yarn.scheduler.capacity.root.ordering-policy": "priority-utilization"
-    "yarn.scheduler.capacity.root.default.capacity": "1"
-    "yarn.scheduler.capacity.root.default.maximum-capacity": "10"
-    "yarn.scheduler.capacity.root.default.acl_submit_applications": ""
+    "yarn.scheduler.capacity.root.default.capacity": "35"
+    "yarn.scheduler.capacity.root.default.maximum-capacity": "75"
+    "yarn.scheduler.capacity.root.default.acl_submit_applications": "*"
     "yarn.scheduler.capacity.root.default.default-application-priority": "1"
-    "yarn.scheduler.capacity.root.mrqueue.capacity": "75"
+    "yarn.scheduler.capacity.root.mrqueue.capacity": "50"
     "yarn.scheduler.capacity.root.mrqueue.acl_submit_applications": "*"
     "yarn.scheduler.capacity.root.mrqueue.maximum-capacity": "95"
     "yarn.scheduler.capacity.root.mrqueue.state": "RUNNING"
     "yarn.scheduler.capacity.root.mrqueue.default-application-priority": "3"
     "yarn.scheduler.capacity.root.mrqueue.ordering-policy": "fifo"
-    "yarn.scheduler.capacity.root.appqueue1.capacity": "24"
+    "yarn.scheduler.capacity.root.appqueue1.capacity": "15"
     "yarn.scheduler.capacity.root.appqueue1.acl_submit_applications": "*"
     "yarn.scheduler.capacity.root.appqueue1.maximum-capacity": "75"
     "yarn.scheduler.capacity.root.appqueue1.state": "RUNNING"
@@ -111,6 +111,7 @@ Configurations:
     "hive.tez.bucket.pruning": "true"
     "hive.optimize.reducededuplication.min.reducer": "1"
     "hive.server2.enable.doAs": "false"
+    "hive.aux.jars.path": "/usr/lib/hadoop-lzo/lib/,/usr/lib/hadoop-lzo/lib/native/,/usr/lib/hadoop-yarn/,/usr/lib/hadoop-yarn/timelineservice/,/usr/lib/hadoop-yarn/timelineservice/lib/,/usr/lib/hadoop-yarn/lib/,/usr/lib/hadoop/lib,/usr/lib/hive/lib/,/usr/share/aws/aws-java-sdk/,/usr/share/aws/emr/ddb/lib/,/usr/share/aws/emr/emrfs/auxlib/,/opt/custom_jars/"
 
 - Classification: "tez-site"
   Properties:
@@ -157,6 +158,9 @@ Configurations:
   Properties:
     "fs.s3.maxConnections": "10000"
     "fs.s3.maxRetries": "20"
+    "fs.s3.cse.enabled": "true"
+    "fs.s3.cse.encryptionMaterialsProvider.uri": "${encryption_materials_provider_uri}"
+    "fs.s3.cse.encryptionMaterialsProvider": "${encryption_materials_provider_class}"
 
 - Classification: "hadoop-env"
   Configurations:

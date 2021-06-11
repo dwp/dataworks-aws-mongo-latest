@@ -2,10 +2,12 @@
 
 sudo mkdir -p /var/log/mongo_latest
 sudo mkdir -p /opt/emr
+sudo mkdir -p /opt/custom_jars
 sudo mkdir -p /opt/shared
 sudo mkdir -p /var/ci
 sudo chown hadoop:hadoop /var/log/mongo_latest
 sudo chown hadoop:hadoop /opt/emr
+sudo chown hadoop:hadoop /opt/custom_jars
 sudo chown hadoop:hadoop /opt/shared
 sudo chown hadoop:hadoop /var/ci
 export MONGO_LATEST_LOG_LEVEL="${MONGO_LATEST_LOG_LEVEL}"
