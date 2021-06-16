@@ -35,12 +35,6 @@ Configurations:
     "yarn.scheduler.capacity.root.appqueue1.default-application-priority": "2"
     "yarn.scheduler.capacity.root.appqueue1.ordering-policy": "fifo"
 
-- Classification: "hive"
-  Properties:
-    "hive.llap.enabled": "true"
-    "hive.llap.percent-allocation": "0.2"
-    "hive.llap.num-instances": "2"
-
 - Classification: "hive-site"
   Properties:
     "hive.metastore.warehouse.dir": "s3://${s3_published_bucket}/mongo_latest/hive/external"
