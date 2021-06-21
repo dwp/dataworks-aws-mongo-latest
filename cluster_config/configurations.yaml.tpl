@@ -19,7 +19,7 @@ Configurations:
     "yarn.scheduler.capacity.root.queues": "default,mrqueue,appqueue1"
     "yarn.scheduler.capacity.root.ordering-policy": "priority-utilization"
     "yarn.scheduler.capacity.root.default.capacity": "35"
-    "yarn.scheduler.capacity.root.default.maximum-capacity": "75"
+    "yarn.scheduler.capacity.root.default.maximum-capacity": "85"
     "yarn.scheduler.capacity.root.default.acl_submit_applications": "*"
     "yarn.scheduler.capacity.root.default.default-application-priority": "1"
     "yarn.scheduler.capacity.root.mrqueue.capacity": "50"
@@ -34,6 +34,12 @@ Configurations:
     "yarn.scheduler.capacity.root.appqueue1.state": "RUNNING"
     "yarn.scheduler.capacity.root.appqueue1.default-application-priority": "2"
     "yarn.scheduler.capacity.root.appqueue1.ordering-policy": "fifo"
+
+- Classification: "hive"
+  Properties:
+    "hive.llap.enabled": "true"
+    "hive.llap.percent-allocation": "${llap_percent_allocation}"
+    "hive.llap.num-instances": "${llap_number_of_instances}"
 
 - Classification: "hive-site"
   Properties:
