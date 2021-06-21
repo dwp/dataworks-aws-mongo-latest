@@ -24,14 +24,14 @@ resource "aws_s3_bucket_object" "libgplcompression_so" {
   key     = "emr/mongo_latest/files/llap/encryption/native/libgplcompression.so"
   source  = "files/llap/encryption/native/libgplcompression.so"
   etag    = filemd5("files/llap/encryption/native/libgplcompression.so")
-}=
+}
 
 resource "aws_s3_bucket_object" "libgplcompression_so_0" {
   bucket  = data.terraform_remote_state.common.outputs.config_bucket.id
   key     = "emr/mongo_latest/files/llap/encryption/native/libgplcompression.so.0"
   source  = "files/llap/encryption/native/libgplcompression.so.0"
   etag    = filemd5("files/llap/encryption/native/libgplcompression.so.0")
-}=
+}
 
 resource "aws_s3_bucket_object" "libgplcompression_so_0_0_0" {
   bucket  = data.terraform_remote_state.common.outputs.config_bucket.id
