@@ -103,6 +103,8 @@ resource "aws_s3_bucket_object" "configurations" {
       map_reduce_memory_per_node                    = local.map_reduce_memory_per_node[local.environment]
       encryption_materials_provider_uri             = local.decryption_jar_s3_location
       encryption_materials_provider_class           = local.decryption_jar_class
+      llap_number_of_instances                      = local.llap_number_of_instances[local.environment]
+      llap_percent_allocation                       = local.llap_percent_allocation[local.environment]
     }
   )
 }
