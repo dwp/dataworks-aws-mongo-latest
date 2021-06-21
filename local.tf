@@ -329,11 +329,11 @@ locals {
 
   # Must be not more than the default queue can handle in the configuration for capacity scheduler
   llap_percent_allocation = {
-    development = "0.3"
-    qa          = "0.3"
-    integration = "0.3"
-    preprod     = "0.3"
-    production  = "0.3"
+    development = "0.2"
+    qa          = "0.2"
+    integration = "0.2"
+    preprod     = "0.2"
+    production  = "0.2"
   }
 
   use_capacity_reservation = {
