@@ -19,7 +19,7 @@ resource "aws_s3_bucket_object" "hadoop_lzo_0_4_19_jar" {
 }
 
 data "local_file" "libgplcompression_a" {
-  filename = "files/llap/encryption/libgplcompression.a"
+  filename = "files/llap/encryption/native/libgplcompression.a"
 }
 
 resource "aws_s3_bucket_object" "libgplcompression_a" {
@@ -29,7 +29,7 @@ resource "aws_s3_bucket_object" "libgplcompression_a" {
 }
 
 data "local_file" "libgplcompression_so" {
-  filename = "files/llap/encryption/libgplcompression.so"
+  filename = "files/llap/encryption/native/libgplcompression.so"
 }
 
 resource "aws_s3_bucket_object" "libgplcompression_so" {
@@ -39,7 +39,7 @@ resource "aws_s3_bucket_object" "libgplcompression_so" {
 }
 
 data "local_file" "libgplcompression_so_0" {
-  filename = "files/llap/encryption/libgplcompression.so.0"
+  filename = "files/llap/encryption/native/libgplcompression.so.0"
 }
 
 resource "aws_s3_bucket_object" "libgplcompression_so_0" {
@@ -49,7 +49,7 @@ resource "aws_s3_bucket_object" "libgplcompression_so_0" {
 }
 
 data "local_file" "libgplcompression_so_0_0_0" {
-  filename = "files/llap/encryption/libgplcompression.so.0.0.0"
+  filename = "files/llap/encryption/native/libgplcompression.so.0.0.0"
 }
 
 resource "aws_s3_bucket_object" "libgplcompression_so_0_0_0" {
