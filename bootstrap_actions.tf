@@ -176,8 +176,8 @@ resource "aws_s3_bucket_object" "update_dynamo_sh" {
 }
 
 resource "aws_s3_bucket_object" "hive_setup_sh" {
-  bucket  = data.terraform_remote_state.common.outputs.config_bucket.id
-  key     = "component/mongo_latest/hive-setup.sh"
+  bucket = data.terraform_remote_state.common.outputs.config_bucket.id
+  key    = "component/mongo_latest/hive-setup.sh"
   content = templatefile("${path.module}/bootstrap_actions/hive-setup.sh",
     {
       config_bucket = data.terraform_remote_state.common.outputs.config_bucket.id
