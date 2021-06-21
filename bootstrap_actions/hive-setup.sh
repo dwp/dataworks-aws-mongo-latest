@@ -22,6 +22,6 @@ set -euo pipefail
     log_wrapper_message "Enable yarn fast launch for LLAP"
     sudo sed -i "s/.require.Enable Yarn fastlaunch.*/ require => [ Exec['Enable Yarn fastlaunch'] ],/g" /var/aws/emr/bigtop-deploy/puppet/modules/hadoop_hive/manifests/init.pp
 
-    sudo aws s3 cp s3://danc-nifi-stub/lzo/ /usr/lib/hadoop/lib/ --recursive
+    sudo aws s3 cp s3://${config_bucket}/emr/mongo_latest/files/llap/encryption/ /usr/lib/hadoop/lib/ --recursive
 
 ) >> /var/log/mongo_latest/hive_setup.log 2>&1
