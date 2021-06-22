@@ -34,7 +34,7 @@ Configurations:
     "hive.llap.enabled": "true"
     "hive.llap.percent-allocation": "${llap_percent_allocation}"
     "hive.llap.num-instances": "${llap_number_of_instances}"
-    "hive.llap.io.allocator.alloc.min": "256Kb"
+    "hive.llap.io.allocator.alloc.min": "512Kb"
 
 - Classification: "hive-site"
   Properties:
