@@ -336,6 +336,14 @@ locals {
     production  = "0.6"
   }
 
+  llap_allocator_min = {
+    development = "512Kb"
+    qa          = "512Kb"
+    integration = "512Kb"
+    preprod     = "2048Kb"
+    production  = "2048Kb"
+  }
+
   use_capacity_reservation = {
     development = false
     qa          = false

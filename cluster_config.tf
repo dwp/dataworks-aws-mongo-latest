@@ -105,6 +105,7 @@ resource "aws_s3_bucket_object" "configurations" {
       encryption_materials_provider_class           = local.decryption_jar_class
       llap_number_of_instances                      = local.llap_number_of_instances[local.environment]
       llap_percent_allocation                       = local.llap_percent_allocation[local.environment]
+      llap_allocator_min                            = local.llap_allocator_min[local.environment]
     }
   )
 }
