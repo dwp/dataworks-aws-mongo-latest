@@ -340,7 +340,7 @@ locals {
     development = false
     qa          = false
     integration = false
-    preprod     = true
+    preprod     = false
     production  = true
   }
 
