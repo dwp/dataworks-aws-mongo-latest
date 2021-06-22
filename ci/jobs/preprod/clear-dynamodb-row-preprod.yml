@@ -6,5 +6,5 @@ jobs:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
             AWS_ACC: ((aws_account.preprod))
-            CORRELATION_ID: ingest_emr_scheduled_tasks_export_snapshots_to_crown_preprod_incremental_157_incremental
+            CORRELATION_ID: ad107e42-e5f1-5275-b16c-2709c81fc6b2
             DATA_PRODUCT: MONGO_LATEST

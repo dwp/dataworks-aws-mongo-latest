@@ -320,20 +320,20 @@ locals {
 
   # Bear in mind the core instance count
   llap_number_of_instances = {
-    development = "2"
-    qa          = "2"
-    integration = "2"
-    preprod     = "10"
-    production  = "10"
+    development = "5"
+    qa          = "5"
+    integration = "5"
+    preprod     = "20"
+    production  = "20"
   }
 
   # Must be not more than the default queue can handle in the configuration for capacity scheduler
   llap_percent_allocation = {
-    development = "0.2"
-    qa          = "0.2"
-    integration = "0.2"
-    preprod     = "0.2"
-    production  = "0.2"
+    development = "0.6"
+    qa          = "0.6"
+    integration = "0.6"
+    preprod     = "0.6"
+    production  = "0.6"
   }
 
   use_capacity_reservation = {
