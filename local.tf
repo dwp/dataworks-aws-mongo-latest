@@ -340,8 +340,8 @@ locals {
     development = "512Kb"
     qa          = "512Kb"
     integration = "512Kb"
-    preprod     = "2048Kb"
-    production  = "2048Kb"
+    preprod     = "4096Kb"
+    production  = "4096Kb"
   }
 
   use_capacity_reservation = {
