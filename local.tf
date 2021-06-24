@@ -323,25 +323,25 @@ locals {
     development = "5"
     qa          = "5"
     integration = "5"
-    preprod     = "20"
-    production  = "20"
+    preprod     = "30"
+    production  = "30"
   }
 
   # Must be not more than the default queue can handle in the configuration for capacity scheduler
   llap_percent_allocation = {
-    development = "0.6"
-    qa          = "0.6"
-    integration = "0.6"
-    preprod     = "0.6"
-    production  = "0.6"
+    development = "0.8"
+    qa          = "0.8"
+    integration = "0.8"
+    preprod     = "0.8"
+    production  = "0.8"
   }
 
   llap_allocator_min = {
-    development = "512Kb"
-    qa          = "512Kb"
-    integration = "512Kb"
-    preprod     = "4096Kb"
-    production  = "4096Kb"
+    development = "1024Kb"
+    qa          = "1024Kb"
+    integration = "1024Kb"
+    preprod     = "8192Kb"
+    production  = "8192Kb"
   }
 
   use_capacity_reservation = {
