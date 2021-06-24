@@ -323,8 +323,8 @@ locals {
     development = "5"
     qa          = "5"
     integration = "5"
-    preprod     = "20"
-    production  = "20"
+    preprod     = "15"
+    production  = "15"
   }
 
   # Must be not more than the default queue can handle in the configuration for capacity scheduler
