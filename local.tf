@@ -146,8 +146,8 @@ locals {
     development = "2688"
     qa          = "2688"
     integration = "2688"
-    preprod     = "16384"
-    production  = "16384"
+    preprod     = "12288"
+    production  = "12288"
   }
 
   # 0.8 of hive_tez_container_size
@@ -155,8 +155,8 @@ locals {
     development = "-Xmx2150m"
     qa          = "-Xmx2150m"
     integration = "-Xmx2150m"
-    preprod     = "-Xmx13107m"
-    production  = "-Xmx13107m"
+    preprod     = "-Xmx9830m"
+    production  = "-Xmx9830m"
   }
 
   # 0.33 of hive_tez_container_size
@@ -164,8 +164,8 @@ locals {
     development = "896"
     qa          = "896"
     integration = "896"
-    preprod     = "4915"
-    production  = "4915"
+    preprod     = "4055"
+    production  = "4055"
   }
 
   hive_bytes_per_reducer = {
@@ -181,8 +181,8 @@ locals {
     development = "268"
     qa          = "268"
     integration = "268"
-    preprod     = "1638"
-    production  = "1638"
+    preprod     = "1228"
+    production  = "1228"
   }
 
   # 0.4 of hive_tez_container_size
@@ -190,8 +190,8 @@ locals {
     development = "1075"
     qa          = "1075"
     integration = "1075"
-    preprod     = "6553"
-    production  = "6553"
+    preprod     = "4915"
+    production  = "4915"
   }
 
   tez_grouping_min_size = {
@@ -323,26 +323,72 @@ locals {
     development = "5"
     qa          = "5"
     integration = "5"
-    preprod     = "30"
-    production  = "30"
+    preprod     = "20"
+    production  = "20"
   }
 
   # Must be not more than the default queue can handle in the configuration for capacity scheduler
   llap_percent_allocation = {
-    development = "0.8"
-    qa          = "0.8"
-    integration = "0.8"
-    preprod     = "0.8"
-    production  = "0.8"
+    development = "0.9"
+    qa          = "0.9"
+    integration = "0.9"
+    preprod     = "0.9"
+    production  = "0.9"
   }
 
   llap_allocator_min = {
-    development = "1024Kb"
-    qa          = "1024Kb"
-    integration = "1024Kb"
-    preprod     = "8192Kb"
-    production  = "8192Kb"
+    development = "512Kb"
+    qa          = "512Kb"
+    integration = "512Kb"
+    preprod     = "4096Kb"
+    production  = "4096Kb"
   }
+
+  llap_allocator_max = {
+    development = "16Mb"
+    qa          = "16Mb"
+    integration = "16Mb"
+    preprod     = "64Mb"
+    production  = "64Mb"
+  }
+
+  # Set to yarn.scheduler.maximum-allocation-mb which is set by AWS according to instance type of core nodes
+  llap_container_max_size_mb = {
+    development = "57344"
+    qa          = "57344"
+    integration = "57344"
+    preprod     = "253952"
+    production  = "253952"
+  }
+
+  # llap_io_memory_size + (llap_number_of_executors_per_daemon x llap_executor_max_size_mb) must fit within llap_container_max_size_mb
+  llap_executor_max_size_mb = {
+    development = "2688"
+    qa          = "2688"
+    integration = "2688"
+    preprod     = "12288"
+    production  = "12288"
+  }
+  
+  # llap_io_memory_size + (llap_number_of_executors_per_daemon x llap_executor_max_size_mb) must fit within llap_container_max_size_mb
+  llap_number_of_executors_per_daemon = {
+    development = "20"
+    qa          = "20"
+    integration = "20"
+    preprod     = "19"
+    production  = "19"
+  }
+
+  # llap_io_memory_size + (llap_number_of_executors_per_daemon x llap_executor_max_size_mb) must fit within llap_container_max_size_mb
+  llap_io_memory_size = {
+    development = "1Gb"
+    qa          = "1Gb"
+    integration = "1Gb"
+    preprod     = "10Gb"
+    production  = "10Gb"
+  }
+
+  yarn_total_preemption_per_round = format("%.2f", (1 / var.emr_core_instance_count[local.environment]))
 
   use_capacity_reservation = {
     development = false
