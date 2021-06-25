@@ -329,27 +329,27 @@ locals {
 
   # Must be not more than the default queue can handle in the configuration for capacity scheduler
   llap_percent_allocation = {
-    development = "0.9"
-    qa          = "0.9"
-    integration = "0.9"
-    preprod     = "0.9"
-    production  = "0.9"
+    development = "0.6"
+    qa          = "0.6"
+    integration = "0.6"
+    preprod     = "0.6"
+    production  = "0.6"
   }
 
   llap_allocator_min = {
     development = "512Kb"
     qa          = "512Kb"
     integration = "512Kb"
-    preprod     = "4096Kb"
-    production  = "4096Kb"
+    preprod     = "1024Kb"
+    production  = "1024Kb"
   }
 
   llap_allocator_max = {
     development = "16Mb"
     qa          = "16Mb"
     integration = "16Mb"
-    preprod     = "64Mb"
-    production  = "64Mb"
+    preprod     = "16Mb"
+    production  = "16Mb"
   }
 
   # Set to yarn.scheduler.maximum-allocation-mb which is set by AWS according to instance type of core nodes
@@ -363,11 +363,11 @@ locals {
 
   # llap_io_memory_size + (llap_number_of_executors_per_daemon x llap_executor_max_size_mb) must fit within llap_container_max_size_mb
   llap_executor_max_size_mb = {
-    development = "2688"
-    qa          = "2688"
-    integration = "2688"
-    preprod     = "12288"
-    production  = "12288"
+    development = "4096"
+    qa          = "4096"
+    integration = "4096"
+    preprod     = "4096"
+    production  = "4096"
   }
 
   # llap_io_memory_size + (llap_number_of_executors_per_daemon x llap_executor_max_size_mb) must fit within llap_container_max_size_mb
@@ -375,8 +375,8 @@ locals {
     development = "20"
     qa          = "20"
     integration = "20"
-    preprod     = "19"
-    production  = "19"
+    preprod     = "40"
+    production  = "40"
   }
 
   # llap_io_memory_size + (llap_number_of_executors_per_daemon x llap_executor_max_size_mb) must fit within llap_container_max_size_mb
@@ -384,8 +384,8 @@ locals {
     development = "1G"
     qa          = "1G"
     integration = "1G"
-    preprod     = "10G"
-    production  = "10G"
+    preprod     = "2G"
+    production  = "2G"
   }
 
   yarn_total_preemption_per_round = format("%.2f", (1 / var.emr_core_instance_count[local.environment]))
