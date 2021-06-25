@@ -115,7 +115,7 @@ locals {
     qa          = "0.0.66"
     integration = "0.0.66"
     preprod     = "0.0.66"
-    production  = "0.0.64"
+    production  = "0.0.66"
   }
 
   dynamodb_final_step = {
