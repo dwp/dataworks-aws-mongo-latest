@@ -1,5 +1,5 @@
 jobs:
-  - name: aws-mongo-latest-int
+  - name: aws-mongo-latest-integration
     max_in_flight: 1
     plan:
       - in_parallel:

@@ -6,21 +6,21 @@ jobs:
           - get: dataworks-aws-mongo-latest
             trigger: true
             passed:
-              - aws-mongo-latest-int
+              - aws-mongo-latest-qa
           - get: emr-al2-ami
             trigger: true
             passed:
-              - aws-mongo-latest-int
+              - aws-mongo-latest-qa
           - get: emr-launcher-release
             version: { tag: ((emr-launcher-version.preprod)) }
             trigger: true
             passed:
-              - aws-mongo-latest-int
+              - aws-mongo-latest-qa
           - get: emr-relauncher-release
             version: { tag: ((emr-relauncher-version.preprod)) }
             trigger: true
             passed:
-              - aws-mongo-latest-int
+              - aws-mongo-latest-qa
       - .: (( inject meta.plan.terraform-bootstrap ))
         config:
           params:
