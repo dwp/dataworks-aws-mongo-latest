@@ -337,11 +337,11 @@ locals {
   }
 
   llap_allocator_min = {
-    development = "512Kb"
-    qa          = "512Kb"
-    integration = "512Kb"
-    preprod     = "1024Kb"
-    production  = "1024Kb"
+    development = "128Kb"
+    qa          = "128Kb"
+    integration = "128Kb"
+    preprod     = "512Kb"
+    production  = "512Kb"
   }
 
   llap_allocator_max = {
@@ -366,8 +366,8 @@ locals {
     development = "4096"
     qa          = "4096"
     integration = "4096"
-    preprod     = "4096"
-    production  = "4096"
+    preprod     = "8192"
+    production  = "8192"
   }
 
   # llap_io_memory_size + (llap_number_of_executors_per_daemon x llap_executor_max_size_mb) must fit within llap_container_max_size_mb
@@ -375,8 +375,8 @@ locals {
     development = "20"
     qa          = "20"
     integration = "20"
-    preprod     = "40"
-    production  = "40"
+    preprod     = "20"
+    production  = "20"
   }
 
   # llap_io_memory_size + (llap_number_of_executors_per_daemon x llap_executor_max_size_mb) must fit within llap_container_max_size_mb
@@ -384,8 +384,8 @@ locals {
     development = "1G"
     qa          = "1G"
     integration = "1G"
-    preprod     = "2G"
-    production  = "2G"
+    preprod     = "1G"
+    production  = "1G"
   }
 
   yarn_total_preemption_per_round = format("%.2f", (1 / var.emr_core_instance_count[local.environment]))

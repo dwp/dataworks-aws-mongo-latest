@@ -61,7 +61,7 @@ resource "aws_lambda_permission" "mongo_latest_emr_relauncher_invoke_permission"
 
 data "aws_iam_policy_document" "mongo_latest_emr_relauncher_assume_policy" {
   statement {
-    sid     = "mongo_latestEMRLauncherLambdaAssumeRolePolicy"
+    sid     = "MongoLatestEMRLauncherLambdaAssumeRolePolicy"
     effect  = "Allow"
     actions = ["sts:AssumeRole"]
 

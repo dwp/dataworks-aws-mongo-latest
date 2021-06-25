@@ -119,7 +119,8 @@ Configurations:
     "hive.llap.daemon.memory.per.instance.mb": "${llap_executor_max_size_mb}"
     "hive.llap.daemon.num.executors": "${llap_number_of_executors_per_daemon}"
     "hive.llap.io.memory.size": "${llap_io_memory_size}"
-    "hive.llap.execution.mode": "all"
+    "hive.llap.execution.mode": "map"
+    "hive.fetch.task.conversion": "none"
 
 - Classification: "tez-site"
   Properties:
