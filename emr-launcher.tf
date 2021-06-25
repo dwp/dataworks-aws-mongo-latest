@@ -170,3 +170,17 @@ resource "aws_iam_role_policy_attachment" "mongo_latest_emr_launcher_getsecrets"
   role       = aws_iam_role.mongo_latest_emr_launcher_lambda_role.name
   policy_arn = aws_iam_policy.mongo_latest_emr_launcher_getsecrets.arn
 }
+
+resource "aws_sns_topic_subscription" "mongo_latest_trigger_sns" {
+  topic_arn = aws_sns_topic.mongo_latest_cw_trigger_sns.arn
+  protocol  = "lambda"
+  endpoint  = aws_lambda_function.mongo_latest_emr_launcher.arn
+}
+
+resource "aws_lambda_permission" "mongo_latest_emr_launcher_subscription" {
+  statement_id  = "CWTriggerMongoLatestSNS"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.mongo_latest_emr_launcher.function_name
+  principal     = "sns.amazonaws.com"
+  source_arn    = aws_sns_topic.mongo_latest_cw_trigger_sns.arn
+}
