@@ -16,6 +16,11 @@ jobs:
             trigger: true
             passed:
               - aws-mongo-latest-preprod
+          - get: emr-relauncher-release
+            version: { tag: ((emr-relauncher-version.production)) }
+            trigger: true
+            passed:
+              - aws-mongo-latest-preprod
       - .: (( inject meta.plan.terraform-bootstrap ))
         config:
           params:

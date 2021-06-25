@@ -62,6 +62,7 @@ meta:
               cp ../terraform-config/terraform.tfvars .
               export TF_VAR_emr_ami_id=$(cat ../emr-al2-ami/id)
               export TF_VAR_emr_launcher_zip="{base_path = \"../emr-launcher-release\", version = \"$(cat ../emr-launcher-release/version)\"}"
+              export TF_VAR_dataworks_emr_relauncher_zip="{base_path = \"../emr-relauncher-release\", version = \"$(cat ../emr-relauncher-release/version)\"}"
               terraform workspace show
               terraform init
               terraform plan -out terraform.plan
@@ -70,6 +71,7 @@ meta:
           - name: dataworks-aws-mongo-latest
           - name: terraform-config
           - name: emr-launcher-release
+          - name: emr-relauncher-release
           - name: emr-al2-ami
 
     terraform-plan:
@@ -85,6 +87,7 @@ meta:
               cp ../terraform-config/terraform.tfvars .
               export TF_VAR_emr_ami_id=$(cat ../emr-al2-ami/id)
               export TF_VAR_emr_launcher_zip="{base_path = \"../emr-launcher-release\", version = \"$(cat ../emr-launcher-release/version)\"}"
+              export TF_VAR_dataworks_emr_relauncher_zip="{base_path = \"../emr-relauncher-release\", version = \"$(cat ../emr-relauncher-release/version)\"}"
               terraform workspace show
               terraform init
               terraform plan $DETAILED_EXITCODE
@@ -93,6 +96,7 @@ meta:
           - name: dataworks-aws-mongo-latest
           - name: terraform-config
           - name: emr-launcher-release
+          - name: emr-relauncher-release
           - name: emr-al2-ami
       params:
         DETAILED_EXITCODE: -detailed-exitcode
