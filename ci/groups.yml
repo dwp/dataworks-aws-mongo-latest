@@ -3,7 +3,7 @@ groups:
     jobs:
       - aws-mongo-latest-dev
       - aws-mongo-latest-qa
-      - aws-mongo-latest-int
+      - aws-mongo-latest-integration
       - aws-mongo-latest-preprod
       - aws-mongo-latest-prod
 
