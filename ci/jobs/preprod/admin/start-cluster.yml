@@ -6,5 +6,5 @@ jobs:
           params:
             AWS_ROLE_ARN: arn:aws:iam::((aws_account.preprod)):role/ci
             AWS_ACC: ((aws_account.preprod))
-            CORRELATION_ID: 95f2519f-fb92-52f1-be85-08d22b7c43fb
-            EXPORT_DATE: "2021-06-24"
+            CORRELATION_ID: f0e3e7c2-701f-5376-a0a1-be9166f190b0
+            EXPORT_DATE: "2021-06-28"
