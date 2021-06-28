@@ -32,7 +32,7 @@ Configurations:
 
 - Classification: "hive"
   Properties:
-    "hive.llap.enabled": "false"
+    "hive.llap.enabled": "true"
     "hive.llap.percent-allocation": "${llap_percent_allocation}"
     "hive.llap.num-instances": "${llap_number_of_instances}"
 

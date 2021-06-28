@@ -4,9 +4,10 @@ jobs:
     plan:
       - in_parallel:
           - get: dataworks-aws-mongo-latest
+            resource: dataworks-aws-mongo-latest-branch
             trigger: true
-            passed:
-              - aws-mongo-latest-qa
+            # passed:
+            #   - aws-mongo-latest-qa
           - get: emr-al2-ami
             trigger: true
             passed:
