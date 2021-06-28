@@ -86,7 +86,7 @@ locals {
     development = true
     qa          = false
     integration = false
-    preprod     = true
+    preprod     = false
     production  = false
   }
 
