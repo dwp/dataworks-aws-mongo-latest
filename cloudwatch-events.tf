@@ -14,7 +14,7 @@ resource "aws_cloudwatch_event_rule" "mongo_latest_failed" {
       "TERMINATED_WITH_ERRORS"
     ],
     "name": [
-      "mongo_latest"
+      "mongo-latest"
     ]
   }
 }
@@ -37,7 +37,7 @@ resource "aws_cloudwatch_event_rule" "mongo_latest_terminated" {
       "TERMINATED"
     ],
     "name": [
-      "mongo_latest"
+      "mongo-latest"
     ],
     "stateChangeReason": [
       "{\"code\":\"USER_REQUEST\",\"message\":\"User request\"}"
@@ -63,7 +63,7 @@ resource "aws_cloudwatch_event_rule" "mongo_latest_success" {
       "TERMINATED"
     ],
     "name": [
-      "mongo_latest"
+      "mongo-latest"
     ],
     "stateChangeReason": [
       "{\"code\":\"ALL_STEPS_COMPLETED\",\"message\":\"Steps completed\"}"
@@ -89,7 +89,7 @@ resource "aws_cloudwatch_event_rule" "mongo_latest_success_with_errors" {
       "TERMINATED"
     ],
     "name": [
-      "mongo_latest"
+      "mongo-latest"
     ],
     "stateChangeReason": [
       "{\"code\":\"STEP_FAILURE\",\"message\":\"Steps completed with errors\"}"
@@ -115,7 +115,7 @@ resource "aws_cloudwatch_event_rule" "mongo_latest_running" {
       "RUNNING"
     ],
     "name": [
-      "mongo_latest"
+      "mongo-latest"
     ]
   }
 }
