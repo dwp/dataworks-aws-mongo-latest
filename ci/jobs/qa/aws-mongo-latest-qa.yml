@@ -1,11 +1,12 @@
 jobs:
   - name: aws-mongo-latest-qa
     max_in_flight: 1
+    serial_groups: [qa-applies]
     plan:
       - in_parallel:
           - put: meta
             resource: meta-qa
-          - get: emr-al2-ami
+          - get: al2-emr-ami
             trigger: true
           - get: dataworks-aws-mongo-latest
             trigger: true

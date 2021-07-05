@@ -7,7 +7,7 @@ jobs:
             resource: meta-development
           - get: dataworks-aws-mongo-latest
             trigger: true
-          - get: emr-al2-ami
+          - get: al2-emr-ami
             trigger: true
           - get: emr-launcher-release
             version: { tag: ((emr-launcher-version.development)) }
