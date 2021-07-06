@@ -146,8 +146,8 @@ locals {
     development = "5376"
     qa          = "5376"
     integration = "5376"
-    preprod     = "18432"
-    production  = "18432"
+    preprod     = "25600"
+    production  = "25600"
   }
 
   # 0.8 of hive_tez_container_size
@@ -155,8 +155,8 @@ locals {
     development = "-Xmx4300m"
     qa          = "-Xmx4300m"
     integration = "-Xmx4300m"
-    preprod     = "-Xmx14745m"
-    production  = "-Xmx14745m"
+    preprod     = "-Xmx20480m"
+    production  = "-Xmx20480m"
   }
 
   # 0.33 of hive_tez_container_size
@@ -164,8 +164,8 @@ locals {
     development = "1774"
     qa          = "1774"
     integration = "1774"
-    preprod     = "6082"
-    production  = "6082"
+    preprod     = "8448"
+    production  = "8448"
   }
 
   hive_bytes_per_reducer = {
@@ -181,8 +181,8 @@ locals {
     development = "537"
     qa          = "537"
     integration = "537"
-    preprod     = "1843"
-    production  = "1843"
+    preprod     = "2560"
+    production  = "2560"
   }
 
   # 0.4 of hive_tez_container_size
@@ -190,8 +190,8 @@ locals {
     development = "2150"
     qa          = "2150"
     integration = "2150"
-    preprod     = "7372"
-    production  = "7372"
+    preprod     = "10240"
+    production  = "10240"
   }
 
   tez_grouping_min_size = {
@@ -214,8 +214,8 @@ locals {
     development = "2048"
     qa          = "2048"
     integration = "2048"
-    preprod     = "8192"
-    production  = "8192"
+    preprod     = "13312"
+    production  = "13312"
   }
 
   # 0.8 of tez_am_resource_memory_mb
@@ -223,8 +223,8 @@ locals {
     development = "-Xmx1638m"
     qa          = "-Xmx1638m"
     integration = "-Xmx1638m"
-    preprod     = "-Xmx6553m"
-    production  = "-Xmx6553m"
+    preprod     = "-Xmx10649m"
+    production  = "-Xmx10649m"
   }
 
   tez_task_resource_memory_mb = {
@@ -314,8 +314,8 @@ locals {
     development = "2048"
     qa          = "2048"
     integration = "2048"
-    preprod     = "8192"
-    production  = "8192"
+    preprod     = "13312"
+    production  = "13312"
   }
 
   # Bear in mind the core instance count
