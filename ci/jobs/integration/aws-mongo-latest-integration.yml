@@ -9,7 +9,7 @@ jobs:
             trigger: true
             passed:
               - aws-mongo-latest-qa
-          - get: emr-al2-ami
+          - get: al2-emr-ami
             trigger: true
             passed:
               - aws-mongo-latest-qa

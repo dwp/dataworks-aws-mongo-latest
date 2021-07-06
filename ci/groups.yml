@@ -38,3 +38,7 @@ groups:
       - int-stop-cluster
       - preprod-stop-cluster
       - prod-stop-cluster
+
+  - name: ami-test
+    jobs:
+      - apply-and-test-with-ami
