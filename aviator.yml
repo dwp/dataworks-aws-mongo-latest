@@ -6,17 +6,9 @@ spruce:
       - with_in: ci/
         regexp: ".*yml"
       - with_in: ci/jobs/
-      - with_in: ci/jobs/development/
-      - with_in: ci/jobs/development/admin/
-      - with_in: ci/jobs/qa/
-      - with_in: ci/jobs/qa/admin/
-      - with_in: ci/jobs/integration/
-      - with_in: ci/jobs/integration/admin/
-      - with_in: ci/jobs/preprod/
-      - with_in: ci/jobs/preprod/admin/
-      - with_in: ci/jobs/production/
-      - with_in: ci/jobs/production/admin/
+        regexp: ".*yml"
       - with_in: ci/jobs/ami-test/
+        regexp: ".*yml"
     to: aviator_pipeline.yml
 fly:
   name: aws-mongo-latest
