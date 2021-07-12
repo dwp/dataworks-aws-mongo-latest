@@ -28,7 +28,7 @@ There is a concourse pipeline for mongo latest named `aws-mongo-latest`. The cod
 
 ### Admin jobs
 
-There are a number of available admin jobs for each environment.
+There are a number of available admin jobs for each environment. These can be found in the [Concourse Utility pipeline](https://ci.dataworks.dwp.gov.uk/teams/utility/pipelines/mongo-latest-emr-admin)
 
 #### Start cluster
 
