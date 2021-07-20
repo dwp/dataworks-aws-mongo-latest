@@ -7,7 +7,7 @@ jobs:
           - put: meta
             resource: meta-qa
           - get: dataworks-aws-mongo-latest
-            trigger: false
+            trigger: true
             passed:
               - aws-mongo-latest-qa
           - get: dataworks-behavioural-framework
@@ -16,31 +16,40 @@ jobs:
               - aws-mongo-latest-qa
           - get: emr-launcher-release
             version: { tag: ((emr-launcher-version.qa)) }
-            trigger: false
+            trigger: true
             passed:
               - aws-mongo-latest-qa
           - get: emr-relauncher-release
             version: { tag: ((emr-relauncher-version.qa)) }
-            trigger: false
+            trigger: true
             passed:
               - aws-mongo-latest-qa
           - get: al2-emr-ami
             resource: untested-al2-emr-ami
             trigger: true
+      - .: (( inject meta.plan.check-ami-test-results ))
+        input_mapping:
+          untested_ami: al2-emr-ami
       - .: (( inject meta.plan.terraform-bootstrap ))
         config:
           params:
             AWS_ACC: ((aws_account.qa))
+          inputs:
+            - name: previous_success
       - .: (( inject meta.plan.terraform-apply ))
         config:
           params:
             TF_WORKSPACE: qa
             TEST_AMI_RUN: true
+          inputs:
+            - name: previous_success
       - .: (( inject meta.plan.terraform-plan ))
         config:
           params:
             TF_WORKSPACE: qa
             TEST_AMI_RUN: true
+          inputs:
+            - name: previous_success
       - in_parallel:
         - .: (( inject meta.plan.e2e-tests))
           config:
@@ -48,7 +57,8 @@ jobs:
               TF_WORKSPACE: qa
               AWS_ACC: ((aws_account.qa))
               AWS_ROLE_ARN: arn:aws:iam::((aws_account.qa)):role/ci
-
+            inputs:
+              - name: previous_success
 
     on_failure:
       do:
