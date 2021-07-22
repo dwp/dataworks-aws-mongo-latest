@@ -21,11 +21,6 @@ locals {
   env_certificate_bucket = "dw-${local.environment}-public-certificates"
   dks_endpoint           = data.terraform_remote_state.crypto.outputs.dks_endpoint[local.environment]
 
-  crypto_workspace = {
-    management-dev = "management-dev"
-    management     = "management"
-  }
-
   management_workspace = {
     management-dev = "default"
     management     = "management"
@@ -405,4 +400,6 @@ locals {
   emr_subnet_non_capacity_reserved_environments = "eu-west-2a"
 
   mongo_latest_pushgateway_hostname = "${aws_service_discovery_service.mongo_latest_services.name}.${aws_service_discovery_private_dns_namespace.mongo_latest_services.name}"
+
+  hive_scratch_dir_patch_files_s3_prefix = "non_source_control_large_files/emr_patches/hive_scratch_dir/"
 }

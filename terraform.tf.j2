@@ -25,6 +25,20 @@ data "terraform_remote_state" "common" {
   }
 }
 
+data "terraform_remote_state" "management" {
+  backend   = "s3"
+  workspace = local.management_workspace[local.management_account[local.environment]]
+
+  config = {
+    bucket         = "{{terraform.state_file_bucket}}"
+    key            = "terraform/dataworks/management.tfstate"
+    region         = "{{terraform.state_file_region}}"
+    encrypt        = true
+    kms_key_id     = "arn:aws:kms:{{terraform.state_file_region}}:{{terraform.state_file_account}}:key/{{terraform.state_file_kms_key}}"
+    dynamodb_table = "remote_state_locks"
+  }
+}
+
 data "terraform_remote_state" "internal_compute" {
   backend   = "s3"
   workspace = terraform.workspace
@@ -82,7 +96,7 @@ data "terraform_remote_state" "aws_certificate_authority" {
 
 data "terraform_remote_state" "crypto" {
   backend   = "s3"
-  workspace = local.crypto_workspace[local.management_account[local.environment]]
+  workspace = local.management_workspace[local.management_account[local.environment]]
   config = {
     bucket         = "{{terraform.state_file_bucket}}"
     key            = "terraform/dataworks/aws-crypto.tfstate"

@@ -184,3 +184,13 @@ resource "aws_s3_bucket_object" "hive_setup_sh" {
     }
   )
 }
+
+resource "aws_s3_bucket_object" "replace_rpms_hive_sh" {
+  bucket = data.terraform_remote_state.common.outputs.config_bucket.id
+  key    = "component/mongo_latest/replace-rpms-hive.sh"
+  content = templatefile("${path.module}/bootstrap_actions/replace-rpms-hive.sh",
+    {
+      hive_scratch_dir_s3_prefix = "s3://${data.terraform_remote_state.management.outputs.config_bucket.id}/${local.hive_scratch_dir_patch_files_s3_prefix}"
+    }
+  )
+}

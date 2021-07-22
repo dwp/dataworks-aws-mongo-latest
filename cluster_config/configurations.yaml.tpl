@@ -121,6 +121,7 @@ Configurations:
     "hive.llap.io.memory.size": "${llap_io_memory_size}"
     "hive.llap.execution.mode": "map"
     "hive.fetch.task.conversion": "none"
+    "hive.emr.use.hdfs.as.scratch.dir": "true"
 
 - Classification: "tez-site"
   Properties:
