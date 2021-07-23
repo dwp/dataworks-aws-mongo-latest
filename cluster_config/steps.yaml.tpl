@@ -24,7 +24,8 @@ BootstrapActions:
 - Name: "replace-rpms-hive"
   ScriptBootstrapAction:
     Path: "file:/var/ci/replace-rpms-hive.sh"
-    Args: "hive"
+    Args:
+    - "hive"
 Steps:
 - Name: "courtesy-flush"
   HadoopJarStep:
