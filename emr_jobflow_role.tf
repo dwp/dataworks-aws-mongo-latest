@@ -99,6 +99,7 @@ data "aws_iam_policy_document" "mongo_latest_read_config" {
 
     actions = [
       "s3:GetBucketLocation",
+      "s3:ListBucket",
     ]
 
     resources = [
@@ -110,7 +111,6 @@ data "aws_iam_policy_document" "mongo_latest_read_config" {
     effect = "Allow"
 
     actions = [
-      "s3:ListBucket",
       "s3:GetObject*",
     ]
 
