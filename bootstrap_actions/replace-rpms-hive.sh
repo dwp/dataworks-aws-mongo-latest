@@ -7,8 +7,8 @@ set -ex
     exclude_pkgs=""
 
     for app in $@; do
-        sudo mkdir -p $local_repo/$app
-        sudo $(which aws) s3 cp $prefix --recursive $local_repo/$app
+        sudo mkdir -p "$local_repo/$app"
+        sudo $(which aws) s3 cp "$prefix" "$local_repo/$app" --recursive
         exclude_pkgs="$exclude_pkgs $app*"
     done
 
