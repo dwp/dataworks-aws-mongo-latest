@@ -27,7 +27,7 @@ set -ex
 
     if [ "$flag" = true ]; then
         sudo bash -c "cat >> $repo" <<EOL
-        exclude =$exclude_pkgs
+exclude =$exclude_pkgs
 EOL
     fi
 
@@ -40,12 +40,12 @@ EOL
 
     if [ "$flag" = true ]; then
         sudo bash -c "cat > /etc/yum.repos.d/bigtop_test.repo" <<EOL
-        [bigtop_test]
-        name=bigtop_test_repo
-        baseurl=file:///var/aws/emr/packages/bigtop
-        enabled=1
-        gpgcheck=0
-        priority=4
+[bigtop_test]
+name=bigtop_test_repo
+baseurl=file:///var/aws/emr/packages/bigtop
+enabled=1
+gpgcheck=0
+priority=4
 EOL
     fi
 ) >> /var/log/mongo_latest/replace_rpms_hive.log 2>&1
