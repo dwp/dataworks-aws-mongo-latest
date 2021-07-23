@@ -112,6 +112,7 @@ data "aws_iam_policy_document" "mongo_latest_read_config" {
     effect = "Allow"
 
     actions = [
+      "s3:ListBucket",
       "s3:GetObject*",
     ]
 
