@@ -6,8 +6,12 @@ set -ex
 
     exclude_pkgs=""
 
+    # Only passing one in here so it is ok as is
+    # shellcheck disable=SC2068
     for app in $@; do
         sudo mkdir -p "$local_repo/$app"
+        # Never usually quote the which aws statement
+        # shellcheck disable=SC2046
         sudo $(which aws) s3 cp "$prefix" "$local_repo/$app" --recursive
         exclude_pkgs="$exclude_pkgs $app*"
     done
