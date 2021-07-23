@@ -21,6 +21,11 @@ locals {
   env_certificate_bucket = "dw-${local.environment}-public-certificates"
   dks_endpoint           = data.terraform_remote_state.crypto.outputs.dks_endpoint[local.environment]
 
+  crypto_workspace = {
+    management-dev = "management-dev"
+    management     = "management"
+  }
+
   management_workspace = {
     management-dev = "default"
     management     = "management"
