@@ -405,4 +405,6 @@ locals {
   emr_subnet_non_capacity_reserved_environments = "eu-west-2a"
 
   mongo_latest_pushgateway_hostname = "${aws_service_discovery_service.mongo_latest_services.name}.${aws_service_discovery_private_dns_namespace.mongo_latest_services.name}"
+
+  hive_scratch_dir_patch_files_s3_prefix = "non_source_control_large_files/emr_patches/hive_scratch_dir/"
 }

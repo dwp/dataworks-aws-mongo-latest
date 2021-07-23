@@ -61,6 +61,12 @@ cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<CWAGEN
             "timezone": "UTC"
           },
           {
+            "file_path": "/var/log/mongo_latest/replace_rpms_hive.log",
+            "log_group_name": "${cwa_bootstrap_loggrp_name}",
+            "log_stream_name": "{instance_id}-replace_rpms_hive.log",
+            "timezone": "UTC"
+          },
+          {
             "file_path": "/var/log/mongo_latest/metrics-setup.log",
             "log_group_name": "${cwa_bootstrap_loggrp_name}",
             "log_stream_name": "{instance_id}-metrics-setup.log",
