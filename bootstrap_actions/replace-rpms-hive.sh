@@ -8,7 +8,7 @@ set -ex
 
     for app in $@; do
         sudo mkdir -p $local_repo/$app
-        sudo aws s3 sync $prefix $local_repo/$app
+        sudo $(which aws) s3 cp $prefix --recursive $local_repo/$app
         exclude_pkgs="$exclude_pkgs $app*"
     done
 
