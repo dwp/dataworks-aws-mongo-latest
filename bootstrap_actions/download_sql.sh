@@ -40,5 +40,10 @@
     echo "FINISHED UNZIPPING ......................"
     log_wrapper_message "finished unzipping ......................."
 
+    echo "Setting shell scripts as executable"
+    log_wrapper_message "Setting shell scripts as executable"
+
+    find "$SCRIPT_DIR" -type f -name "*.sh" -print0 | xargs -0 chmod 755
+
 )  >> /var/log/mongo_latest/download_sql.log 2>&1
 
