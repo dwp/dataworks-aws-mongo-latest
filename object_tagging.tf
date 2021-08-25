@@ -1,3 +1,18 @@
+# AWS IAM for Cloudwatch event triggers
+data "aws_iam_policy_document" "cloudwatch_events_assume_role" {
+  statement {
+    sid    = "CloudwatchEventsAssumeRolePolicy"
+    effect = "Allow"
+
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      identifiers = ["events.amazonaws.com"]
+      type        = "Service"
+    }
+  }
+}
+
 resource "aws_iam_role" "allow_batch_job_submission" {
   name               = "AllowBatchJobSubmission"
   assume_role_policy = data.aws_iam_policy_document.cloudwatch_events_assume_role.json
