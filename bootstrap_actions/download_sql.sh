@@ -35,7 +35,7 @@
     echo "START_UNZIPPING ......................"
     log_wrapper_message "start unzipping ......................."
 
-    unzip "/opt/emr/$REPOSITORY_NAME-$VERSION.zip" -d "$SCRIPT_DIR"  >> /var/log/mongo_latest/download_unzip_sql.log 2>&1
+    unzip "/opt/emr/$REPOSITORY_NAME-$VERSION.zip" -d "$SCRIPT_DIR"
 
     echo "FINISHED UNZIPPING ......................"
     log_wrapper_message "finished unzipping ......................."
