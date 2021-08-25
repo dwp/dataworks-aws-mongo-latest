@@ -13,7 +13,7 @@
 
     SCRIPT_DIR="/opt/emr/$REPOSITORY_NAME"
 
-    echo "Download & install latest mongo latest scripts"
+    echo "Download & install latest $REPOSITORY_NAME scripts"
     log_wrapper_message "Downloading & install $REPOSITORY_NAME scripts"
 
     URL="s3://${s3_artefact_bucket_id}/$REPOSITORY_NAME/$REPOSITORY_NAME-$VERSION.zip"
