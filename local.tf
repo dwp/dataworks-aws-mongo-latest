@@ -119,11 +119,11 @@ locals {
   }
 
   payment_timelines_version = {
-    development = "0.0.12"
-    qa          = "0.0.12"
-    integration = "0.0.12"
-    preprod     = "0.0.12"
-    production  = "0.0.12"
+    development = "0.0.13"
+    qa          = "0.0.13"
+    integration = "0.0.13"
+    preprod     = "0.0.13"
+    production  = "0.0.13"
   }
 
   cbol_data_version = {
@@ -423,4 +423,10 @@ locals {
   mongo_latest_pushgateway_hostname = "${aws_service_discovery_service.mongo_latest_services.name}.${aws_service_discovery_private_dns_namespace.mongo_latest_services.name}"
 
   hive_scratch_dir_patch_files_s3_prefix = "non_source_control_large_files/emr_patches/hive_scratch_dir/"
+
+  data_classification = {
+    config_bucket  = data.terraform_remote_state.common.outputs.config_bucket
+    config_prefix  = data.terraform_remote_state.aws_s3_object_tagger.outputs.pt_object_tagger_data_classification.config_prefix
+    data_s3_prefix = data.terraform_remote_state.aws_s3_object_tagger.outputs.pt_object_tagger_data_classification.data_s3_prefix
+  }
 }

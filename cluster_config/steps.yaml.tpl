@@ -64,9 +64,7 @@ Steps:
 - Name: "pt-minus-1-sql"
   HadoopJarStep:
     Args:
-    - "/opt/emr/aws-payment-timelines/scripts/build_pt.sh"
-    - "uc_payment_timelines"
-    - "1"
+    - "/opt/emr/aws-payment-timelines/scripts/pt-minus-1-sql.sh"
     Jar: "s3://eu-west-2.elasticmapreduce/libs/script-runner/script-runner.jar"
   ActionOnFailure: "${action_on_failure}"
 - Name: "cbol-sql"
