@@ -163,12 +163,29 @@ cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<CWAGEN
             "timezone": "UTC"
           },
           {
+            "file_path": "/var/log/aws_cbol_data/cbol-report.log",
+            "log_group_name": "${cwa_steps_loggrp_name}",
+            "log_stream_name": "{instance_id}-cbol-report.log",
+            "timezone": "UTC"
+          },
+          {
+            "file_path": "/var/log/aws_cbol_data/cbol-sql.log",
+            "log_group_name": "${cwa_steps_loggrp_name}",
+            "log_stream_name": "{instance_id}-cbol-sql.log",
+            "timezone": "UTC"
+          },
+          {
+            "file_path": "/var/log/aws_payment_timelines/pt-minus-1-sql.log",
+            "log_group_name": "${cwa_steps_loggrp_name}",
+            "log_stream_name": "{instance_id}-pt-minus-1-sql.log",
+            "timezone": "UTC"
+          },
+          {
             "file_path": "/var/log/mongo_latest/e2e.log",
             "log_group_name": "${cwa_tests_loggrp_name}",
             "log_stream_name": "{instance_id}-e2e.log",
             "timezone": "UTC"
           }
-
         ]
       }
     },
