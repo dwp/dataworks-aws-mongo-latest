@@ -10,10 +10,10 @@ sudo chown hadoop:hadoop /opt/emr
 sudo chown hadoop:hadoop /opt/custom_jars
 sudo chown hadoop:hadoop /opt/shared
 sudo chown hadoop:hadoop /var/ci
-export MONGO_LATEST_LOG_LEVEL="${MONGO_LATEST_LOG_LEVEL}"
+export LOG_LEVEL="${LOG_LEVEL}"
 
 echo "${VERSION}" > /opt/emr/version
-echo "${MONGO_LATEST_LOG_LEVEL}" > /opt/emr/log_level
+echo "${LOG_LEVEL}" > /opt/emr/log_level
 echo "${ENVIRONMENT_NAME}" > /opt/emr/environment
 
 # Download the logging scripts

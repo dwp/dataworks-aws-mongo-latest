@@ -47,7 +47,7 @@ locals {
     production  = "1 0 * * ? 2025"
   }
 
-  mongo_latest_log_level = {
+  log_level = {
     development = "DEBUG"
     qa          = "DEBUG"
     integration = "DEBUG"
@@ -118,12 +118,28 @@ locals {
     production  = "0.0.67"
   }
 
+  payment_timelines_version = {
+    development = "0.0.12"
+    qa          = "0.0.12"
+    integration = "0.0.12"
+    preprod     = "0.0.12"
+    production  = "0.0.12"
+  }
+
+  cbol_data_version = {
+    development = "0.0.11"
+    qa          = "0.0.11"
+    integration = "0.0.11"
+    preprod     = "0.0.11"
+    production  = "0.0.11"
+  }
+
   dynamodb_final_step = {
-    development = "executeUpdateAll"
-    qa          = "executeUpdateAll"
-    integration = "executeUpdateAll"
-    preprod     = "executeUpdateAll"
-    production  = "executeUpdateAll"
+    development = "cbol-report"
+    qa          = "cbol-report"
+    integration = "cbol-report"
+    preprod     = "cbol-report"
+    production  = "cbol-report"
   }
 
   mongo_latest_max_retry_count = {

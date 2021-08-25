@@ -35,7 +35,7 @@ chmod u+x /opt/emr/status_metrics.sh
     export HTTPS_PROXY="$FULL_PROXY"
     export no_proxy="$FULL_NO_PROXY"
     export NO_PROXY="$FULL_NO_PROXY"
-    export MONGO_LATEST_LOG_LEVEL="${MONGO_LATEST_LOG_LEVEL}"
+    export LOG_LEVEL="${LOG_LEVEL}"
     
     PUB_BUCKET_ID="${publish_bucket_id}"
     echo "export PUBLISH_BUCKET_ID=$PUB_BUCKET_ID" | sudo tee /etc/profile.d/buckets.sh

@@ -11,7 +11,7 @@ resource "aws_s3_bucket_object" "download_scripts_sh" {
   content = templatefile("${path.module}/bootstrap_actions/download_scripts.sh",
     {
       VERSION                 = local.mongo_latest_version[local.environment]
-      MONGO_LATEST_LOG_LEVEL  = local.mongo_latest_log_level[local.environment]
+      LOG_LEVEL               = local.log_level[local.environment]
       ENVIRONMENT_NAME        = local.environment
       S3_COMMON_LOGGING_SHELL = format("s3://%s/%s", data.terraform_remote_state.common.outputs.config_bucket.id, data.terraform_remote_state.common.outputs.application_logging_common_file.s3_id)
       S3_LOGGING_SHELL        = format("s3://%s/%s", data.terraform_remote_state.common.outputs.config_bucket.id, aws_s3_bucket_object.logging_script.key)
@@ -31,7 +31,7 @@ resource "aws_s3_bucket_object" "emr_setup_sh" {
   key    = "component/mongo_latest/emr-setup.sh"
   content = templatefile("${path.module}/bootstrap_actions/emr-setup.sh",
     {
-      MONGO_LATEST_LOG_LEVEL          = local.mongo_latest_log_level[local.environment]
+      LOG_LEVEL                       = local.log_level[local.environment]
       RESUME_STEP_SHELL               = format("s3://%s/%s", data.terraform_remote_state.common.outputs.config_bucket.id, aws_s3_bucket_object.resume_step_script.key)
       aws_default_region              = "eu-west-2"
       full_proxy                      = data.terraform_remote_state.internal_compute.outputs.internet_proxy.url
@@ -148,10 +148,9 @@ resource "aws_s3_bucket_object" "download_sql_sh" {
   key    = "component/mongo_latest/download_sql.sh"
   content = templatefile("${path.module}/bootstrap_actions/download_sql.sh",
     {
-      version                = local.mongo_latest_version[local.environment]
-      s3_artefact_bucket_id  = data.terraform_remote_state.management_artefact.outputs.artefact_bucket.id
-      mongo_latest_log_level = local.mongo_latest_log_level[local.environment]
-      environment_name       = local.environment
+      s3_artefact_bucket_id = data.terraform_remote_state.management_artefact.outputs.artefact_bucket.id
+      environment_name      = local.environment
+      log_level             = local.log_level[local.environment]
     }
   )
 }
