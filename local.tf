@@ -119,19 +119,19 @@ locals {
   }
 
   payment_timelines_version = {
-    development = "0.0.14"
-    qa          = "0.0.14"
-    integration = "0.0.14"
-    preprod     = "0.0.14"
-    production  = "0.0.14"
+    development = "0.0.15"
+    qa          = "0.0.15"
+    integration = "0.0.15"
+    preprod     = "0.0.15"
+    production  = "0.0.15"
   }
 
   cbol_data_version = {
-    development = "0.0.12"
-    qa          = "0.0.12"
-    integration = "0.0.12"
-    preprod     = "0.0.12"
-    production  = "0.0.12"
+    development = "0.0.11"
+    qa          = "0.0.11"
+    integration = "0.0.11"
+    preprod     = "0.0.11"
+    production  = "0.0.11"
   }
 
   dynamodb_final_step = {
