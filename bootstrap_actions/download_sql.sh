@@ -10,14 +10,15 @@
 
     REPOSITORY_NAME="$1"
     VERSION="$2"
+    LOCAL_FOLDER="$2"
 
-    SCRIPT_DIR="/opt/emr/$REPOSITORY_NAME"
+    SCRIPT_DIR="$LOCAL_FOLDER/$REPOSITORY_NAME"
 
     echo "Download & install latest $REPOSITORY_NAME scripts"
     log_wrapper_message "Downloading & install $REPOSITORY_NAME scripts"
 
     URL="s3://${s3_artefact_bucket_id}/$REPOSITORY_NAME/$REPOSITORY_NAME-$VERSION.zip"
-    $(which aws) s3 cp "$URL" "/opt/emr/"
+    $(which aws) s3 cp "$URL" "$LOCAL_FOLDER/"
 
     echo "VERSION: $VERSION"
     log_wrapper_message "$REPOSITORY_NAME version: $VERSION"
@@ -35,7 +36,7 @@
     echo "START_UNZIPPING ......................"
     log_wrapper_message "start unzipping ......................."
 
-    unzip "/opt/emr/$REPOSITORY_NAME-$VERSION.zip" -d "$SCRIPT_DIR"
+    unzip "$LOCAL_FOLDER/$REPOSITORY_NAME-$VERSION.zip" -d "$SCRIPT_DIR"
 
     echo "FINISHED UNZIPPING ......................"
     log_wrapper_message "finished unzipping ......................."

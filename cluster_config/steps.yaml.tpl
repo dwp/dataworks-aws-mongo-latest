@@ -21,18 +21,21 @@ BootstrapActions:
     Args:
     - "aws-mongo-latest"
     - "${mongo_latest_version}"
+    - "/opt/emr"
 - Name: "download-payment-timelines-sql"
   ScriptBootstrapAction:
     Path: "file:/var/ci/download_sql.sh"
     Args:
     - "aws-payment-timelines"
     - "${payment_timelines_version}"
+    - "/opt/emr/repos"
 - Name: "download-cbol-sql"
   ScriptBootstrapAction:
     Path: "file:/var/ci/download_sql.sh"
     Args:
     - "aws-cbol-data"
     - "${cbol_data_version}"
+    - "/opt/emr/repos"
 - Name: "hive-setup"
   ScriptBootstrapAction:
     Path: "file:/var/ci/hive-setup.sh"
@@ -64,20 +67,20 @@ Steps:
 - Name: "pt-minus-1-sql"
   HadoopJarStep:
     Args:
-    - "/opt/emr/aws-payment-timelines/scripts/pt-minus-1-sql.sh"
+    - "/opt/emr/repos/aws-payment-timelines/scripts/pt-minus-1-sql.sh"
     Jar: "s3://eu-west-2.elasticmapreduce/libs/script-runner/script-runner.jar"
   ActionOnFailure: "${action_on_failure}"
 - Name: "cbol-sql"
   HadoopJarStep:
     Args:
-    - "/opt/emr/aws-cbol-data/cbol-sql.sh"
+    - "/opt/emr/repos/aws-cbol-data/cbol-sql.sh"
     - "aws-cbol-data"
     Jar: "s3://eu-west-2.elasticmapreduce/libs/script-runner/script-runner.jar"
   ActionOnFailure: "${action_on_failure}"
 - Name: "cbol-report"
   HadoopJarStep:
     Args:
-    - "/opt/emr/aws-cbol-data/cbol-report.sh"
+    - "/opt/emr/repos/aws-cbol-data/cbol-report.sh"
     - "dataegress/cbol-report"
     Jar: "s3://eu-west-2.elasticmapreduce/libs/script-runner/script-runner.jar"
   ActionOnFailure: "${action_on_failure}"
