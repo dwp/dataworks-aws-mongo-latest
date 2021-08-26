@@ -43,6 +43,7 @@ data "aws_iam_policy_document" "mongo_latest_write_parquet" {
       "${data.terraform_remote_state.common.outputs.published_bucket.arn}/data/ucs_latest_redacted/*",
       "${data.terraform_remote_state.common.outputs.published_bucket.arn}/data/uc_spo_data/*",
       "${data.terraform_remote_state.common.outputs.published_bucket.arn}/data/uc_payment_timelines/*",
+      "${data.terraform_remote_state.common.outputs.published_bucket.arn}/dataegress/cbol-report/*",
     ]
   }
 
