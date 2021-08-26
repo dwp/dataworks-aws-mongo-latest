@@ -82,6 +82,7 @@ Steps:
     Args:
     - "/opt/emr/repos/aws-cbol-data/cbol-report.sh"
     - "dataegress/cbol-report"
+    - "${s3_published_bucket}"
     Jar: "s3://eu-west-2.elasticmapreduce/libs/script-runner/script-runner.jar"
   ActionOnFailure: "${action_on_failure}"
 - Name: "flush-pushgateway"
