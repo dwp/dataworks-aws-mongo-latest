@@ -54,9 +54,12 @@ resource "aws_s3_bucket_object" "steps" {
   key    = "emr/mongo_latest/steps.yaml"
   content = templatefile("${path.module}/cluster_config/steps.yaml.tpl",
     {
-      s3_config_bucket    = data.terraform_remote_state.common.outputs.config_bucket.id
-      action_on_failure   = local.step_fail_action[local.environment]
-      s3_published_bucket = data.terraform_remote_state.common.outputs.published_bucket.id
+      s3_config_bucket          = data.terraform_remote_state.common.outputs.config_bucket.id
+      action_on_failure         = local.step_fail_action[local.environment]
+      s3_published_bucket       = data.terraform_remote_state.common.outputs.published_bucket.id
+      mongo_latest_version      = local.mongo_latest_version[local.environment]
+      payment_timelines_version = local.payment_timelines_version[local.environment]
+      cbol_data_version         = local.cbol_data_version[local.environment]
     }
   )
 }

@@ -8,17 +8,20 @@
         log_mongo_latest_message "$${1}" "download_sql.sh" "$${PID}" "$${@:2}" "Running as: ,$USER"
     }
 
-    SCRIPT_DIR=/opt/emr/aws-mongo-latest
+    REPOSITORY_NAME="$1"
+    VERSION="$2"
+    LOCAL_FOLDER="$3"
 
-    echo "Download & install latest mongo latest scripts"
-    log_wrapper_message "Downloading & install aws-mongo-latest scripts"
+    SCRIPT_DIR="$LOCAL_FOLDER/$REPOSITORY_NAME"
 
-    VERSION="${version}"
-    URL="s3://${s3_artefact_bucket_id}/aws-mongo-latest/aws-mongo-latest-$VERSION.zip"
-    $(which aws) s3 cp "$URL" "/opt/emr/"
+    echo "Download & install latest $REPOSITORY_NAME scripts"
+    log_wrapper_message "Downloading & install $REPOSITORY_NAME scripts"
 
-    echo "MONGO_LATEST_VERSION: $VERSION"
-    log_wrapper_message "aws mongo latest version: $VERSION"
+    URL="s3://${s3_artefact_bucket_id}/$REPOSITORY_NAME/$REPOSITORY_NAME-$VERSION.zip"
+    $(which aws) s3 cp "$URL" "$LOCAL_FOLDER/"
+
+    echo "VERSION: $VERSION"
+    log_wrapper_message "$REPOSITORY_NAME version: $VERSION"
 
     echo "SCRIPT_DOWNLOAD_URL: $URL"
     log_wrapper_message "script_download_url: $URL"
@@ -27,16 +30,21 @@
     log_wrapper_message "script unzip location: $SCRIPT_DIR"
 
     echo "$version" > /opt/emr/version
-    echo "${mongo_latest_log_level}" > /opt/emr/log_level
+    echo "${log_level}" > /opt/emr/log_level
     echo "${environment_name}" > /opt/emr/environment
 
     echo "START_UNZIPPING ......................"
     log_wrapper_message "start unzipping ......................."
 
-    unzip "/opt/emr/aws-mongo-latest-$VERSION.zip" -d "$SCRIPT_DIR"  >> /var/log/mongo_latest/download_unzip_sql.log 2>&1
+    unzip "$LOCAL_FOLDER/$REPOSITORY_NAME-$VERSION.zip" -d "$SCRIPT_DIR"
 
     echo "FINISHED UNZIPPING ......................"
     log_wrapper_message "finished unzipping ......................."
+
+    echo "Setting shell scripts as executable"
+    log_wrapper_message "Setting shell scripts as executable"
+
+    find "$SCRIPT_DIR" -type f -name "*.sh" -print0 | xargs -0 chmod 755
 
 )  >> /var/log/mongo_latest/download_sql.log 2>&1
 

@@ -47,7 +47,7 @@ locals {
     production  = "1 0 * * ? 2025"
   }
 
-  mongo_latest_log_level = {
+  log_level = {
     development = "DEBUG"
     qa          = "DEBUG"
     integration = "DEBUG"
@@ -118,12 +118,28 @@ locals {
     production  = "0.0.67"
   }
 
+  payment_timelines_version = {
+    development = "0.0.18"
+    qa          = "0.0.18"
+    integration = "0.0.18"
+    preprod     = "0.0.18"
+    production  = "0.0.18"
+  }
+
+  cbol_data_version = {
+    development = "0.0.13"
+    qa          = "0.0.13"
+    integration = "0.0.13"
+    preprod     = "0.0.13"
+    production  = "0.0.13"
+  }
+
   dynamodb_final_step = {
-    development = "executeUpdateAll"
-    qa          = "executeUpdateAll"
-    integration = "executeUpdateAll"
-    preprod     = "executeUpdateAll"
-    production  = "executeUpdateAll"
+    development = "cbol-report"
+    qa          = "cbol-report"
+    integration = "cbol-report"
+    preprod     = "cbol-report"
+    production  = "cbol-report"
   }
 
   mongo_latest_max_retry_count = {
@@ -407,4 +423,10 @@ locals {
   mongo_latest_pushgateway_hostname = "${aws_service_discovery_service.mongo_latest_services.name}.${aws_service_discovery_private_dns_namespace.mongo_latest_services.name}"
 
   hive_scratch_dir_patch_files_s3_prefix = "non_source_control_large_files/emr_patches/hive_scratch_dir/"
+
+  data_classification = {
+    config_bucket  = data.terraform_remote_state.common.outputs.config_bucket
+    config_prefix  = data.terraform_remote_state.aws_s3_object_tagger.outputs.pt_object_tagger_data_classification.config_prefix
+    data_s3_prefix = data.terraform_remote_state.aws_s3_object_tagger.outputs.pt_object_tagger_data_classification.data_s3_prefix
+  }
 }

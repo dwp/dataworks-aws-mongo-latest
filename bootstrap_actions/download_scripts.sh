@@ -1,19 +1,23 @@
 #!/bin/bash
 
 sudo mkdir -p /var/log/mongo_latest
+sudo mkdir -p /var/log/aws_cbol_data
+sudo mkdir -p /var/log/aws_payment_timelines
 sudo mkdir -p /opt/emr
 sudo mkdir -p /opt/custom_jars
 sudo mkdir -p /opt/shared
 sudo mkdir -p /var/ci
 sudo chown hadoop:hadoop /var/log/mongo_latest
+sudo chown hadoop:hadoop /var/log/aws_cbol_data
+sudo chown hadoop:hadoop /var/log/aws_payment_timelines
 sudo chown hadoop:hadoop /opt/emr
 sudo chown hadoop:hadoop /opt/custom_jars
 sudo chown hadoop:hadoop /opt/shared
 sudo chown hadoop:hadoop /var/ci
-export MONGO_LATEST_LOG_LEVEL="${MONGO_LATEST_LOG_LEVEL}"
+export LOG_LEVEL="${LOG_LEVEL}"
 
 echo "${VERSION}" > /opt/emr/version
-echo "${MONGO_LATEST_LOG_LEVEL}" > /opt/emr/log_level
+echo "${LOG_LEVEL}" > /opt/emr/log_level
 echo "${ENVIRONMENT_NAME}" > /opt/emr/environment
 
 # Download the logging scripts
