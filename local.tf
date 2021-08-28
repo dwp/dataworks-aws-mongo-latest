@@ -230,8 +230,8 @@ locals {
     development = "2048"
     qa          = "2048"
     integration = "2048"
-    preprod     = "13312"
-    production  = "13312"
+    preprod     = "2048"
+    production  = "2048"
   }
 
   # 0.8 of tez_am_resource_memory_mb
@@ -239,8 +239,8 @@ locals {
     development = "-Xmx1638m"
     qa          = "-Xmx1638m"
     integration = "-Xmx1638m"
-    preprod     = "-Xmx10649m"
-    production  = "-Xmx10649m"
+    preprod     = "-Xmx1638m"
+    production  = "-Xmx1638m"
   }
 
   tez_task_resource_memory_mb = {
