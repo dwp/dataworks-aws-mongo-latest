@@ -64,6 +64,27 @@ Steps:
     - "${s3_published_bucket}"
     Jar: "s3://eu-west-2.elasticmapreduce/libs/script-runner/script-runner.jar"
   ActionOnFailure: "${action_on_failure}"
+- Name: "pt-minus-1-sql"
+  HadoopJarStep:
+    Args:
+    - "/opt/emr/repos/aws-payment-timelines/scripts/pt-minus-1-sql.sh"
+    Jar: "s3://eu-west-2.elasticmapreduce/libs/script-runner/script-runner.jar"
+  ActionOnFailure: "${action_on_failure}"
+- Name: "cbol-sql"
+  HadoopJarStep:
+    Args:
+    - "/opt/emr/repos/aws-cbol-data/cbol-sql.sh"
+    - "aws-cbol-data"
+    Jar: "s3://eu-west-2.elasticmapreduce/libs/script-runner/script-runner.jar"
+  ActionOnFailure: "${action_on_failure}"
+- Name: "cbol-report"
+  HadoopJarStep:
+    Args:
+    - "/opt/emr/repos/aws-cbol-data/cbol-report.sh"
+    - "dataegress/cbol-report"
+    - "${s3_published_bucket}"
+    Jar: "s3://eu-west-2.elasticmapreduce/libs/script-runner/script-runner.jar"
+  ActionOnFailure: "${action_on_failure}"
 - Name: "flush-pushgateway"
   HadoopJarStep:
     Args:
