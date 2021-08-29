@@ -112,17 +112,37 @@ Configurations:
     "hive.vectorized.adaptor.usage.mode": "chosen"
     "hive.vectorized.use.vector.serde.deserialize": "true"
     "hive.exec.max.dynamic.partitions.pernode": "1000"
+    "hive.aux.jars.path": "/usr/lib/hadoop-lzo/lib/,/usr/lib/hadoop-lzo/lib/native/,/usr/lib/hadoop-yarn/,/usr/lib/hadoop-yarn/timelineservice/,/usr/lib/hadoop-yarn/timelineservice/lib/,/usr/lib/hadoop-yarn/lib/,/usr/lib/hadoop/lib,/usr/lib/hive/lib/,/usr/share/aws/aws-java-sdk/,/usr/share/aws/emr/ddb/lib/,/usr/share/aws/emr/emrfs/auxlib/,/opt/custom_jars/,/usr/lib/hive/auxlib/"
 
 - Classification: "emrfs-site"
   Properties:
     "fs.s3.maxRetries": "20"
+    "fs.s3.cse.enabled": "true"
+    "fs.s3.cse.encryptionMaterialsProvider.uri": "${encryption_materials_provider_uri}"
+    "fs.s3.cse.encryptionMaterialsProvider": "${encryption_materials_provider_class}"
+  
 - Classification: "tez-site"
   Properties:
     "tez.aux.uris": "/libs/"
     "tez.am.resource.memory.mb": "1024"
+  
 - Classification: "hive-env"
   Configurations:
   - Classification: "export"
     Properties:
       "HADOOP_HEAPSIZE": "2000"
+
+- Classification: "hadoop-env"
+  Configurations:
+  - Classification: "export"
+    Properties:
+      "HADOOP_NAMENODE_OPTS": "\"-javaagent:/opt/emr/metrics/dependencies/jmx_prometheus_javaagent-0.14.0.jar=7101:/opt/emr/metrics/prometheus_config.yml\""
+      "HADOOP_DATANODE_OPTS": "\"-javaagent:/opt/emr/metrics/dependencies/jmx_prometheus_javaagent-0.14.0.jar=7103:/opt/emr/metrics/prometheus_config.yml\""
+
+- Classification: "yarn-env"
+  Configurations:
+  - Classification: "export"
+    Properties:
+      "YARN_RESOURCEMANAGER_OPTS": "\"-javaagent:/opt/emr/metrics/dependencies/jmx_prometheus_javaagent-0.14.0.jar=7105:/opt/emr/metrics/prometheus_config.yml\""
+      "YARN_NODEMANAGER_OPTS": "\"-javaagent:/opt/emr/metrics/dependencies/jmx_prometheus_javaagent-0.14.0.jar=7107:/opt/emr/metrics/prometheus_config.yml\""
   

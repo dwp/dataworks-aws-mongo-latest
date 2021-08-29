@@ -409,7 +409,7 @@ locals {
     qa          = false
     integration = false
     preprod     = false
-    production  = true
+    production  = false
   }
 
   emr_capacity_reservation_preference = local.use_capacity_reservation[local.environment] == true ? "open" : "none"
