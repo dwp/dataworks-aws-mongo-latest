@@ -110,7 +110,6 @@ resource "aws_s3_bucket_object" "configurations" {
       llap_percent_allocation                       = local.llap_percent_allocation[local.environment]
       llap_allocator_min                            = local.llap_allocator_min[local.environment]
       llap_allocator_max                            = local.llap_allocator_max[local.environment]
-      yarn_total_preemption_per_round               = local.yarn_total_preemption_per_round
       llap_container_max_size_mb                    = local.llap_container_max_size_mb[local.environment]
       llap_executor_max_size_mb                     = local.llap_executor_max_size_mb[local.environment]
       llap_number_of_executors_per_daemon           = local.llap_number_of_executors_per_daemon[local.environment]

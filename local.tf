@@ -404,8 +404,6 @@ locals {
     production  = "1G"
   }
 
-  yarn_total_preemption_per_round = format("%.2f", (1 / var.emr_core_instance_count[local.environment]))
-
   use_capacity_reservation = {
     development = false
     qa          = false
