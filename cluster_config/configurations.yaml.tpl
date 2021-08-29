@@ -72,7 +72,7 @@ Configurations:
     "hive.convert.join.bucket.mapjoin.tez": "false"
     "hive.metastore.schema.verification": "false"
     "hive.compactor.initiator.on": "true"
-    "hive.compactor.worker.threads": "${hive_compaction_threads}"
+    "hive.compactor.worker.threads": "1"
     "hive.exec.parallel": "true"
     "hive.vectorized.execution.enabled": "true"
     "hive.vectorized.execution.reduce.enabled": "true"
