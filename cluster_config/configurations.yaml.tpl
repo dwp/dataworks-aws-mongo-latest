@@ -54,9 +54,9 @@ Configurations:
     "hive.txn.manager": "org.apache.hadoop.hive.ql.lockmgr.DbTxnManager"
     "javax.jdo.option.ConnectionDriverName": "org.mariadb.jdbc.Driver"
     "javax.jdo.option.ConnectionPassword": ${hive_metastore_pwd}
-    "javax.jdo.option.ConnectionURL": "jdbc:mysql://${hive_metastore_endpoint}:3306/${hive_metastore_database_name}"
+    "javax.jdo.option.ConnectionURL": "jdbc:mysql://${hive_metastore_endpoint}:3306/${hive_metastore_database_name}?createDatabaseIfNotExist=true"
     "javax.jdo.option.ConnectionUserName": "${hive_metastore_username}"
-    "hive.metastore.warehouse.dir": "s3://${config_bucket}/data/external"
+    "hive.metastore.warehouse.dir": "s3://${s3_published_bucket}/mongo_latest/hive/external"
     "hive.metastore.client.socket.timeout": "10800"
     "hive.strict.checks.cartesian.product": "false"
     "hive.mapred.mode": "nonstrict"
