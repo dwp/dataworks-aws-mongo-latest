@@ -91,8 +91,6 @@ Configurations:
     "hive.server2.async.exec.threads": "1500"
     "hive.server2.async.exec.wait.queue.size": "1500"
     "hive.server2.async.exec.keepalive.time": "120"
-    "hive.tez.min.partition.factor": "0.25"
-    "hive.tez.max.partition.factor": "2.0"
     "hive.exec.reducers.max": "${hive_max_reducers}"
     "hive.default.fileformat": "TextFile"
     "hive.default.fileformat.managed": "ORC"
