@@ -3,25 +3,18 @@ Configurations:
 - Classification: "yarn-site"
   Properties:
     "yarn.log-aggregation-enable": "true"
+    "yarn.log-aggregation.retain-seconds": "-1"
     "yarn.nodemanager.remote-app-log-dir": "s3://${s3_log_bucket}/${s3_log_prefix}/yarn"
     "yarn.nodemanager.vmem-check-enabled": "false"
     "yarn.nodemanager.pmem-check-enabled": "false"
-    "yarn.acl.enable": "true"
-    "yarn.resourcemanager.scheduler.monitor.enable": "true"
-    "yarn.resourcemanager.monitor.capacity.preemption.total_preemption_per_round": "${yarn_total_preemption_per_round}"
     "yarn.resourcemanager.scheduler.class": "org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler"
+    "yarn.scheduler.fair.preemption": "true"
 
 - Classification: "hive"
   Properties:
     "hive.llap.enabled": "false"
     "hive.llap.percent-allocation": "${llap_percent_allocation}"
     "hive.llap.num-instances": "${llap_number_of_instances}"
-
-- Classification: "hive-env"
-  Configurations:
-  - Classification: "export"
-    Properties:
-      "HADOOP_HEAPSIZE": "2000"
 
 - Classification: "hive-site"
   Properties:
@@ -187,3 +180,9 @@ Configurations:
     Properties:
       "YARN_RESOURCEMANAGER_OPTS": "\"-javaagent:/opt/emr/metrics/dependencies/jmx_prometheus_javaagent-0.14.0.jar=7105:/opt/emr/metrics/prometheus_config.yml\""
       "YARN_NODEMANAGER_OPTS": "\"-javaagent:/opt/emr/metrics/dependencies/jmx_prometheus_javaagent-0.14.0.jar=7107:/opt/emr/metrics/prometheus_config.yml\""
+
+- Classification: "hive-env"
+  Configurations:
+  - Classification: "export"
+    Properties:
+      "HADOOP_HEAPSIZE": "2000"
