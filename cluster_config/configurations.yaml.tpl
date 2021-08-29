@@ -16,7 +16,7 @@ Configurations:
   Properties:
     "yarn.log-aggregation-enable": "true"
     "yarn.log-aggregation.retain-seconds": "-1"
-    "yarn.nodemanager.remote-app-log-dir": "s3://${log_bucket}/logs/yarn/"
+    "yarn.nodemanager.remote-app-log-dir": "s3://${s3_log_bucket}/${s3_log_prefix}/yarn"
     "yarn.resourcemanager.scheduler.class": "org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler"
     "yarn.scheduler.fair.preemption": "true"
 - Classification: "spark"
@@ -125,3 +125,4 @@ Configurations:
   - Classification: "export"
     Properties:
       "HADOOP_HEAPSIZE": "2000"
+  
