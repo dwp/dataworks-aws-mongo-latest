@@ -114,6 +114,8 @@ resource "aws_s3_bucket_object" "configurations" {
       llap_executor_max_size_mb                     = local.llap_executor_max_size_mb[local.environment]
       llap_number_of_executors_per_daemon           = local.llap_number_of_executors_per_daemon[local.environment]
       llap_io_memory_size                           = local.llap_io_memory_size[local.environment]
+      proxy_host                                    = data.terraform_remote_state.internal_compute.outputs.internet_proxy.url
+      full_no_proxy                                 = local.no_proxy
     }
   )
 }
