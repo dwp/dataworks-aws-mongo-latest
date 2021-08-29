@@ -36,7 +36,6 @@ Configurations:
     "spark.r.command": "/opt/R/R-3.6.3/bin/Rscript"
     "spark.r.shell.command": "/opt/R/R-3.6.3/bin/R"
     "spark.sql.catalogImplementation": "hive"
-    "spark.sql.warehouse.dir": "s3://${config_bucket}/data/external"
 - Classification: "spark-hive-site"
   Properties:
     "hive.exec.dynamic.partition.mode": "nonstrict"
