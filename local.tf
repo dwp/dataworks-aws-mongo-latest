@@ -264,7 +264,7 @@ locals {
     qa          = "20"
     integration = "20"
     preprod     = "50"
-    production  = "50"
+    production  = "10"
   }
 
   hive_prewarm_container_count = {
