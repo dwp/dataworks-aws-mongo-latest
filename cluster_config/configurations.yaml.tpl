@@ -60,15 +60,13 @@ Configurations:
     "hive.metastore.client.socket.timeout": "10800"
     "hive.strict.checks.cartesian.product": "false"
     "hive.mapred.mode": "nonstrict"
-    %{~ if environment == "production" ~}
-    "hive.tez.container.size": "32768"
-    "hive.tez.java.opts": "-Xmx26214m"
-    "hive.auto.convert.join.noconditionaltask.size": "10922"
+    "hive.tez.container.size": "${hive_tez_container_size}"
+    "hive.tez.java.opts": "${hive_tez_java_opts}"
+    "hive.auto.convert.join.noconditionaltask.size": "${hive_auto_convert_join_noconditionaltask_size}"
     "hive.exec.failure.hooks": "org.apache.hadoop.hive.ql.hooks.ATSHook"
     "hive.exec.post.hooks": "org.apache.hadoop.hive.ql.hooks.ATSHook"
     "hive.exec.pre.hooks": "org.apache.hadoop.hive.ql.hooks.ATSHook"
     "hive_timeline_logging_enabled": "true"
-    %{~ endif ~}
     "hive.convert.join.bucket.mapjoin.tez": "false"
     "hive.metastore.schema.verification": "false"
     "hive.compactor.initiator.on": "true"
@@ -123,7 +121,9 @@ Configurations:
 - Classification: "tez-site"
   Properties:
     "tez.aux.uris": "/libs/"
-    "tez.am.resource.memory.mb": "1024"
+    "tez.task.resource.memory.mb": "${tez_task_resource_memory_mb}"
+    "tez.am.resource.memory.mb": "${tez_am_resource_memory_mb}"
+    "tez.am.launch.cmd-opts": "${tez_am_launch_cmd_opts}"
   
 - Classification: "hive-env"
   Configurations:
