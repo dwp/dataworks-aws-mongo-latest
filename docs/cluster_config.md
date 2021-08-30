@@ -49,32 +49,6 @@ Again, a fine balance of the number of Tez sessions to create across the cluster
 Tez default queue is set to `appqueue` in our configuration. Set the queue via `hive.server2.tez.default.queues`.
 This parameter tells Tez which Yarn queue to assign tasks to. Note: If you set two queues here, Tez would randomly assign a task a Yarn queue, if one was not supplied in the original Hive command. If a queue is supplied, Tez honours the selection.
 
-### LLAP Configuration
-Hive 'Live Long and Process'
-
-A good description of LLAP [Source](https://community.cloudera.com/t5/Community-Articles/Hive-LLAP-deep-dive/ta-p/248893):
-
-LLAP provides a hybrid execution model. It consists of a long-lived daemon which replaces direct interactions with the HDFS Data Node, and a tightly integrated DAG-based framework.
-Functionality such as caching, pre-fetching, some query processing and access control are moved into the daemon. Small/short queries are largely processed by this daemon directly, while any heavy lifting will be performed in standard YARN containers.
-
-Similar to the Data Node, LLAP daemons can be used by other applications as well, especially if a relational view on the data is preferred over file-centric processing. The daemon is also open through optional APIs (e.g., Input Format) that can be leveraged by other data processing frameworks as a building block.
-
-Hive LLAP consists of the following component
-
-Hive Interactive Server: Thrift server which provide JDBC interface to connect to the Hive LLAP.
-Slider AM: The slider application which spawns, monitor and maintains the LLAP daemons.
-TEZ AM query coordinator: TEZ Am which accepts the incoming the request of the user and execute them in executors available inside the LLAP daemons (JVM).
-LLAP daemons: To facilitate caching and JIT optimization, and to eliminate most of the startup costs, a daemon runs on the worker nodes on the cluster. The daemon handles I/O, caching, and query fragment execution.
-
-[Reference](https://community.cloudera.com/t5/Community-Articles/Hive-LLAP-deep-dive/ta-p/248893)
-
-For our configuration, we are controlling the number of LLAP instances across the cluster with `hive.llap.num-instances`, controlling the resources provided to LLAP with `hive.llap.percent-allocation`.
-For `hive.llap.percent-allocation`, this is a percentage given in decimal form. eg 0.1 is 10%.
-
-We've experienced and it's also spoken about in the above resource, that LLAP instances should be given almost if not all Yarn resources for the instances it belongs on.
-LLAP performs better if the instances it has, can utilise the full resources of the node it resides on; rather than each node having an LLAP instance and a small percentage of resources.
-We can assume that this is because LLAP suffers from noisy neighbours.
-
 ### Mappers and Reducers configuration
 Mappers collect and orchestrate data. Reducers operate joins operations etc.
 
@@ -120,7 +94,6 @@ Once the mappers and reducers finish, they allow the Tez task which is awaiting 
 
 ## Resources
 https://cwiki.apache.org/confluence/display/TEZ/How+initial+task+parallelism+works
-https://community.cloudera.com/t5/Community-Articles/Hive-LLAP-deep-dive/ta-p/248893
 https://blog.cloudera.com/yarn-capacity-scheduler/
 https://medium.com/@sohamghosh/schedulers-in-emr-6445180b44f6
 https://hadoop.apache.org/docs/r1.2.1/capacity_scheduler.html
