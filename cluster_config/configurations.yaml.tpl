@@ -4,6 +4,7 @@ Configurations:
   Properties:
     "hadoop.proxyuser.livy.groups": "*"
     "hadoop.proxyuser.livy.hosts": "*"
+
 - Classification: "livy-conf"
   Properties:
     "livy.file.local-dir-whitelist": /
@@ -12,6 +13,7 @@ Configurations:
     "livy.server.port": "8998"
     "livy.spark.deploy-mode": "cluster"
     "livy.spark.yarn.security.credentials.hiveserver2.enabled": "true"
+
 - Classification: "yarn-site"
   Properties:
     "yarn.log-aggregation-enable": "true"
@@ -19,9 +21,11 @@ Configurations:
     "yarn.nodemanager.remote-app-log-dir": "s3://${s3_log_bucket}/${s3_log_prefix}/yarn"
     "yarn.resourcemanager.scheduler.class": "org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler"
     "yarn.scheduler.fair.preemption": "true"
+
 - Classification: "spark"
   Properties:
     "maximizeResourceAllocation": "false"
+
 - Classification: "spark-defaults"
   Properties:
     "spark.driver.extraJavaOptions": "-XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=70
@@ -36,6 +40,7 @@ Configurations:
     "spark.r.command": "/opt/R/R-3.6.3/bin/Rscript"
     "spark.r.shell.command": "/opt/R/R-3.6.3/bin/R"
     "spark.sql.catalogImplementation": "hive"
+
 - Classification: "spark-hive-site"
   Properties:
     "hive.exec.dynamic.partition.mode": "nonstrict"
@@ -46,6 +51,7 @@ Configurations:
     "javax.jdo.option.ConnectionPassword": ${hive_metastore_pwd}
     "javax.jdo.option.ConnectionURL": "jdbc:mysql://${hive_metastore_endpoint}:3306/${hive_metastore_database_name}"
     "javax.jdo.option.ConnectionUserName": "${hive_metastore_username}"
+
 - Classification: "hive-site"
   Properties:
     "hive.exec.dynamic.partition.mode": "nonstrict"

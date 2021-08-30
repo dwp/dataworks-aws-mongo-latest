@@ -39,14 +39,6 @@ locals {
     production  = "management"
   }
 
-  mongo_latest_emr_lambda_schedule = {
-    development = "1 0 * * ? 2099"
-    qa          = "1 0 * * ? *"
-    integration = "00 14 6 Jul ? 2020" # trigger one off temp increase for DW-4437 testing
-    preprod     = "1 0 * * ? *"
-    production  = "1 0 * * ? 2025"
-  }
-
   log_level = {
     development = "DEBUG"
     qa          = "DEBUG"
@@ -184,61 +176,19 @@ locals {
     production  = "10813"
   }
 
-  hive_bytes_per_reducer = {
-    development = "10485760"
-    qa          = "10485760"
-    integration = "10485760"
-    preprod     = "44739242"
-    production  = "44739242"
-  }
-
-  # 0.1 of hive_tez_container_size
-  tez_runtime_unordered_output_buffer_size_mb = {
-    development = "537"
-    qa          = "537"
-    integration = "537"
-    preprod     = "3276"
-    production  = "3276"
-  }
-
-  # 0.4 of hive_tez_container_size
-  tez_runtime_io_sort_mb = {
-    development = "2150"
-    qa          = "2150"
-    integration = "2150"
-    preprod     = "13107"
-    production  = "13107"
-  }
-
-  tez_grouping_min_size = {
-    development = "13421770"
-    qa          = "13421770"
-    integration = "13421770"
-    preprod     = "52428800"
-    production  = "52428800"
-  }
-
-  tez_grouping_max_size = {
-    development = "67108850"
-    qa          = "67108850"
-    integration = "67108850"
-    preprod     = "536870912"
-    production  = "536870912"
-  }
-
   tez_am_resource_memory_mb = {
-    development = "2048"
-    qa          = "2048"
-    integration = "2048"
+    development = "1024"
+    qa          = "1024"
+    integration = "1024"
     preprod     = "2048"
     production  = "2048"
   }
 
   # 0.8 of tez_am_resource_memory_mb
   tez_am_launch_cmd_opts = {
-    development = "-Xmx1638m"
-    qa          = "-Xmx1638m"
-    integration = "-Xmx1638m"
+    development = "-Xmx816m"
+    qa          = "-Xmx816m"
+    integration = "-Xmx816m"
     preprod     = "-Xmx1638m"
     production  = "-Xmx1638m"
   }
@@ -260,148 +210,11 @@ locals {
   }
 
   hive_tez_sessions_per_queue = {
-    development = "20"
-    qa          = "20"
-    integration = "20"
-    preprod     = "50"
-    production  = "10"
-  }
-
-  hive_prewarm_container_count = {
-    development = "20"
-    qa          = "20"
-    integration = "20"
-    preprod     = "50"
-    production  = "50"
-  }
-
-  map_reduce_vcores_per_node = {
-    development = "4"
-    qa          = "4"
-    integration = "4"
-    preprod     = "12"
-    production  = "12"
-  }
-
-  map_reduce_vcores_per_task = {
-    development = "2"
-    qa          = "2"
-    integration = "2"
-    preprod     = "5"
-    production  = "5"
-  }
-
-  map_reduce_memory_per_reducer = {
-    development = "2048"
-    qa          = "2048"
-    integration = "2048"
-    preprod     = "8192"
-    production  = "8192"
-  }
-
-  # 0.8 of map_reduce_memory_per_reducer
-  map_reduce_java_opts_per_reducer = {
-    development = "-Xmx1638m"
-    qa          = "-Xmx1638m"
-    integration = "-Xmx1638m"
-    preprod     = "-Xmx6553m"
-    production  = "-Xmx6553m"
-  }
-
-  map_reduce_memory_per_mapper = {
-    development = "2048"
-    qa          = "2048"
-    integration = "2048"
-    preprod     = "8192"
-    production  = "8192"
-  }
-
-  # 0.8 of map_reduce_memory_per_mapper
-  map_reduce_java_opts_per_mapper = {
-    development = "-Xmx1638m"
-    qa          = "-Xmx1638m"
-    integration = "-Xmx1638m"
-    preprod     = "-Xmx6553m"
-    production  = "-Xmx6553m"
-  }
-
-  # Same as tez_am_resource_memory_mb
-  map_reduce_memory_per_node = {
-    development = "2048"
-    qa          = "2048"
-    integration = "2048"
-    preprod     = "13312"
-    production  = "13312"
-  }
-
-  # Bear in mind the core instance count
-  llap_number_of_instances = {
     development = "5"
     qa          = "5"
     integration = "5"
-    preprod     = "15"
-    production  = "15"
-  }
-
-  # Must be not more than the default queue can handle in the configuration for capacity scheduler
-  llap_percent_allocation = {
-    development = "0.6"
-    qa          = "0.6"
-    integration = "0.6"
-    preprod     = "0.6"
-    production  = "0.6"
-  }
-
-  llap_allocator_min = {
-    development = "128Kb"
-    qa          = "128Kb"
-    integration = "128Kb"
-    preprod     = "512Kb"
-    production  = "512Kb"
-  }
-
-  llap_allocator_max = {
-    development = "16Mb"
-    qa          = "16Mb"
-    integration = "16Mb"
-    preprod     = "16Mb"
-    production  = "16Mb"
-  }
-
-  # Set to yarn.scheduler.maximum-allocation-mb which is set by AWS according to instance type of core nodes
-  llap_container_max_size_mb = {
-    development = "57344"
-    qa          = "57344"
-    integration = "57344"
-    preprod     = "253952"
-    production  = "253952"
-  }
-
-  # llap_io_memory_size + (llap_number_of_executors_per_daemon x llap_executor_max_size_mb) must fit within llap_container_max_size_mb
-  llap_executor_max_size_mb = {
-    development = "4096"
-    qa          = "4096"
-    integration = "4096"
-    preprod     = "8192"
-    production  = "8192"
-  }
-
-  # llap_io_memory_size + (llap_number_of_executors_per_daemon x llap_executor_max_size_mb) must fit within llap_container_max_size_mb
-  llap_number_of_executors_per_daemon = {
-    development = "20"
-    qa          = "20"
-    integration = "20"
-    preprod     = "20"
-    production  = "20"
-  }
-
-  # llap_io_memory_size + (llap_number_of_executors_per_daemon x llap_executor_max_size_mb) must fit within llap_container_max_size_mb
-  llap_io_memory_size = {
-    development = "1G"
-    qa          = "1G"
-    integration = "1G"
-    preprod     = "1G"
-    production  = "1G"
+    preprod     = "10"
+    production  = "10"
   }
 
   use_capacity_reservation = {

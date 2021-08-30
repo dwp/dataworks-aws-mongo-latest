@@ -27,21 +27,9 @@ resource "aws_lambda_function" "mongo_latest_emr_launcher" {
     variables = {
       EMR_LAUNCHER_CONFIG_S3_BUCKET = data.terraform_remote_state.common.outputs.config_bucket.id
       EMR_LAUNCHER_CONFIG_S3_FOLDER = "emr/mongo_latest"
-      EMR_LAUNCHER_LOG_LEVEL        = "debug"
+      EMR_LAUNCHER_LOG_LEVEL        = local.log_level[local.environment]
     }
   }
-}
-
-resource "aws_cloudwatch_event_rule" "mongo_latest_emr_launcher_schedule" {
-  name                = "mongo_latest_emr_launcher_schedule"
-  description         = "Triggers Mongo Latest EMR Launcher"
-  schedule_expression = format("cron(%s)", local.mongo_latest_emr_lambda_schedule[local.environment])
-}
-
-resource "aws_cloudwatch_event_target" "mongo_latest_emr_launcher_target" {
-  rule      = aws_cloudwatch_event_rule.mongo_latest_emr_launcher_schedule.name
-  target_id = "mongo_latest_emr_launcher_target"
-  arn       = aws_lambda_function.mongo_latest_emr_launcher.arn
 }
 
 resource "aws_iam_role" "mongo_latest_emr_launcher_lambda_role" {
