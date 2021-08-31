@@ -28,7 +28,7 @@ resource "aws_lambda_function" "mongo_latest_emr_relauncher" {
       SNS_TOPIC       = aws_sns_topic.mongo_latest_cw_trigger_sns.arn
       TABLE_NAME      = local.data_pipeline_metadata
       MAX_RETRY_COUNT = local.mongo_latest_max_retry_count[local.environment]
-      LOG_LEVEL       = "debug"
+      LOG_LEVEL       = local.log_level[local.environment]
     }
   }
 
