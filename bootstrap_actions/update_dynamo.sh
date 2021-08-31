@@ -20,7 +20,6 @@
   SNAPSHOT_TYPE_FILE=/opt/emr/snapshot_type.txt
   OUTPUT_LOCATION_FILE=/opt/emr/output_location.txt
   EXPORT_DATE_FILE=/opt/emr/export_date.txt
-
   DATE=$(date '+%Y-%m-%d')
   CLUSTER_ID=$(jq '.jobFlowId' < /mnt/var/lib/info/job-flow.json)
   CLUSTER_ID="$${CLUSTER_ID//\"}"
