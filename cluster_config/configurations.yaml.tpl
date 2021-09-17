@@ -78,7 +78,8 @@ Configurations:
     "hive.compactor.initiator.on": "true"
     "hive.compactor.worker.threads": "1"
     "hive.exec.parallel": "true"
-    "hive.vectorized.execution.enabled": "true"
+# do not turn vectorisation on see DW-6676
+    "hive.vectorized.execution.enabled": "false"
     "hive.vectorized.execution.reduce.enabled": "true"
     "hive.vectorized.complex.types.enabled": "true"
     "hive.vectorized.use.row.serde.deserialize": "true"
@@ -149,4 +150,3 @@ Configurations:
     Properties:
       "YARN_RESOURCEMANAGER_OPTS": "\"-javaagent:/opt/emr/metrics/dependencies/jmx_prometheus_javaagent-0.14.0.jar=7105:/opt/emr/metrics/prometheus_config.yml\""
       "YARN_NODEMANAGER_OPTS": "\"-javaagent:/opt/emr/metrics/dependencies/jmx_prometheus_javaagent-0.14.0.jar=7107:/opt/emr/metrics/prometheus_config.yml\""
-  
