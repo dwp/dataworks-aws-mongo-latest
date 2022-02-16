@@ -154,7 +154,7 @@ locals {
     development = "5376"
     qa          = "5376"
     integration = "5376"
-    preprod     = "8192"
+    preprod     = "9216"
     production  = "32768"
   }
 
@@ -163,7 +163,7 @@ locals {
     development = "-Xmx4300m"
     qa          = "-Xmx4300m"
     integration = "-Xmx4300m"
-    preprod     = "-Xmx6554m"
+    preprod     = "-Xmx7373m"
     production  = "-Xmx26214m"
   }
 
@@ -172,7 +172,7 @@ locals {
     development = "1774"
     qa          = "1774"
     integration = "1774"
-    preprod     = "4096"
+    preprod     = "3042"
     production  = "10813"
   }
 
