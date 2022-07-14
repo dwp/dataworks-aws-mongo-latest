@@ -115,7 +115,7 @@ locals {
     qa          = "0.0.30"
     integration = "0.0.30"
     preprod     = "0.0.30"
-    production  = "0.0.23"
+    production  = "0.0.30"
   }
 
   cbol_data_version = {
