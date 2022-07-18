@@ -111,10 +111,10 @@ locals {
   }
 
   payment_timelines_version = {
-    development = "0.0.30"
-    qa          = "0.0.30"
-    integration = "0.0.30"
-    preprod     = "0.0.30"
+    development = "0.0.31"
+    qa          = "0.0.31"
+    integration = "0.0.31"
+    preprod     = "0.0.31"
     production  = "0.0.30"
   }
 
