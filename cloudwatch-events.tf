@@ -40,7 +40,7 @@ resource "aws_cloudwatch_event_rule" "mongo_latest_terminated" {
       "mongo-latest"
     ],
     "stateChangeReason": [
-      "{\"code\":\"USER_REQUEST\",\"message\":\"User request\"}"
+      "{\"code\":\"USER_REQUEST\",\"message\":\"Terminated by user request\"}"
     ]
   }
 }
