@@ -154,8 +154,23 @@ locals {
     development = "5376"
     qa          = "5376"
     integration = "5376"
-    preprod     = "9216"
+    preprod     = "7168"
     production  = "32768"
+  }
+  tez_grouping_min_size = {
+    development = "1342177"
+    qa          = "1342177"
+    integration = "1342177"
+    preprod     = "16777216"
+    production  = "16777216"
+  }
+
+  tez_grouping_max_size = {
+    development = "268435456"
+    qa          = "268435456"
+    integration = "268435456"
+    preprod     = "1073741824"
+    production  = "1073741824"
   }
 
   # 0.8 of hive_tez_container_size
@@ -163,7 +178,7 @@ locals {
     development = "-Xmx4300m"
     qa          = "-Xmx4300m"
     integration = "-Xmx4300m"
-    preprod     = "-Xmx7373m"
+    preprod     = "-Xmx5734m"
     production  = "-Xmx26214m"
   }
 
@@ -172,7 +187,7 @@ locals {
     development = "1774"
     qa          = "1774"
     integration = "1774"
-    preprod     = "3042"
+    preprod     = "2365"
     production  = "10813"
   }
 
@@ -180,7 +195,7 @@ locals {
     development = "1024"
     qa          = "1024"
     integration = "1024"
-    preprod     = "2048"
+    preprod     = "7168"
     production  = "2048"
   }
 
@@ -189,7 +204,7 @@ locals {
     development = "-Xmx816m"
     qa          = "-Xmx816m"
     integration = "-Xmx816m"
-    preprod     = "-Xmx1638m"
+    preprod     = "-Xmx5734m"
     production  = "-Xmx1638m"
   }
 
@@ -197,7 +212,7 @@ locals {
     development = "2048"
     qa          = "2048"
     integration = "2048"
-    preprod     = "15360"
+    preprod     = "5734"
     production  = "15360"
   }
 
@@ -213,7 +228,7 @@ locals {
     development = "5"
     qa          = "5"
     integration = "5"
-    preprod     = "10"
+    preprod     = "35"
     production  = "10"
   }
 
