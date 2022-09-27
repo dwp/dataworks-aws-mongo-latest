@@ -130,7 +130,7 @@ Configurations:
     "tez.task.resource.memory.mb": "${tez_task_resource_memory_mb}"
     "tez.am.resource.memory.mb": "${tez_am_resource_memory_mb}"
     "tez.am.launch.cmd-opts": "${tez_am_launch_cmd_opts}"
-  
+
 - Classification: "hive-env"
   Configurations:
   - Classification: "export"

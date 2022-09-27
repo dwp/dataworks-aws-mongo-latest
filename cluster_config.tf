@@ -80,6 +80,8 @@ resource "aws_s3_bucket_object" "configurations" {
       hive_tez_java_opts                            = local.hive_tez_java_opts[local.environment]
       tez_am_resource_memory_mb                     = local.tez_am_resource_memory_mb[local.environment]
       tez_am_launch_cmd_opts                        = local.tez_am_launch_cmd_opts[local.environment]
+      tez_grouping_min_size                         = local.tez_grouping_min_size[local.environment]
+      tez_grouping_max_size                         = local.tez_grouping_max_size[local.environment]
       tez_task_resource_memory_mb                   = local.tez_task_resource_memory_mb[local.environment]
       hive_auto_convert_join_noconditionaltask_size = local.hive_auto_convert_join_noconditionaltask_size[local.environment]
       hive_max_reducers                             = local.hive_max_reducers[local.environment]
@@ -88,6 +90,8 @@ resource "aws_s3_bucket_object" "configurations" {
       encryption_materials_provider_class           = local.decryption_jar_class
       proxy_host                                    = data.terraform_remote_state.internal_compute.outputs.internet_proxy.url
       full_no_proxy                                 = local.no_proxy
+      tez_runtime_io_sort                           = format("%.0f", local.hive_tez_container_size[local.environment] * 0.4)
+      tez_runtime_unordered_output_buffer_size_mb   = format("%.0f", local.hive_tez_container_size[local.environment] * 0.1)
     }
   )
 }
