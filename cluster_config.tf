@@ -86,7 +86,6 @@ resource "aws_s3_bucket_object" "configurations" {
       hive_auto_convert_join_noconditionaltask_size = local.hive_auto_convert_join_noconditionaltask_size[local.environment]
       hive_max_reducers                             = local.hive_max_reducers[local.environment]
       hive_tez_sessions_per_queue                   = local.hive_tez_sessions_per_queue[local.environment]
-      yarn_mapreduce_am_resourcemb                  = local.yarn_mapreduce_am_resourcemb[local.environment]
       encryption_materials_provider_uri             = local.decryption_jar_s3_location
       encryption_materials_provider_class           = local.decryption_jar_class
       proxy_host                                    = data.terraform_remote_state.internal_compute.outputs.internet_proxy.url
