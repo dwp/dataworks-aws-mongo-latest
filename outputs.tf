@@ -13,4 +13,5 @@ output "private_dns" {
     mongo_latest_service_discovery_dns = aws_service_discovery_private_dns_namespace.mongo_latest_services
     mongo_latest_service_discovery     = aws_service_discovery_service.mongo_latest_services
   }
+  sensitive = true
 }
