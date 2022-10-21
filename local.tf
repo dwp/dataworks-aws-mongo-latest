@@ -155,7 +155,7 @@ locals {
     qa          = "5376"
     integration = "5376"
     preprod     = "7168"
-    production  = "32768"
+    production  = "7168"
   }
   tez_grouping_min_size = {
     development = "1342177"
@@ -179,7 +179,7 @@ locals {
     qa          = "-Xmx4300m"
     integration = "-Xmx4300m"
     preprod     = "-Xmx5734m"
-    production  = "-Xmx26214m"
+    production  = "-Xmx5734m"
   }
 
   # 0.33 of hive_tez_container_size
@@ -188,7 +188,7 @@ locals {
     qa          = "1774"
     integration = "1774"
     preprod     = "2365"
-    production  = "10813"
+    production  = "2365"
   }
 
   tez_am_resource_memory_mb = {
@@ -196,7 +196,7 @@ locals {
     qa          = "1024"
     integration = "1024"
     preprod     = "7168"
-    production  = "2048"
+    production  = "7168"
   }
 
   # 0.8 of tez_am_resource_memory_mb
@@ -205,7 +205,7 @@ locals {
     qa          = "-Xmx816m"
     integration = "-Xmx816m"
     preprod     = "-Xmx5734m"
-    production  = "-Xmx1638m"
+    production  = "-Xmx5734m"
   }
 
   tez_task_resource_memory_mb = {
@@ -213,7 +213,7 @@ locals {
     qa          = "2048"
     integration = "2048"
     preprod     = "5734"
-    production  = "15360"
+    production  = "5734"
   }
 
   hive_max_reducers = {
