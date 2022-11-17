@@ -78,6 +78,8 @@ resource "aws_s3_bucket_object" "configurations" {
       hive_metastore_database_name                  = data.terraform_remote_state.internal_compute.outputs.hive_metastore_v2.database_name
       hive_tez_container_size                       = local.hive_tez_container_size[local.environment]
       hive_tez_java_opts                            = local.hive_tez_java_opts[local.environment]
+      hive_blobstore_use_output-committer           = local.hive_blobstore_use_output-committer[local.environment]
+      hive_exec_parallel                            = local.hive_exec_parallel[local.environment]
       tez_am_resource_memory_mb                     = local.tez_am_resource_memory_mb[local.environment]
       tez_am_launch_cmd_opts                        = local.tez_am_launch_cmd_opts[local.environment]
       tez_grouping_min_size                         = local.tez_grouping_min_size[local.environment]
