@@ -77,7 +77,7 @@ Configurations:
     "hive.metastore.schema.verification": "false"
     "hive.compactor.initiator.on": "true"
     "hive.compactor.worker.threads": "1"
-    "hive.exec.parallel": "true"
+    "hive.exec.parallel": "${hive_exec_parallel}"
 # do not turn vectorisation on see DW-6676
     "hive.vectorized.execution.enabled": "false"
     "hive.vectorized.execution.reduce.enabled": "true"
@@ -102,6 +102,7 @@ Configurations:
     "hive.compactor.worker.timeout": "86400"
     "hive.blobstore.optimizations.enabled": "true"
     "hive.blobstore.use.blobstore.as.scratchdir": "false"
+    "hive.blobstore.use.output-committer": "${hive_blobstore_use_output-committer}"
     "hive.server2.tez.session.lifetime": "0"
     "hive.exec.reducers.max": "${hive_max_reducers}"
     "hive.mapjoin.bucket.cache.size": "10000"
