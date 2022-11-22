@@ -162,7 +162,7 @@
   }
 
   build_step_json_file() {
-    cd "$STEP_DETAILS_DIR" || exit
+    cd "$STEP_DETAILS_DIR"
 
     # step sequence to a flat file
     grep -A 1 -E '^\s*stepEntities {' job-flow-state.txt | grep sequence: | sed 's/^[ \t]*//g' > $TMP_STEP_JSON_OUTPUT_LOCATION/seq.txt
@@ -233,9 +233,10 @@
   READY_TO_BUILD_JSON=0
   while [[ ! "$READY_TO_BUILD_JSON" == 1 ]]; do
       if grep -q 'stepEntities' "$STEP_DETAILS_DIR/job-flow-state.txt" ; then
-          log_wrapper_message "Step metadata are now available ..."
           READY_TO_BUILD_JSON=1
+          sleep 5
           build_step_json_file
+          log_wrapper_message "Step metadata are now built ..."
       else
           log_wrapper_message "Waiting for step metadata  ..."
           sleep 10
@@ -243,6 +244,7 @@
   done
 
   #kick off loop to process all step files
+  log_wrapper_message "Starting to loop through the step metadata files ..."
   check_step_dir
 
 ) >> /var/log/mongo_latest/update_dynamo_sh.log 2>&1
