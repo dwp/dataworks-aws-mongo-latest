@@ -15,7 +15,7 @@
 
   log_wrapper_message "Start running update_dynamo.sh Shell"
 
-  STEP_DETAILS_DIR=/mnt/var/lib/info
+  STEP_DETAILS_DIR=/emr/instance-controller/lib/info
   TMP_STEP_JSON_OUTPUT_LOCATION=$STEP_DETAILS_DIR/tmp
   STEP_JSON_OUTPUT_LOCATION=$STEP_DETAILS_DIR/steps
   mkdir -p $TMP_STEP_JSON_OUTPUT_LOCATION $STEP_JSON_OUTPUT_LOCATION
@@ -162,7 +162,7 @@
   }
 
   build_step_json_file() {
-    cd "$STEP_DETAILS_DIR" || exit
+    cd "$STEP_DETAILS_DIR" || { log_wrapper_message "Issue encountered while changing the working directory to $STEP_DETAILS_DIR"; exit; }
 
     # step sequence to a flat file
     grep -A 1 -E '^\s*stepEntities {' job-flow-state.txt | grep sequence: | sed 's/^[ \t]*//g' > $TMP_STEP_JSON_OUTPUT_LOCATION/seq.txt
@@ -233,9 +233,10 @@
   READY_TO_BUILD_JSON=0
   while [[ ! "$READY_TO_BUILD_JSON" == 1 ]]; do
       if grep -q 'stepEntities' "$STEP_DETAILS_DIR/job-flow-state.txt" ; then
-          log_wrapper_message "Step metadata are now available ..."
           READY_TO_BUILD_JSON=1
+          sleep 5
           build_step_json_file
+          log_wrapper_message "Step metadata are now available ..."
       else
           log_wrapper_message "Waiting for step metadata  ..."
           sleep 10
