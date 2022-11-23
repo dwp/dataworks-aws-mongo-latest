@@ -15,7 +15,7 @@
 
   log_wrapper_message "Start running update_dynamo.sh Shell"
 
-  STEP_DETAILS_DIR=/mnt/var/lib/info
+  STEP_DETAILS_DIR=/emr/instance-controller/lib/info
   TMP_STEP_JSON_OUTPUT_LOCATION=$STEP_DETAILS_DIR/tmp
   STEP_JSON_OUTPUT_LOCATION=$STEP_DETAILS_DIR/steps
   mkdir -p $TMP_STEP_JSON_OUTPUT_LOCATION $STEP_JSON_OUTPUT_LOCATION
@@ -126,23 +126,30 @@
         state=$(jq -r '.state' "$i")
         if [[ -n "$state" ]] && [[ -n "$CURRENT_STEP" ]]; then
           if [[ "$state" == "$FAILED_STATUS" ]] || [[ "$state" == "$CANCELLED_STATUS" ]]; then
-            log_wrapper_message "Failed step. Step Name: $CURRENT_STEP, Step status: $state"
+            log_wrapper_message "Failed step in $i. Step Name: $CURRENT_STEP, Step status: $state"
             dynamo_update_item "$CURRENT_STEP" "$FAILED_STATUS" "NOT_SET"
             exit 0
           fi
-          if [[ "$CURRENT_STEP" == "$FINAL_STEP_NAME" ]] && [[ "$state" == "$COMPLETED_STATUS" ]]; then
-            dynamo_update_item "$CURRENT_STEP" "$COMPLETED_STATUS" "NOT_SET"
-            log_wrapper_message "All steps completed. Final step Name: $CURRENT_STEP, Step status: $state"
-            exit 0
+          if [[ "$CURRENT_STEP" == "$FINAL_STEP_NAME" ]]; then 
+            if [[ "$state" == "$COMPLETED_STATUS" ]]; then
+              dynamo_update_item "$CURRENT_STEP" "$COMPLETED_STATUS" "NOT_SET"
+              log_wrapper_message "All steps completed. Final step in $i. Final step Name: $CURRENT_STEP, Step status: $state"
+              exit 0
+            else
+              log_wrapper_message "Running final step in $i. Final step Name: $CURRENT_STEP, Step status: $state"
+              # refresh json files
+              sleep 10
+              build_step_json_file
+            fi
           fi
           if [[ "$PREVIOUS_STATE" != "$state" ]] && [[ "$PREVIOUS_STEP" != "$CURRENT_STEP" ]]; then
             dynamo_update_item "$CURRENT_STEP" "NOT_SET" "NOT_SET"
-            log_wrapper_message "Successful step. Last step name: $PREVIOUS_STEP, Last step status: $PREVIOUS_STATE, Current step name: $CURRENT_STEP, Current step status: $state"
+            log_wrapper_message "Successful step in $i. Last step name: $PREVIOUS_STEP, Last step status: $PREVIOUS_STATE, Current step name: $CURRENT_STEP, Current step status: $state"
             processed_files+=( "$i" )
           else
             # refresh json files
             build_step_json_file
-            sleep 0.2
+            sleep 10
           fi
         else
           if [[ "$RETRY_COUNT" -ge "$MAX_RETRY" ]]; then
@@ -162,7 +169,7 @@
   }
 
   build_step_json_file() {
-    cd "$STEP_DETAILS_DIR" || exit
+    cd "$STEP_DETAILS_DIR" || { log_wrapper_message "Issue encountered while changing the working directory to $STEP_DETAILS_DIR"; exit; }
 
     # step sequence to a flat file
     grep -A 1 -E '^\s*stepEntities {' job-flow-state.txt | grep sequence: | sed 's/^[ \t]*//g' > $TMP_STEP_JSON_OUTPUT_LOCATION/seq.txt
@@ -205,7 +212,6 @@
             mv "$TMP_STEP_JSON_OUTPUT_LOCATION/$CURRENT_STEP_COUNT.json" "$STEP_JSON_OUTPUT_LOCATION/$CURRENT_STEP_COUNT.json"
         fi
           CURRENT_STEP_COUNT=$((CURRENT_STEP_COUNT+1))
-        sleep 0.5
     done
   }
 
@@ -233,9 +239,10 @@
   READY_TO_BUILD_JSON=0
   while [[ ! "$READY_TO_BUILD_JSON" == 1 ]]; do
       if grep -q 'stepEntities' "$STEP_DETAILS_DIR/job-flow-state.txt" ; then
-          log_wrapper_message "Step metadata are now available ..."
           READY_TO_BUILD_JSON=1
+          sleep 5
           build_step_json_file
+          log_wrapper_message "Step metadata are now available ..."
       else
           log_wrapper_message "Waiting for step metadata  ..."
           sleep 10
