@@ -60,6 +60,7 @@ resource "aws_s3_bucket_object" "steps" {
       mongo_latest_version      = local.mongo_latest_version[local.environment]
       payment_timelines_version = local.payment_timelines_version[local.environment]
       cbol_data_version         = local.cbol_data_version[local.environment]
+      cluster_debug             = local.cluster_debug[local.environment]
     }
   )
 }

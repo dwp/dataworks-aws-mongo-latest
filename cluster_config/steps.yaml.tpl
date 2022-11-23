@@ -44,6 +44,7 @@ BootstrapActions:
     Path: "file:/var/ci/replace-rpms-hive.sh"
     Args:
     - "hive"
+%{if $cluster_debug != true }
 Steps:
 - Name: "courtesy-flush"
   HadoopJarStep:
@@ -91,3 +92,5 @@ Steps:
     - "file:/var/ci/flush-pushgateway.sh"
     Jar: "s3://eu-west-2.elasticmapreduce/libs/script-runner/script-runner.jar"
   ActionOnFailure: "CONTINUE"
+%{ endif }
+
