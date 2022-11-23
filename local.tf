@@ -234,11 +234,11 @@ locals {
 
   # leave all as false under normal circumstances. Override in CI and avaite then revert when done
   cluster_debug = {
-    development = false
-    qa          = false
-    integration = false
-    preprod     = false
-    production  = false
+    development = "false"
+    qa          = "false"
+    integration = "false"
+    preprod     = "false"
+    production  = "false"
   }
 
   hive_blobstore_use_output-committer = {

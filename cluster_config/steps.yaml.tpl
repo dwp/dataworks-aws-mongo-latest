@@ -44,7 +44,7 @@ BootstrapActions:
     Path: "file:/var/ci/replace-rpms-hive.sh"
     Args:
     - "hive"
-%{if $cluster_debug != true }
+%{if $cluster_debug != "true" }
 Steps:
 - Name: "courtesy-flush"
   HadoopJarStep:
