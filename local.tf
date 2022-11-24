@@ -232,22 +232,6 @@ locals {
     production  = "10"
   }
 
-  hive_blobstore_use_output-committer = {
-    development = true
-    qa          = true
-    integration = true
-    preprod     = true
-    production  = false
-  }
-
-  hive_exec_parallel = {
-    development = false
-    qa          = false
-    integration = false
-    preprod     = false
-    production  = true
-  }
-
   use_capacity_reservation = {
     development = false
     qa          = false
