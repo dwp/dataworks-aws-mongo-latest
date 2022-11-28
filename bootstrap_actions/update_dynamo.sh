@@ -15,11 +15,7 @@
 
   log_wrapper_message "Start running update_dynamo.sh Shell"
 
-  STEP_DETAILS_DIR=/emr/instance-controller/lib/info
-  TMP_STEP_JSON_OUTPUT_LOCATION=$STEP_DETAILS_DIR/tmp
-  STEP_JSON_OUTPUT_LOCATION=$STEP_DETAILS_DIR/steps
-  mkdir -p $TMP_STEP_JSON_OUTPUT_LOCATION $STEP_JSON_OUTPUT_LOCATION
-
+  STEP_DETAILS_DIR=/mnt/var/lib/info/steps
   CORRELATION_ID_FILE=/opt/emr/correlation_id.txt
   SNAPSHOT_TYPE_FILE=/opt/emr/snapshot_type.txt
   OUTPUT_LOCATION_FILE=/opt/emr/output_location.txt
@@ -32,7 +28,6 @@
   COMPLETED_STATUS="COMPLETED"
   IN_PROGRESS_STATUS="IN_PROGRESS"
   CANCELLED_STATUS="CANCELLED"
-  RUNNING_STATUS="RUNNING"
 
   FINAL_STEP_NAME="${dynamodb_final_step}"
 
@@ -113,7 +108,7 @@
   check_step_dir() {
     cd "$STEP_DETAILS_DIR" || exit
     #shellcheck disable=SC2231
-    for i in $STEP_JSON_OUTPUT_LOCATION/*.json; do # We want wordsplitting here
+    for i in $STEP_DETAILS_DIR/*.json; do # We want wordsplitting here
       #shellcheck disable=SC2076
       if [[ "$${processed_files[@]}" =~ "$${i}" ]]; then # We do not want a REGEX check here so it is ok
         continue
@@ -122,6 +117,9 @@
       state=$(jq -r '.state' "$i")
       while [[ "$state" != "$COMPLETED_STATUS" ]]; do
         step_script_name=$(jq -r '.args[0]' "$i")
+        if [[ "$step_script_name" == "python3" ]]; then
+            step_script_name=$(jq -r '.args[1]' "$i")
+        fi
         CURRENT_STEP=$(echo "$step_script_name" | sed 's:.*/::' | cut -f 1 -d '.')
         state=$(jq -r '.state' "$i")
         if [[ -n "$state" ]] && [[ -n "$CURRENT_STEP" ]]; then
@@ -140,8 +138,6 @@
             log_wrapper_message "Successful step. Last step name: $PREVIOUS_STEP, Last step status: $PREVIOUS_STATE, Current step name: $CURRENT_STEP, Current step status: $state"
             processed_files+=( "$i" )
           else
-            # refresh json files
-            build_step_json_file
             sleep 0.2
           fi
         else
@@ -159,54 +155,6 @@
       done
     done
     check_step_dir
-  }
-
-  build_step_json_file() {
-    cd "$STEP_DETAILS_DIR" || { log_wrapper_message "Issue encountered while changing the working directory to $STEP_DETAILS_DIR"; exit; }
-
-    # step sequence to a flat file
-    grep -A 1 -E '^\s*stepEntities {' job-flow-state.txt | grep sequence: | sed 's/^[ \t]*//g' > $TMP_STEP_JSON_OUTPUT_LOCATION/seq.txt
-
-    # step argument to a flat file (this always aligns/matches with step sequence)
-    grep -A 2 -E 'id: "s-' job-flow-state.txt | grep 'arg: ' | sed 's/^[ \t]*//g' | tr -d '"' | cut -c 6- > $TMP_STEP_JSON_OUTPUT_LOCATION/args.txt
-
-    # step-ids to a flat file (required to get step status, no other use)
-    while IFS= read -r line;
-    do
-        grep -A 2 -E "$line$" job-flow-state.txt | grep 'id: "s-'
-    done < $TMP_STEP_JSON_OUTPUT_LOCATION/seq.txt |  sed 's/^[ \t]*//g' | cut -c 6- | tr -d '"' > $TMP_STEP_JSON_OUTPUT_LOCATION/ids.txt
-
-    # step state to a flat file
-    while IFS= read -r line;
-    do
-        grep -A 2 -E "$line" job-flow-state.txt | grep 'state: '
-    done < $TMP_STEP_JSON_OUTPUT_LOCATION/ids.txt |  sed 's/^[ \t]*//g' | cut -c 8-  > $TMP_STEP_JSON_OUTPUT_LOCATION/state.txt
-
-    # re-do sequence file - to remove 'sequence: ' prefix
-    grep -A 1 -E '^\s*stepEntities {' job-flow-state.txt | grep sequence: | sed 's/^[ \t]*//g' | cut -c 11- > $TMP_STEP_JSON_OUTPUT_LOCATION/seq.txt
-
-    STEP_COUNT=$(cat $TMP_STEP_JSON_OUTPUT_LOCATION/seq.txt | wc -l)
-
-    # ensure that all flat file line count matches before continuing
-    if [[ $STEP_COUNT != $(cat $TMP_STEP_JSON_OUTPUT_LOCATION/ids.txt | wc -l) ]] || [[ $STEP_COUNT != $(cat $TMP_STEP_JSON_OUTPUT_LOCATION/state.txt | wc -l) ]] || [[ $STEP_COUNT != $(cat $TMP_STEP_JSON_OUTPUT_LOCATION/args.txt | wc -l) ]]; then
-        log_wrapper_message "An issue encountered while building step json. Line counts in one or more step falt files do not match!"
-        dynamo_update_item "NOT_SET" "$FAILED_STATUS" "NOT_SET"
-        exit 1
-    fi
-
-    # (re)write id.json
-    CURRENT_STEP_COUNT=1
-    while [[ "$CURRENT_STEP_COUNT" -le "$STEP_COUNT" ]]; do
-
-        printf '{\n  "id": %s,\n  "args": [\n    "%s"\n  ],\n  "state": "%s"\n}\n' "$(sed "$CURRENT_STEP_COUNT!d" < "$TMP_STEP_JSON_OUTPUT_LOCATION/seq.txt")" "$(sed "$CURRENT_STEP_COUNT!d" < "$TMP_STEP_JSON_OUTPUT_LOCATION/args.txt")" "$(sed "$CURRENT_STEP_COUNT!d" < "$TMP_STEP_JSON_OUTPUT_LOCATION/state.txt")" > "$TMP_STEP_JSON_OUTPUT_LOCATION/$CURRENT_STEP_COUNT.json"
-
-        # move json that has completed & running state to step watch dir
-        if grep -q "$COMPLETED_STATUS" "$TMP_STEP_JSON_OUTPUT_LOCATION/$CURRENT_STEP_COUNT.json" || grep -q "$RUNNING_STATUS" "$TMP_STEP_JSON_OUTPUT_LOCATION/$CURRENT_STEP_COUNT.json"; then
-            mv "$TMP_STEP_JSON_OUTPUT_LOCATION/$CURRENT_STEP_COUNT.json" "$STEP_JSON_OUTPUT_LOCATION/$CURRENT_STEP_COUNT.json"
-        fi
-          CURRENT_STEP_COUNT=$((CURRENT_STEP_COUNT+1))
-        sleep 0.5
-    done
   }
 
   #Check if row for this correlation ID already exists - in which case we need to increment the Run_Id
@@ -228,20 +176,6 @@
     dynamo_update_item "NOT_SET" "$IN_PROGRESS_STATUS" "$NEW_RUN_ID"
   fi
   log_wrapper_message "Updating DynamoDB with CORRELATION_ID: $CORRELATION_ID and RUN_ID: $NEW_RUN_ID"
-
-  # wait for step json to be created
-  READY_TO_BUILD_JSON=0
-  while [[ ! "$READY_TO_BUILD_JSON" == 1 ]]; do
-      if grep -q 'stepEntities' "$STEP_DETAILS_DIR/job-flow-state.txt" ; then
-          READY_TO_BUILD_JSON=1
-          sleep 5
-          build_step_json_file
-          log_wrapper_message "Step metadata are now available ..."
-      else
-          log_wrapper_message "Waiting for step metadata  ..."
-          sleep 10
-      fi
-  done
 
   #kick off loop to process all step files
   check_step_dir
