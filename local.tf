@@ -103,10 +103,10 @@ locals {
   data_pipeline_metadata = data.terraform_remote_state.internal_compute.outputs.data_pipeline_metadata_dynamo.name
 
   mongo_latest_version = {
-    development = "0.0.70"
-    qa          = "0.0.70"
-    integration = "0.0.70"
-    preprod     = "0.0.70"
+    development = "0.0.71"
+    qa          = "0.0.71"
+    integration = "0.0.71"
+    preprod     = "0.0.71"
     production  = "0.0.67"
   }
 
