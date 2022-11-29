@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 get_release_information(){
-    VERSION=$(terraform show|ggrep -o -P "(?<=release\/${REPO}-).*?(?=\.zip)"|head -1)
+    VERSION=$(terraform show|pcregrep -o "(?<=release\/${REPO}-).*?(?=\.zip)"|head -1)
     # VERSION=$(curl --silent "https://api.github.com/repos/dwp/${REPO}/releases/tags/${TAG_VER}" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
     RESPONSE=$(curl --silent "https://api.github.com/repos/dwp/${REPO}/releases/tags/${VERSION}")
 }
