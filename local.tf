@@ -107,7 +107,7 @@ locals {
     qa          = "0.0.72"
     integration = "0.0.72"
     preprod     = "0.0.72"
-    production  = "0.0.67"
+    production  = "0.0.72"
   }
 
   payment_timelines_version = {
