@@ -80,6 +80,12 @@ jobs:
               TF_WORKSPACE: qa
           input_mapping:
             al2-emr-ami: al2-emr-ami-restored
+        - .: (( inject meta.plan.terraform-plan ))
+          config:
+            params:
+              TF_WORKSPACE: qa
+          input_mapping:
+            al2-emr-ami: al2-emr-ami-restored
     on_success:
       do:
         - .: (( inject meta.plan.ami-test-results ))
