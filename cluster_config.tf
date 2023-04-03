@@ -56,6 +56,9 @@ resource "aws_s3_object" "steps" {
       mongo_latest_version      = local.mongo_latest_version[local.environment]
       payment_timelines_version = local.payment_timelines_version[local.environment]
       cbol_data_version         = local.cbol_data_version[local.environment]
+      environment               = local.hcs_environment[local.environment]
+      proxy_http_host           = data.terraform_remote_state.internal_compute.outputs.internet_proxy.host
+      proxy_http_port           = data.terraform_remote_state.internal_compute.outputs.internet_proxy.port
     }
   )
 }

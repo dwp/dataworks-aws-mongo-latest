@@ -20,6 +20,14 @@ resource "aws_s3_object" "download_scripts_sh" {
   })
 }
 
+resource "aws_s3_object" "config_hcs_script" {
+  bucket     = data.terraform_remote_state.common.outputs.config_bucket.id
+  key        = "component/mongo_latest/config_hcs.sh"
+  content    = file("${path.module}/bootstrap_actions/config_hcs.sh")
+  kms_key_id = data.terraform_remote_state.common.outputs.config_bucket_cmk.arn
+}
+
+
 resource "aws_s3_object" "resume_step_script" {
   bucket  = data.terraform_remote_state.common.outputs.config_bucket.id
   key     = "component/mongo_latest/resume_step.sh"
