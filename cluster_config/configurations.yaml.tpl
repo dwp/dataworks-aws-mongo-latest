@@ -108,6 +108,7 @@ Configurations:
     "hive.merge.nway.joins": "true"
     "hive.optimize.sort.dynamic.partition": "false"
     "hive.llap.execution.mode": "none"
+    "fs.s3a.threads.max": "1000"
     "hive.vectorized.groupby.maxentries": "100000"
     "hive.vectorized.use.vectorized.input.format": "true"
     "hive.vectorized.groupby.checkinterval": "4096"
