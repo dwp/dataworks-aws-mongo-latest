@@ -134,7 +134,7 @@ Configurations:
     "fs.s3a.connection.maximum": "4500"
     "fs.s3a.threads.max": "3000"
     "fs.s3a.max.total.tasks": "2000"
-  # performance testing start
+  # performance testing end
     "fs.s3.maxRetries": "20"
     "fs.s3.cse.enabled": "true"
     "fs.s3.cse.encryptionMaterialsProvider.uri": "${encryption_materials_provider_uri}"
