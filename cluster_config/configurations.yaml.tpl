@@ -54,6 +54,15 @@ Configurations:
 
 - Classification: "hive-site"
   Properties:
+    # performance testing start
+    "hive.exec.orc.compression.strategy": "SPEED"
+    "hive.exec.orc.default.compress": "ZLIB"
+    "hive.exec.orc.encoding.strategy": "SPEED"
+    "hive.auto.convert.join": "TRUE"
+    "hive.exec.orc.default.block.size": "568435456"
+    "hive.exec.orc.default.stripe.size": "568435456"
+    "hive.exec.input.listing.max.threads": "40"
+    # performance testing end
     "hive.exec.dynamic.partition.mode": "nonstrict"
     "hive.server2.authentication": "nosasl"
     "hive.support.concurrency": "true"
@@ -78,7 +87,7 @@ Configurations:
     "hive.compactor.initiator.on": "true"
     "hive.compactor.worker.threads": "1"
     "hive.exec.parallel": "true"
-# do not turn vectorisation on see DW-6676
+    # do not turn vectorisation on see DW-6676
     "hive.vectorized.execution.enabled": "false"
     "hive.vectorized.execution.reduce.enabled": "true"
     "hive.vectorized.complex.types.enabled": "true"
@@ -120,6 +129,12 @@ Configurations:
 
 - Classification: "emrfs-site"
   Properties:
+    # performance testing start
+    "fs.s3a.threads.core": "3000"
+    "fs.s3a.connection.maximum": "4500"
+    "fs.s3a.threads.max": "3000"
+    "fs.s3a.max.total.tasks": "2000"
+    # performance testing end
     "fs.s3.maxRetries": "20"
     "fs.s3.cse.enabled": "true"
     "fs.s3.cse.encryptionMaterialsProvider.uri": "${encryption_materials_provider_uri}"
