@@ -7,8 +7,6 @@ jobs:
             resource: meta-development
           - get: dataworks-aws-mongo-latest
             trigger: true
-          - get: dataworks-aws-mongo-latest-dev
-            trigger: true
           - get: al2-emr-ami
             trigger: true
           - get: emr-launcher-release
@@ -20,24 +18,16 @@ jobs:
           - get: dataworks-behavioural-framework
             trigger: false
       - .: (( inject meta.plan.terraform-bootstrap ))
-        input_mapping:
-          dataworks-aws-mongo-latest: dataworks-aws-mongo-latest-dev
         config:
           params:
             AWS_ACC: ((aws_account.development))
       - .: (( inject meta.plan.terraform-apply ))
-        input_mapping:
-          dataworks-aws-mongo-latest: dataworks-aws-mongo-latest-dev
         params:
           TF_WORKSPACE: default
       - .: (( inject meta.plan.terraform-plan ))
-        input_mapping:
-          dataworks-aws-mongo-latest: dataworks-aws-mongo-latest-dev
         params:
           TF_WORKSPACE: default
       - .: (( inject meta.plan.e2e-tests))
-        input_mapping:
-          dataworks-aws-mongo-latest: dataworks-aws-mongo-latest-dev
         config:
           params:
             TF_WORKSPACE: default
