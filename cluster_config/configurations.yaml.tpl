@@ -82,7 +82,6 @@ Configurations:
     "hive.mapred.mode": "nonstrict"
     "hive.tez.container.size": "${hive_tez_container_size}"
     "hive.tez.java.opts": "${hive_tez_java_opts}"
-    
     "hive.auto.convert.join.noconditionaltask.size": "${hive_auto_convert_join_noconditionaltask_size}"
     "hive.exec.failure.hooks": "org.apache.hadoop.hive.ql.hooks.ATSHook"
     "hive.exec.post.hooks": "org.apache.hadoop.hive.ql.hooks.ATSHook"
