@@ -55,12 +55,17 @@ Configurations:
 - Classification: "hive-site"
   Properties:
     # performance testing start
+    "hive.merge.tezfiles": "true"
+    "hive.merge.mapfiles": "true"
+    "hive.merge.mapredfiles": "true"
+    "hive.merge.size.per.task": "128000000"
+    "hive.merge.smallfiles.avgsize": "128000000"
     "hive.exec.orc.compression.strategy": "SPEED"
     "hive.exec.orc.default.compress": "ZLIB"
     "hive.exec.orc.encoding.strategy": "SPEED"
     "hive.auto.convert.join": "TRUE"
-    "hive.exec.orc.default.block.size": "568435456"
-    "hive.exec.orc.default.stripe.size": "568435456"
+    "hive.exec.orc.default.block.size": "268435456"
+    "hive.exec.orc.default.stripe.size": "268435456"
     "hive.exec.input.listing.max.threads": "40"
     # performance testing end
     "hive.exec.dynamic.partition.mode": "nonstrict"
@@ -77,7 +82,6 @@ Configurations:
     "hive.mapred.mode": "nonstrict"
     "hive.tez.container.size": "${hive_tez_container_size}"
     "hive.tez.java.opts": "${hive_tez_java_opts}"
-    "hive.merge.tezfiles": "false"
     "hive.auto.convert.join.noconditionaltask.size": "${hive_auto_convert_join_noconditionaltask_size}"
     "hive.exec.failure.hooks": "org.apache.hadoop.hive.ql.hooks.ATSHook"
     "hive.exec.post.hooks": "org.apache.hadoop.hive.ql.hooks.ATSHook"
@@ -111,7 +115,7 @@ Configurations:
     "hive.compactor.worker.threads": "1"
     "hive.compactor.worker.timeout": "86400"
     "hive.blobstore.optimizations.enabled": "true"
-    "hive.blobstore.use.blobstore.as.scratchdir": "false"
+    "hive.blobstore.use.blobstore.as.scratchdir": "true"
     "hive.server2.tez.session.lifetime": "0"
     "hive.exec.reducers.max": "${hive_max_reducers}"
     "hive.mapjoin.bucket.cache.size": "10000"
@@ -131,9 +135,9 @@ Configurations:
 - Classification: "emrfs-site"
   Properties:
     # performance testing start
-    "fs.s3a.threads.core": "3000"
-    "fs.s3a.connection.maximum": "4500"
-    "fs.s3a.threads.max": "3000"
+    "fs.s3a.threads.core": "2000"
+    "fs.s3a.connection.maximum": "3000"
+    "fs.s3a.threads.max": "2000"
     "fs.s3a.max.total.tasks": "2000"
     # performance testing end
     "fs.s3.maxRetries": "20"
