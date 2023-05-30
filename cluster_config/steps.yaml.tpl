@@ -2,7 +2,7 @@
 BootstrapActions:
 - Name: "run-log4j-patch"
   ScriptBootstrapAction:
-    Path: "s3://${s3_config_bucket}/component/mongo_latest/patch-log4j-emr-6.3.1-v2.sh"
+    Path: "s3://${s3_config_bucket}/component/mongo_latest/patch-log4j-emr-6.5.0-v2.sh"
 - Name: "download_scripts"
   ScriptBootstrapAction:
     Path: "s3://${s3_config_bucket}/component/mongo_latest/download_scripts.sh"
