@@ -226,8 +226,8 @@ locals {
     development = "5"
     qa          = "5"
     integration = "5"
-    preprod     = "25"
-    production  = "25"
+    preprod     = "20"
+    production  = "20"
   }
 
   use_capacity_reservation = {

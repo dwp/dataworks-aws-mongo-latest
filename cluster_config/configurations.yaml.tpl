@@ -94,7 +94,7 @@ Configurations:
     "hive.exec.parallel": "true"
     # do not turn vectorisation on see DW-6676
     "hive.vectorized.execution.enabled": "false"
-    "hive.vectorized.execution.reduce.enabled": "false"
+    "hive.vectorized.execution.reduce.enabled": "true"
     "hive.vectorized.complex.types.enabled": "true"
     "hive.vectorized.use.row.serde.deserialize": "true"
     "hive.vectorized.execution.ptf.enabled": "true"
