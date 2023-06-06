@@ -17,11 +17,22 @@ jobs:
             args:
               - -exc
               - |
+                # use existing ci config from aviator.yml
+                # 1 - ignore existing *dev*.yml under ci/jobs
                 sed '1,/".*yml"/s//"^(?!.*dev).*yml"/' aviator.yml
+
+                # 2 - add a line so that existing *dev*.yml is replaced with our new dev.yml that sources dev branch instead of master
                 sed '/aviator_pipeline.*/i     \      - with_in: ci/jobs/dev-branch-dev\n        regexp: ".*yml"' aviator.yml
+
+                # 3 - add a copy of git resource with, but with dev branch instead
                 cat ci/resources.yml| grep -B 1 -A 7 -E ": dataworks-aws-mongo-latest$"| sed '/latest$/ s/$/-dev/' | sed 's/branch:.*/branch: dev/' >>ci/resources.yml
+
+                # 4 - remove `fly` call
                 sed -i 's/fly/nofly/' aviator.yml
+
+                # 5 - aviator to have it into a single file
                 /usr/bin/aviator -f aviator.yml
+
                 mv aviator_pipeline.yml ../pipeline
                 mv ci/vars.yml ../pipeline
             dir: dataworks-aws-mongo-latest
