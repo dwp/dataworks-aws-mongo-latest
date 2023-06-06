@@ -71,7 +71,7 @@ Steps:
 - Name: "mongo-latest-build"
   HadoopJarStep:
     Args:
-    - "/opt/emr/aws-mongo-latest/update/executeUpdateAll.sh"
+    - "/opt/emr/aws-mongo-latest/scripts/executeUpdateAll.sh"
     - "${s3_published_bucket}"
     Jar: "s3://eu-west-2.elasticmapreduce/libs/script-runner/script-runner.jar"
   ActionOnFailure: "${action_on_failure}"
@@ -99,7 +99,7 @@ Steps:
 - Name: "mongo-latest-publish"
   HadoopJarStep:
     Args:
-    - "/opt/emr/aws-mongo-latest/update/executePublishAll.sh"
+    - "/opt/emr/aws-mongo-latest/scripts/executePublishAll.sh"
     - "${s3_published_bucket}"
     Jar: "s3://eu-west-2.elasticmapreduce/libs/script-runner/script-runner.jar"
   ActionOnFailure: "${action_on_failure}"
