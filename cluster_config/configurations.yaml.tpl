@@ -67,7 +67,6 @@ Configurations:
     "hive.exec.orc.default.block.size": "268435456"
     "hive.exec.orc.default.stripe.size": "268435456"
     "hive.exec.input.listing.max.threads": "40"
-    "hive.optimize.s3.query": "true"
     # performance testing end
     "hive.exec.dynamic.partition.mode": "nonstrict"
     "hive.server2.authentication": "nosasl"
