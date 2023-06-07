@@ -193,8 +193,8 @@ locals {
     development = "1024"
     qa          = "1024"
     integration = "1024"
-    preprod     = "7168"
-    production  = "7168"
+    preprod     = "8192"
+    production  = "8192"
   }
 
   # 0.8 of tez_am_resource_memory_mb
@@ -202,24 +202,24 @@ locals {
     development = "-Xmx816m"
     qa          = "-Xmx816m"
     integration = "-Xmx816m"
-    preprod     = "-Xmx5734m"
-    production  = "-Xmx5734m"
+    preprod     = "-Xmx6554m"
+    production  = "-Xmx6554m"
   }
 
   tez_task_resource_memory_mb = {
     development = "2048"
     qa          = "2048"
     integration = "2048"
-    preprod     = "5734"
-    production  = "5734"
+    preprod     = "6554"
+    production  = "6554"
   }
 
   hive_max_reducers = {
     development = "1099"
     qa          = "1099"
     integration = "1099"
-    preprod     = "3000"
-    production  = "3000"
+    preprod     = "5000"
+    production  = "5000"
   }
 
   hive_tez_sessions_per_queue = {
