@@ -218,8 +218,8 @@ locals {
     development = "1099"
     qa          = "1099"
     integration = "1099"
-    preprod     = "3000"
-    production  = "3000"
+    preprod     = "3500"
+    production  = "3500"
   }
 
   hive_tez_sessions_per_queue = {
