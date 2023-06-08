@@ -117,10 +117,10 @@ locals {
   }
 
   cbol_data_version = {
-    development = "0.0.14"
-    qa          = "0.0.14"
-    integration = "0.0.14"
-    preprod     = "0.0.14"
+    development = "0.0.19"
+    qa          = "0.0.19"
+    integration = "0.0.19"
+    preprod     = "0.0.19"
     production  = "0.0.13"
   }
 
