@@ -109,18 +109,18 @@ locals {
   }
 
   payment_timelines_version = {
-    development = "0.0.37"
-    qa          = "0.0.37"
-    integration = "0.0.37"
-    preprod     = "0.0.37"
+    development = "0.0.38"
+    qa          = "0.0.38"
+    integration = "0.0.38"
+    preprod     = "0.0.38"
     production  = "0.0.37"
   }
 
   cbol_data_version = {
-    development = "0.0.13"
-    qa          = "0.0.13"
-    integration = "0.0.13"
-    preprod     = "0.0.13"
+    development = "0.0.14"
+    qa          = "0.0.14"
+    integration = "0.0.14"
+    preprod     = "0.0.14"
     production  = "0.0.13"
   }
 
