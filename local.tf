@@ -109,18 +109,18 @@ locals {
   }
 
   payment_timelines_version = {
-    development = "0.0.37"
-    qa          = "0.0.37"
-    integration = "0.0.37"
-    preprod     = "0.0.37"
+    development = "0.0.38"
+    qa          = "0.0.38"
+    integration = "0.0.38"
+    preprod     = "0.0.38"
     production  = "0.0.37"
   }
 
   cbol_data_version = {
-    development = "0.0.13"
-    qa          = "0.0.13"
-    integration = "0.0.13"
-    preprod     = "0.0.13"
+    development = "0.0.20"
+    qa          = "0.0.20"
+    integration = "0.0.20"
+    preprod     = "0.0.20"
     production  = "0.0.13"
   }
 
@@ -218,8 +218,8 @@ locals {
     development = "1099"
     qa          = "1099"
     integration = "1099"
-    preprod     = "3000"
-    production  = "3000"
+    preprod     = "3500"
+    production  = "3500"
   }
 
   hive_tez_sessions_per_queue = {
@@ -252,5 +252,88 @@ locals {
     config_bucket  = data.terraform_remote_state.common.outputs.config_bucket
     config_prefix  = data.terraform_remote_state.aws_s3_object_tagger.outputs.pt_object_tagger_data_classification.config_prefix
     data_s3_prefix = data.terraform_remote_state.aws_s3_object_tagger.outputs.pt_object_tagger_data_classification.data_s3_prefix
+  }
+
+  tenable_install = {
+    development    = "true"
+    qa             = "true"
+    integration    = "true"
+    preprod        = "true"
+    production     = "true"
+    management-dev = "true"
+    management     = "true"
+  }
+
+  trend_install = {
+    development    = "true"
+    qa             = "true"
+    integration    = "true"
+    preprod        = "true"
+    production     = "true"
+    management-dev = "true"
+    management     = "true"
+  }
+
+  tanium_install = {
+    development    = "false"
+    qa             = "false"
+    integration    = "false"
+    preprod        = "false"
+    production     = "false"
+    management-dev = "false"
+    management     = "false"
+  }
+
+
+  ## Tanium config
+  ## Tanium Servers
+  tanium1 = jsondecode(data.aws_secretsmanager_secret_version.terraform_secrets.secret_binary).tanium[local.environment].server_1
+  tanium2 = jsondecode(data.aws_secretsmanager_secret_version.terraform_secrets.secret_binary).tanium[local.environment].server_2
+
+  ## Tanium Env Config
+  tanium_env = {
+    development    = "pre-prod"
+    qa             = "prod"
+    integration    = "prod"
+    preprod        = "prod"
+    production     = "prod"
+    management-dev = "pre-prod"
+    management     = "prod"
+  }
+
+  ## Tanium prefix list for TGW for Security Group rules
+  tanium_prefix = {
+    development    = [data.aws_ec2_managed_prefix_list.list.id]
+    qa             = [data.aws_ec2_managed_prefix_list.list.id]
+    integration    = [data.aws_ec2_managed_prefix_list.list.id]
+    preprod        = [data.aws_ec2_managed_prefix_list.list.id]
+    production     = [data.aws_ec2_managed_prefix_list.list.id]
+    management-dev = [data.aws_ec2_managed_prefix_list.list.id]
+    management     = [data.aws_ec2_managed_prefix_list.list.id]
+  }
+
+  tanium_log_level = {
+    development    = "41"
+    qa             = "41"
+    integration    = "41"
+    preprod        = "41"
+    production     = "41"
+    management-dev = "41"
+    management     = "41"
+  }
+
+  ## Trend config
+  tenant   = jsondecode(data.aws_secretsmanager_secret_version.terraform_secrets.secret_binary).trend.tenant
+  tenantid = jsondecode(data.aws_secretsmanager_secret_version.terraform_secrets.secret_binary).trend.tenantid
+  token    = jsondecode(data.aws_secretsmanager_secret_version.terraform_secrets.secret_binary).trend.token
+
+  policy_id = {
+    development    = "69"
+    qa             = "69"
+    integration    = "69"
+    preprod        = "69"
+    production     = "69"
+    management-dev = "69"
+    management     = "69"
   }
 }
