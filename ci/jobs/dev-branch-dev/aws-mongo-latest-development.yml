@@ -1,0 +1,45 @@
+jobs:
+  - name: aws-mongo-latest-dev
+    max_in_flight: 1
+    plan:
+      - in_parallel:
+          - put: meta
+            resource: meta-development
+          - get: dataworks-aws-mongo-latest
+            trigger: true
+          - get: dataworks-aws-mongo-latest
+            trigger: false
+          - get: al2-emr-ami
+            trigger: true
+          - get: emr-launcher-release
+            version: { tag: ((emr-launcher-version.development)) }
+            trigger: true
+          - get: emr-relauncher-release
+            version: { tag: ((emr-relauncher-version.development)) }
+            trigger: true
+          - get: dataworks-behavioural-framework
+            trigger: false
+      - .: (( inject meta.plan.terraform-bootstrap ))
+        input_mapping:
+          dataworks-aws-mongo-latest: dataworks-aws-mongo-latest-dev
+        config:
+          params:
+            AWS_ACC: ((aws_account.development))
+      - .: (( inject meta.plan.terraform-apply ))
+        input_mapping:
+          dataworks-aws-mongo-latest: dataworks-aws-mongo-latest-dev
+        params:
+          TF_WORKSPACE: default
+      - .: (( inject meta.plan.terraform-plan ))
+        input_mapping:
+          dataworks-aws-mongo-latest: dataworks-aws-mongo-latest-dev
+        params:
+          TF_WORKSPACE: default
+      - .: (( inject meta.plan.e2e-tests))
+        input_mapping:
+          dataworks-aws-mongo-latest: dataworks-aws-mongo-latest-dev
+        config:
+          params:
+            TF_WORKSPACE: default
+            AWS_ACC: ((aws_account.development))
+            AWS_ROLE_ARN: arn:aws:iam::((aws_account.development)):role/ci
