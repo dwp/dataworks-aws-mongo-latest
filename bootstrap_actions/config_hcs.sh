@@ -31,17 +31,24 @@
     fi
 
     if [ "$install_trend" = true ]; then
+<<<<<<< HEAD
         # Add VPC IP's to local host file with local DNS config for Trend
         echo Adding VPC Endpoint IP to hosts file
         vpce_ip1=$(dig +short "$2" | sed -n 1p | grep '^[.0-9]*$')
         sudo sed -i -e '$a'"$vpce_ip1"'  'dwx-squid-proxy.local /etc/hosts
+=======
+>>>>>>> c5f9d18 (refactor: Tenable/Tanium config)
 
         echo Installing and configuring Trend Micro Agent
         # PROXY_ADDR_PORT and PROXY_CREDENTIAL define proxy for software download and Agent activation
         PROXY_ADDR_PORT="$2:$3"
         # RELAY_PROXY_ADDR_PORT and RELAY_PROXY_CREDENTIAL define proxy for Agent and Relay communication
         RELAY_PROXY_ADDR_PORT="$2:$3"
+<<<<<<< HEAD
         # HTTP_PROXY is exported for compatibility purpose, remove it if it is not needed in your environment
+=======
+        # HTTP_PROXY is exported for compatibility purpose, remove it if it is not needed in your environment 
+>>>>>>> c5f9d18 (refactor: Tenable/Tanium config)
         export HTTP_PROXY=http://$PROXY_ADDR_PORT/
         export HTTPS_PROXY=http://$PROXY_ADDR_PORT/
 
@@ -118,7 +125,11 @@
         echo "Flag set to skip Trend installation"
     fi
 
+<<<<<<< HEAD
     if [ "$install_tanium" = true ]; then
+=======
+    if [ "$install_tanium" = true ]; then   
+>>>>>>> c5f9d18 (refactor: Tenable/Tanium config)
         log_wrapper_message "Installing and configuring Tanium"
         sudo rpm -Uvh /opt/agents/tanium/TaniumClient-*
         echo "set ServerNameList $4,$5"
