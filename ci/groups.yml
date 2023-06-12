@@ -15,6 +15,10 @@ groups:
     jobs:
       - update-pipeline
 
+  - name: dev-in-dev
+    jobs:
+      - dev-branch-in-dev
+
   - name: ami-test
     jobs:
       - apply-and-test-with-ami
