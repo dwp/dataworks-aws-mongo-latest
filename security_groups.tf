@@ -183,6 +183,47 @@ resource "aws_security_group_rule" "ingress_to_dks" {
   security_group_id = data.terraform_remote_state.crypto.outputs.dks_sg_id[local.environment]
 }
 
+
+resource "aws_security_group_rule" "mongo_latest_host_outbound_tanium_1" {
+  description       = "Mongo Latest host outbound port 1 to Tanium"
+  type              = "egress"
+  from_port         = var.tanium_port_1
+  to_port           = var.tanium_port_1
+  protocol          = "tcp"
+  prefix_list_ids   = local.tanium_prefix[local.environment]
+  security_group_id = aws_security_group.mongo_latest_common.id
+}
+
+resource "aws_security_group_rule" "mongo_latest_host_outbound_tanium_2" {
+  description       = "Mongo Latest outbound port 2 to Tanium"
+  type              = "egress"
+  from_port         = var.tanium_port_2
+  to_port           = var.tanium_port_2
+  protocol          = "tcp"
+  prefix_list_ids   = local.tanium_prefix[local.environment]
+  security_group_id = aws_security_group.mongo_latest_common.id
+}
+
+resource "aws_security_group_rule" "mongo_latest_host_inbound_tanium_1" {
+  description       = "Mongo Latest inbound port 1 from Tanium"
+  type              = "ingress"
+  from_port         = var.tanium_port_1
+  to_port           = var.tanium_port_1
+  protocol          = "tcp"
+  prefix_list_ids   = local.tanium_prefix[local.environment]
+  security_group_id = aws_security_group.mongo_latest_common.id
+}
+
+resource "aws_security_group_rule" "mongo_latest_host_inbound_tanium_2" {
+  description       = "Mongo Latest inbound port 2 from Tanium"
+  type              = "ingress"
+  from_port         = var.tanium_port_2
+  to_port           = var.tanium_port_2
+  protocol          = "tcp"
+  prefix_list_ids   = local.tanium_prefix[local.environment]
+  security_group_id = aws_security_group.mongo_latest_common.id
+}
+
 # https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-man-sec-groups.html#emr-sg-elasticmapreduce-sa-private
 resource "aws_security_group_rule" "emr_service_ingress_master" {
   description              = "Allow EMR master nodes to reach the EMR service"
