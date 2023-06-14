@@ -105,7 +105,7 @@ locals {
     qa          = "0.0.76"
     integration = "0.0.76"
     preprod     = "0.0.76"
-    production  = "0.0.72"
+    production  = "0.0.76"
   }
 
   payment_timelines_version = {
@@ -113,7 +113,7 @@ locals {
     qa          = "0.0.38"
     integration = "0.0.38"
     preprod     = "0.0.38"
-    production  = "0.0.37"
+    production  = "0.0.38"
   }
 
   cbol_data_version = {
@@ -121,7 +121,7 @@ locals {
     qa          = "0.0.20"
     integration = "0.0.20"
     preprod     = "0.0.20"
-    production  = "0.0.13"
+    production  = "0.0.20"
   }
 
   dynamodb_final_step = {
