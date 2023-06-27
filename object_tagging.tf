@@ -69,7 +69,7 @@ resource "aws_cloudwatch_event_target" "pt_minus_1_success_start_object_tagger" 
 
   batch_target {
     job_definition = data.terraform_remote_state.aws_s3_object_tagger.outputs.s3_object_tagger_batch.job_definition.name
-    job_name       = "mongo-latest-success-cloudwatch-event"
+    job_name       = "pt-minus-1-success-cloudwatch-event"
   }
 
   input = "{\"Parameters\": {\"data-s3-prefix\": \"${local.data_classification.data_s3_prefix}\", \"csv-location\": \"s3://${local.data_classification.config_bucket.id}/${local.data_classification.config_prefix}/data_classification.csv\"}}"
