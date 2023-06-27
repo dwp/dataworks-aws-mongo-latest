@@ -72,6 +72,28 @@ resource "aws_cloudwatch_event_rule" "mongo_latest_success" {
 }
 EOF
 }
+resource "aws_cloudwatch_event_rule" "pt_minus_1_success" {
+  name          = "pt_minus_1_success"
+  description   = "checks that all steps complete"
+  event_pattern = <<EOF
+{
+  "source": [
+    "aws.emr"
+  ],
+  "detail-type": [
+    "EMR Step Status Change"
+  ],
+  "detail": {
+    "state": [
+      "COMPLETED"
+    ],
+    "name": [
+      "mongo-latest"
+    ]
+  }
+}
+EOF
+}
 
 resource "aws_cloudwatch_event_rule" "mongo_latest_success_with_errors" {
   name          = "mongo_latest_success_with_errors"
