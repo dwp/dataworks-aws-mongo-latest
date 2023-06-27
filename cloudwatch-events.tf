@@ -88,7 +88,7 @@ resource "aws_cloudwatch_event_rule" "pt_minus_1_success" {
       "COMPLETED"
     ],
     "name": [
-      "mongo-latest"
+      "pt-minus-1-sql"
     ]
   }
 }
