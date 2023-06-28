@@ -324,7 +324,7 @@ resource "aws_cloudwatch_metric_alarm" "pt_minus_1_success" {
   period                    = "60"
   statistic                 = "Sum"
   threshold                 = "1"
-  alarm_description         = "Monitoring Mongo Latest completion"
+  alarm_description         = "Monitoring PT-1 completion"
   insufficient_data_actions = []
   alarm_actions             = [data.terraform_remote_state.security-tools.outputs.sns_topic_london_monitoring.arn]
   dimensions = {
