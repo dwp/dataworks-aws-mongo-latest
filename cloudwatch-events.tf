@@ -302,7 +302,7 @@ resource "aws_cloudwatch_metric_alarm" "mongo_latest_success" {
   insufficient_data_actions = []
   alarm_actions             = [data.terraform_remote_state.security-tools.outputs.sns_topic_london_monitoring.arn]
   dimensions = {
-    RuleName = aws_cloudwatch_event_rule.mongo_latest_success.name
+    RuleName = aws_cloudwatch_event_rule.pt_minus_1_success.name
   }
   tags = merge(
     local.common_tags,
