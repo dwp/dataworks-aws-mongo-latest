@@ -118,11 +118,7 @@
         echo "Flag set to skip Trend installation"
     fi
 
-<<<<<<< HEAD
     if [ "$install_tanium" = true ]; then
-=======
-    if [ "$install_tanium" = true ]; then   
->>>>>>> c5f9d18 (refactor: Tenable/Tanium config)
         log_wrapper_message "Installing and configuring Tanium"
         sudo rpm -Uvh /opt/agents/tanium/TaniumClient-*
         echo "set ServerNameList $4,$5"
