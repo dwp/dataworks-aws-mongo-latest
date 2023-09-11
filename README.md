@@ -1,3 +1,6 @@
+# DO NOT USE THIS REPO - MIGRATED TO GITLAB
+
+
 # dataworks-aws-mongo-latest
 
 The Mongo Latest cluster runs the aws-mongo-latest SQL data product and builds the infrastructure needed for it to run on AWS.
